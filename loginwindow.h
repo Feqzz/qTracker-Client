@@ -15,6 +15,9 @@ public:
     LogInWindow(QWidget *parent = nullptr);
     ~LogInWindow();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::LogInWindow *ui;
 };
