@@ -1,10 +1,9 @@
 #include "loginwindow.h"
 #include "ui_loginwindow.h"
-#include "database.h"
+
 
 LogInWindow::LogInWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::LogInWindow)
+    : QMainWindow(parent), ui(new Ui::LogInWindow), db(new Database())
 {
     ui->setupUi(this);
 }
@@ -16,6 +15,14 @@ LogInWindow::~LogInWindow()
 
 void LogInWindow::on_pushButton_clicked() //login button
 {
-    Database* db = new Database();
-    db->makeTables();
+    QString username = ui->lineEdit->text();
+    QString password = ui->lineEdit_2->text();
+    db->login(username, password);
+}
+
+void LogInWindow::on_pushButton_2_clicked() //Register button
+{
+    QString username = ui->lineEdit->text();
+    QString password = ui->lineEdit_2->text();
+    db->register_(username, password);
 }
