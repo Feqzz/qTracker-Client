@@ -23,18 +23,6 @@ void Database::query(QString str)
     q.exec(str);
 }
 
-void Database::makeTables()
-{
-    QString query =
-        "CREATE TABLE IF NOT EXISTS user("
-        "id INT AUTO_INCREMENT PRIMARY KEY,"
-        "username VARCHAR(50) NOT NULL UNIQUE,"
-        "password VARCHAR(255) NOT NULL,"
-        "created_at DATETIME DEFAULT CURRENT_TIMESTAMP"
-        ")";
-    this->query(query);
-}
-
 bool Database::uniqueUsername(QString str)
 {
     QSqlQuery q(this->db);

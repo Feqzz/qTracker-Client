@@ -10,7 +10,6 @@ class Database
 {
 public:
     Database();
-    void makeTables();
     void login(QString, QString);
     void register_(QString, QString); //Illegal to name it register
     bool isConnected;
