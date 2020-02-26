@@ -1,6 +1,6 @@
 #include <QString>
 
-const QString dbHostName = "test";
+const QString dbHostName = "";
 const QString dbDatabaseName = "";
 const QString dbUserName = "";
 const QString dbPassword = "";
