@@ -7,6 +7,9 @@ CREATE TABLE IF NOT EXISTS user
     username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
+    upload DOUBLE,
+    download DOUBLE,
+    privilege INT,
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -14,8 +17,8 @@ CREATE TABLE IF NOT EXISTS invite
 (
     id INT AUTO_INCREMENT PRIMARY KEY,
     recipientEmail VARCHAR(255) NOT NULL UNIQUE,
-    sender INT,
-    key VARCHAR(255) NOT NULL UNIQUE,
-    expDate DATETIME DEFAULT (CURRENT_TIMESTAMP + 48),
-    FOREIGN KEY(sender) REFERENCES user(id)
+    sender INT NOT NULL,
+    InviteKey VARCHAR(255) NOT NULL UNIQUE,
+    expDate DATETIME NOT NULL,
+    FOREIGN KEY (sender) REFERENCES user(id)
 );

@@ -17,14 +17,28 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    config.cpp \
-    database.cpp \
-    main.cpp \
-    loginwindow.cpp
+    app/controller/logincontroller.cpp \
+    app/config.cpp \
+    app/core/application.cpp \
+    app/core/controller.cpp \
+    app/core/database.cpp \
+    app/core/model.cpp \
+    app/core/view.cpp \
+    app/main.cpp \
+    app/model/login.cpp \
+    app/model/user.cpp \
+    app/view/loginwindow.cpp
 
 HEADERS += \
-    database.h \
-    loginwindow.h
+    app/controller/logincontroller.h \
+    app/core/application.h \
+    app/core/controller.h \
+    app/core/database.h \
+    app/core/model.h \
+    app/core/view.h \
+    app/model/login.h \
+    app/model/user.h \
+    app/view/loginwindow.h
 
 FORMS += \
     loginwindow.ui
