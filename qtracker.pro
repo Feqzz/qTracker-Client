@@ -18,16 +18,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     app/controller/logincontroller.cpp \
-    app/config.cpp \
+    config.cpp \
     app/core/application.cpp \
     app/core/controller.cpp \
     app/core/database.cpp \
     app/core/model.cpp \
     app/core/view.cpp \
-    app/main.cpp \
     app/model/login.cpp \
     app/model/user.cpp \
-    app/view/loginwindow.cpp
+    app/view/loginwindow.cpp \
+    public/main.cpp
 
 HEADERS += \
     app/controller/logincontroller.h \
