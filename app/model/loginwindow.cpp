@@ -121,7 +121,7 @@ bool LogInWindow::validInviteKey(QString key, QString email)
     q.bindValue(":email", email);
     if (q.exec())
     {
-        qDebug() << q.value(0).toString();
+        q.next();
         return (key != q.value(0).toString()) ? false : true;
     }
     else
@@ -133,7 +133,6 @@ bool LogInWindow::validInviteKey(QString key, QString email)
 
 void LogInWindow::on_pushButton_6_clicked()
 {
-    qDebug() << "We got here";
     QString email = ui->lineEdit_8->text();
     QString username = ui->lineEdit_3->text();
     QString password = ui->lineEdit_7->text();
@@ -147,7 +146,6 @@ void LogInWindow::on_pushButton_2_clicked()
     QString key = generateKey(email);
     if (key != NULL)
     {
-        qDebug() << "Should be printing";
         ui->label_13->setText(key);
         ui->label_13->update();
     }
