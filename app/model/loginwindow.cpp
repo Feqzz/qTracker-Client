@@ -158,18 +158,8 @@ QString LogInWindow::generateKey(QString email)
 {
     if(tempUserId)
     {
-        /*QString key;
-        static const char alphanum[] =
-            "0123456789"
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            "abcdefghijklmnopqrstuvwxyz";
-        for (int i = 0; i < 12; ++i)
-        {
-            key[i] = alphanum[qrand() % (sizeof(alphanum) - 1)];
-        }*/
-        QString key = QUuid::createUuid().toString();
+        QString key = QUuid::createUuid().toString(QUuid::Id128).left(12);
         qDebug() << "Key: " << key;
-
 
         QSqlQuery q = db->query();
         q.prepare("INSERT INTO invite (recipientEmail, sender, InviteKey, expDate) "
