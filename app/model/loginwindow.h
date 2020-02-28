@@ -5,6 +5,8 @@
 #include "app/core/model.h"
 #include "app/core/database.h"
 #include <QDebug>
+#include <QUuid>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class LogInWindow; }

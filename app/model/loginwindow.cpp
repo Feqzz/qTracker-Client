@@ -2,6 +2,7 @@
 #include "ui_loginwindow.h"
 
 
+
 LogInWindow::LogInWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::LogInWindow)
 {
@@ -159,7 +160,7 @@ QString LogInWindow::generateKey(QString email)
 {
     if(tempUserId)
     {
-        QString key;
+        /*QString key;
         static const char alphanum[] =
             "0123456789"
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -167,11 +168,9 @@ QString LogInWindow::generateKey(QString email)
         for (int i = 0; i < 12; ++i)
         {
             key[i] = alphanum[qrand() % (sizeof(alphanum) - 1)];
-        }
-
+        }*/
+        QString key = QUuid::createUuid().toString();
         qDebug() << "Key: " << key;
-
-
 
 
         QSqlQuery q = db->query();
