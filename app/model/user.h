@@ -8,13 +8,13 @@ public:
     User(int);
     double getRatio();
     void changePassword(QString, QString);
+    int id;
 private:
     QString username;
     QString password;
     double download;
     double upload;
     int privilege;
-    int id;
 };
 
 #endif // USER_H

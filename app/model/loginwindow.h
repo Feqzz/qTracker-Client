@@ -18,11 +18,17 @@ public:
     ~LogInWindow();
 private slots:
     void on_pushButton_clicked();
+    void on_pushButton_6_clicked();
     void on_pushButton_2_clicked();
+
 private:
     void login(QString, QString);
-    void register_(QString, QString); //Illegal to name it register
+    void register_(QString, QString, QString, QString); //Illegal to name it register
+    bool validInviteKey(QString, QString);
     bool uniqueUsername(QString);
+    bool uniqueEmail(QString);
+    QString generateKey(QString);
+    int tempUserId;
     Ui::LogInWindow *ui;
 };
 #endif // LOGINWINDOW_H

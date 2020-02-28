@@ -30,16 +30,17 @@ void Login::login(QString username, QString password)
      }
 }
 
-void Login::register_(QString username, QString password)
+void Login::register_(QString username, QString password, QString email)
 {
-    if (uniqueUsername(username))
+    if (uniqueUsername(username) && uniqueEmail(email))
     {
         QString hashedPassword = db->hash(password);
         QSqlQuery q = db->query();
-        q.prepare("INSERT INTO user (username, password)"
-                  "VALUES (:username, :password)");
+        q.prepare("INSERT INTO user (username, password, email)"
+                  "VALUES (:username, :password, :email)");
         q.bindValue(":username", username);
         q.bindValue(":password", hashedPassword);
+        q.bindValue(":email", email);
         if (q.exec())
         {
             qDebug() << "User registered";
@@ -67,3 +68,25 @@ bool Login::uniqueUsername(QString str)
         return false;
     }
 }
+
+bool Login::uniqueEmail(QString str)
+{
+    QSqlQuery q = db->query();
+    q.prepare("SELECT email FROM user WHERE email = :email");
+    q.bindValue(":email", str);
+    if (q.exec())
+    {
+        return (q.size() > 0) ? false : true;
+    }
+    else
+    {
+        qDebug("Failed to execute query while checking for unique email");
+        return false;
+    }
+}
+
+
+
+
+
+
