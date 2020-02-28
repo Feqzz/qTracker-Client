@@ -1,7 +1,7 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
-#include "core/model.h"
-#include "core/view.h"
+#include "app/core/model.h"
+#include "app/core/view.h"
 
 class Controller
 {

@@ -1,6 +1,6 @@
 #ifndef LOGIN_H
 #define LOGIN_H
-#include "core/model.h"
+#include "app/core/model.h"
 
 class Login : public Model
 {

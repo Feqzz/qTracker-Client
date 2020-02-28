@@ -1,6 +1,6 @@
 #ifndef VIEW_H
 #define VIEW_H
-
+#include "app/core/model.h"
 
 class View
 {

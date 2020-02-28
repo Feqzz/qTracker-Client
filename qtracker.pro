@@ -26,7 +26,7 @@ SOURCES += \
     app/core/view.cpp \
     app/model/login.cpp \
     app/model/user.cpp \
-    app/view/loginwindow.cpp \
+    app/model/loginwindow.cpp \
     public/main.cpp
 
 HEADERS += \
@@ -38,7 +38,7 @@ HEADERS += \
     app/core/view.h \
     app/model/login.h \
     app/model/user.h \
-    app/view/loginwindow.h
+    app/model/loginwindow.h
 
 FORMS += \
     loginwindow.ui

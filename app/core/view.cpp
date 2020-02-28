@@ -1,6 +1,6 @@
 #include "view.h"
 
-view::view()
+View::View()
 {
 
 }

@@ -1,6 +1,6 @@
 #ifndef USER_H
 #define USER_H
-#include "core/model.h"
+#include "app/core/model.h"
 
 class User : public Model
 {

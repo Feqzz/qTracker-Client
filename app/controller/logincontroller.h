@@ -1,6 +1,6 @@
 #ifndef LOGINCONTROLLER_H
 #define LOGINCONTROLLER_H
-#include "core/controller.h"
+#include "app/core/controller.h"
 
 class LoginController : public Controller
 {
