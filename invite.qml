@@ -29,8 +29,7 @@ Rectangle {
             id: inviteButton
             text: "Invite"
             anchors.horizontalCenter: emailField.horizontalCenter
-            onClicked: {
-                generateInvite(emailField.text, inviteKeyLabel);
+            onClicked: generateInvite(emailField.text, inviteKeyLabel)
 
         }
 
