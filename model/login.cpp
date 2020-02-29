@@ -5,6 +5,11 @@ Login::Login(QObject *parent) : QObject(parent)
 
 }
 
+Login::Login(User* a)
+{
+    user = a;
+}
+
 void Login::test(QString str)
 {
     qDebug() << "Hello " << str;
@@ -24,8 +29,7 @@ bool Login::login(QString username, QString password)
         {
             qDebug() << "User logged in!";
             int id = q.value(0).toInt();
-            sessionUser = new User(id);
-            qDebug() << sessionUser->getId();
+            user = new User(id);
             return true;
         }
         else
@@ -124,31 +128,4 @@ bool Login::validInviteKey(QString key, QString email)
     }
 }
 
-QString Login::generateKey(QString email)
-{
-    if(sessionUser->getId())
-    {
-        QString key = QUuid::createUuid().toString(QUuid::Id128).left(12);
-        qDebug() << "Key: " << key;
 
-        QSqlQuery q = db->query();
-        q.prepare("INSERT INTO invite (recipientEmail, sender, InviteKey, expDate) "
-                  "VALUES (:email, :sender, :key, DATE_ADD( NOW(), INTERVAL 48 HOUR ))");
-        q.bindValue(":email", email);
-        q.bindValue(":sender", sessionUser->getId());
-        q.bindValue(":key", key);
-        if (q.exec())
-        {
-            return key;
-        }
-        else
-        {
-            return NULL;
-        }
-    }
-    else
-    {
-        qDebug() << "No user is logged in";
-        return NULL;
-    }
-}

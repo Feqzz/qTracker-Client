@@ -1,14 +1,19 @@
 #ifndef USER_H
 #define USER_H
 #include "core/model.h"
+#include <QObject>
 
-class User : public Model
+class User : public QObject, public Model
 {
+    Q_OBJECT
 public:
+    explicit User(QObject *parent = nullptr);
     User(int);
-    double getRatio();
+    Q_INVOKABLE double getRatio();
     void changePassword(QString, QString);
-    int getId();
+    Q_INVOKABLE int getId();
+    Q_INVOKABLE double getDownload();
+    Q_INVOKABLE double getUpload();
 private:
     QString username;
     QString password;
@@ -16,6 +21,7 @@ private:
     double upload;
     int privilege;
     int id;
+signals:
 };
 
 #endif // USER_H

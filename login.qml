@@ -1,14 +1,12 @@
 import QtQuick 2.12
-//import qtracker 1.0
 import QtQuick.Controls 2.3
 import QtQuick.Window 2.12
-//import "imports/qtracker/"
 
 Page{
     visible: true
     width: 1366
     height: 768
-    title: qsTr("qTracker 1.0");
+    title: qsTr("Login :: qTracker 1.0");
 
     Rectangle {
         id: loginroot

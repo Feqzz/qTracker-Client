@@ -1,5 +1,10 @@
 #include "user.h"
 
+User::User(QObject *parent) : QObject(parent)
+{
+
+}
+
 User::User(int id) : id(id)
 {
     QSqlQuery q = db->query();
@@ -8,6 +13,7 @@ User::User(int id) : id(id)
     q.bindValue(":id", id);
     if (q.exec())
     {
+        q.next();
         username = q.value(0).toString();
         password = q.value(1).toString();
         upload = q.value(2).toDouble();
@@ -23,6 +29,16 @@ User::User(int id) : id(id)
 double User::getRatio()
 {
     return upload/download;
+}
+
+double User::getUpload()
+{
+    return upload;
+}
+
+double User::getDownload()
+{
+    return download;
 }
 
 void User::changePassword(QString oldPassword, QString newPassword)
