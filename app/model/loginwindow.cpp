@@ -167,7 +167,7 @@ QString LogInWindow::generateKey(QString email)
         {
             key[i] = alphanum[qrand() % (sizeof(alphanum) - 1)];
         }*/
-        QString key = QUuid::createUuid().toString();
+        QString key = QUuid::createUuid().toString(QUuid::Id128);
         qDebug() << "Key: " << key;
 
 
