@@ -32,9 +32,8 @@ class SecureSocket : public QObject
     //Q_PROPERTY(type name READ name WRITE setName NOTIFY nameChanged)
 public:
     explicit SecureSocket(QObject *parent = nullptr);
-    SecureSocket();
     ~SecureSocket();
-    void send(QString);
+    Q_INVOKABLE void send(QString);
 private:
     bool setup();
     char buff[100] = {};

@@ -17,7 +17,25 @@ SecureSocket::~SecureSocket()
     if(NULL != ctx)
         SSL_CTX_free(ctx);
 }
+void SecureSocket::send(QString msg)
+{
+    BIO_puts(web, msg.toLocal8Bit().data());
+    BIO_puts(out, "ResponseFromServer: \n");
 
+    int len = 0;
+    do {
+        /* https://www.openssl.org/docs/crypto/BIO_read.html */
+        len = BIO_read(web, buff, sizeof(buff));
+
+        if(len > 0)
+            BIO_write(out, buff, len);
+
+        /* BIO_should_retry returns TRUE unless there's an  */
+        /* error. We expect an error when the server        */
+        /* provides the response and closes the connection. */
+
+    } while (len > 0 || BIO_should_retry(web));
+}
 bool SecureSocket::setup()
 {
     long res = 1;
@@ -315,4 +333,32 @@ void SecureSocket::print_error_string(unsigned long err, const char* const label
         fprintf(stderr, "%s\n", str);
     else
         fprintf(stderr, "%s failed: %lu (0x%lx)\n", label, err, err);
+}
+void SecureSocket::init_openssl_library(void)
+{
+    /* https://www.openssl.org/docs/ssl/SSL_library_init.html */
+    (void)SSL_library_init();
+    /* Cannot fail (always returns success) ??? */
+
+    /* https://www.openssl.org/docs/crypto/ERR_load_crypto_strings.html */
+    SSL_load_error_strings();
+    /* Cannot fail ??? */
+
+    /* SSL_load_error_strings loads both libssl and libcrypto strings */
+    /* ERR_load_crypto_strings(); */
+    /* Cannot fail ??? */
+
+    /* OpenSSL_config may or may not be called internally, based on */
+    /*  some #defines and internal gyrations. Explicitly call it    */
+    /*  *IF* you need something from openssl.cfg, such as a         */
+    /*  dynamically configured ENGINE.                              */
+    OPENSSL_config(NULL);
+    /* Cannot fail ??? */
+
+    /* Include <openssl/opensslconf.h> to get this define     */
+    //#if defined (OPENSSL_THREADS)
+    /* TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO */
+    /* https://www.openssl.org/docs/crypto/threads.html */
+    //fprintf(stdout, "Warning: thread locking is not implemented\n");
+    //#endif
 }

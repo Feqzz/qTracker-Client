@@ -172,6 +172,7 @@ Page {
                     target: inviteButton
                     anchors.horizontalCenterOffset: 50
                     visible: true
+                    onClicked: secureSocket.send(emailField.text)
                 }
 
                 PropertyChanges {

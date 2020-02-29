@@ -20,7 +20,7 @@ SOURCES += \
         core/core.cpp \
         core/database.cpp \
         core/model.cpp \
-    core/securesocket.cpp \
+        core/securesocket.cpp \
         model/login.cpp \
         main.cpp \
         model/user.cpp \
