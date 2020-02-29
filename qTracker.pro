@@ -1,6 +1,8 @@
 QT += quick sql
 
-CONFIG += c++11
+CONFIG += c++11 console -Wno-deprecated-declarations
+
+LIBS += -L/usr/lib -lssl -lcrypto
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -18,6 +20,7 @@ SOURCES += \
         core/core.cpp \
         core/database.cpp \
         core/model.cpp \
+    core/securesocket.cpp \
         model/login.cpp \
         main.cpp \
         model/user.cpp \
@@ -41,6 +44,7 @@ HEADERS += \
     core/core.h \
     core/database.h \
     core/model.h \
+    core/securesocket.h \
     login.h \
     model/user.h \
     model/login.h \
