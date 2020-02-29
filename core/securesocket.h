@@ -33,6 +33,20 @@ class SecureSocket : public QObject
 public:
     explicit SecureSocket(QObject *parent = nullptr);
     SecureSocket();
+    ~SecureSocket();
+    void send(QString);
+private:
+    bool setup();
+    char buff[100] = {};
+    SSL_CTX* ctx = NULL;
+    BIO *web = NULL, *out = NULL;
+    SSL *ssl = NULL;
+    const char* const PREFERRED_CIPHERS = "HIGH:!aNULL:!kRSA:!SRP:!PSK:!CAMELLIA:!RC4:!MD5:!DSS";
+    static void init_openssl_library(void);
+    //static void print_cn_name(const char* label, X509_NAME* const name);
+    //static void print_san_name(const char* label, X509* const cert);
+    static int verify_callback(int preverify, X509_STORE_CTX* x509_ctx);
+    static void print_error_string(unsigned long err, const char* const label);
 
 };
 
