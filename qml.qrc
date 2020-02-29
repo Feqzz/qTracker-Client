@@ -4,5 +4,7 @@
         <file>PushButton.qml</file>
         <file>home.qml</file>
         <file>login.qml</file>
+        <file>invite.qml</file>
+        <file>NavBar.qml</file>
     </qresource>
 </RCC>

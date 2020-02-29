@@ -44,4 +44,21 @@ ApplicationWindow {
             loginroot.state = "base state"
         }
     }
+
+    function generateInvite(email, inviteLabel) {
+        var str = invite.generateKey(email);
+        inviteLabel.text(str);
+    }
+
+    function getRatio() {
+        return user.getRatio();
+    }
+
+    function getUpload() {
+        return user.getUpload();
+    }
+
+    function getDownload() {
+        return user.getDownload();
+    }
 }

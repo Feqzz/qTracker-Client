@@ -17,10 +17,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         config.cpp \
-        core/core.cpp \
         core/database.cpp \
         core/model.cpp \
         core/securesocket.cpp \
+        model/invite.cpp \
         model/login.cpp \
         main.cpp \
         model/user.cpp \
@@ -30,10 +30,12 @@ RESOURCES += qml.qrc \
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH = \
         PushButton.qml
+        header.qml
 
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH = \
         PushButton.qml
+        header.qml
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -41,10 +43,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    core/core.h \
     core/database.h \
     core/model.h \
     core/securesocket.h \
     login.h \
+    model/invite.h \
     model/user.h \
     model/login.h \

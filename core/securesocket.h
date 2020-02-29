@@ -27,8 +27,6 @@
 #include <openssl/x509v3.h>
 #include <openssl/opensslconf.h>
 
-#include "core/core.h"
-
 class SecureSocket : public QObject
 {
     Q_OBJECT
