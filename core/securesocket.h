@@ -36,7 +36,7 @@ class SecureSocket : public QObject
 public:
     explicit SecureSocket(QObject *parent = nullptr);
     ~SecureSocket();
-    Q_INVOKABLE void send(QString,QString);
+    Q_INVOKABLE void sendInviteEmailAndKey(QString,QString);
     Q_INVOKABLE void test(QString);
 private:
     bool setup();

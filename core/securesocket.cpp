@@ -20,12 +20,12 @@ SecureSocket::~SecureSocket()
     if(NULL != ctx)
         SSL_CTX_free(ctx);
 }
-void SecureSocket::send(QString msg,QString key)
+void SecureSocket::sendInviteEmailAndKey(QString email,QString key)
 {
     bool success = setup();
     qDebug() << "Setup finished: " << success << "\n";
     if(success){
-        BIO_puts(web, (msg+" "+key+" ").toLocal8Bit().data());
+        BIO_puts(web, ("1"+email+"\n"+key+"\n").toLocal8Bit().data());
         //BIO_puts(out, "ResponseFromServer: \n");
         //int len = 0;
         //do {

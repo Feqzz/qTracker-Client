@@ -16,11 +16,11 @@ public:
     Q_INVOKABLE void test(QString);
     Q_INVOKABLE bool login(QString, QString);
     Q_INVOKABLE bool registerUser(QString, QString, QString, QString);
+    Q_INVOKABLE QString generateKey(QString);
 private:
     bool validInviteKey(QString, QString);
     bool uniqueUsername(QString);
     bool uniqueEmail(QString);
-    QString generateKey(QString);
     int tempUserId;
 signals:
 };
