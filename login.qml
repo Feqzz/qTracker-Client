@@ -11,7 +11,7 @@ Page{
     title: qsTr("qTracker 1.0");
 
     Rectangle {
-        id: root
+        id: loginroot
         color: "#141414"
         property alias inviteLabel: inviteLabel
         width: 1366
@@ -32,7 +32,7 @@ Page{
                 visible: false
                 anchors.horizontalCenterOffset: 0
                 anchors.horizontalCenter: title.horizontalCenter
-                onClicked: login.register_(usernameField.text, passwordField.text,
+                onClicked: registerUser(usernameField.text, passwordField.text,
                                            emailField.text, inviteField.text)
             }
 
@@ -107,7 +107,7 @@ Page{
                     id: ma
                     hoverEnabled: true
                     anchors.fill: parent
-                    onClicked: root.state = "registerState"
+                    onClicked: loginroot.state = "registerState"
                 }
             }
 
@@ -125,7 +125,7 @@ Page{
                     id: ma1
                     visible: false
                     hoverEnabled: true
-                    onClicked: root.state = "base state"
+                    onClicked: loginroot.state = "base state"
                 }
                 anchors.verticalCenter: loginButton.verticalCenter
                 anchors.verticalCenterOffset: 64
