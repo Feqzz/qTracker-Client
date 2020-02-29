@@ -37,7 +37,7 @@ bool Login::login(QString username, QString password)
 
 }
 
-void Login::register_(QString username, QString password, QString email, QString key)
+bool Login::registerUser(QString username, QString password, QString email, QString key)
 {
     if (uniqueEmail(email))
     {

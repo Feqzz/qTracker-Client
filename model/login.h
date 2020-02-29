@@ -15,7 +15,7 @@ public:
     explicit Login(QObject *parent = nullptr);
     Q_INVOKABLE void test(QString);
     Q_INVOKABLE bool login(QString, QString);
-    Q_INVOKABLE void register_(QString, QString, QString, QString); //Illegal to name it register
+    Q_INVOKABLE bool registerUser(QString, QString, QString, QString);
 private:
     bool validInviteKey(QString, QString);
     bool uniqueUsername(QString);

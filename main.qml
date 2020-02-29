@@ -23,7 +23,6 @@ ApplicationWindow {
         login.login()
     }
 
-
     function changePage(page) {
         var template = "qrc:/%1.qml";
         var url = template.arg(page);
@@ -37,4 +36,12 @@ ApplicationWindow {
         }
     }
 
+    function registerUser(usernameField, passwordField,
+                          emailField, inviteField) {
+
+        if(login.registerUser(usernameField, passwordField,
+                                                   emailField, inviteField)) {
+            loginroot.state = "base state"
+        }
+    }
 }
