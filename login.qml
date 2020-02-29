@@ -46,7 +46,7 @@ Page{
                 anchors.verticalCenterOffset: 96
                 anchors.verticalCenter: column.verticalCenter
                 font.pixelSize: 32
-                onClicked: login.login(usernameField.text, passwordField.text)
+                onClicked: loginUser(usernameField.text, passwordField.text)
             }
 
             Text {

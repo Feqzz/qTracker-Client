@@ -18,7 +18,23 @@ ApplicationWindow {
     }
 
     // After loading show initial Login Page
-        Component.onCompleted: {
-            stackView.push("qrc:/home.qml")
+    Component.onCompleted: {
+        stackView.push("qrc:/login.qml")
+        login.login()
+    }
+
+
+    function changePage(page) {
+        var template = "qrc:/%1.qml";
+        var url = template.arg(page);
+        stackView.replace(url);
+    }
+
+    function loginUser(username, password) {
+        if(login.login(username, password))
+        {
+            changePage("home");
         }
+    }
+
 }

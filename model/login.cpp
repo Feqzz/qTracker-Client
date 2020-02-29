@@ -10,7 +10,7 @@ void Login::test(QString str)
     qDebug() << "Hello " << str;
 }
 
-void Login::login(QString username, QString password)
+bool Login::login(QString username, QString password)
 {
      QSqlQuery q = db->query();
      q.prepare("SELECT id, password FROM user WHERE username = :username");
@@ -26,12 +26,14 @@ void Login::login(QString username, QString password)
             int id = q.value(0).toInt();
             sessionUser = new User(id);
             qDebug() << sessionUser->getId();
+            return true;
         }
         else
         {
             qDebug() << "Password did not match!";
         }
      }
+     return false;
 
 }
 

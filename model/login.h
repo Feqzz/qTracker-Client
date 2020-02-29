@@ -14,7 +14,7 @@ class Login : public QObject, public Model, public Core
 public:
     explicit Login(QObject *parent = nullptr);
     Q_INVOKABLE void test(QString);
-    Q_INVOKABLE void login(QString, QString);
+    Q_INVOKABLE bool login(QString, QString);
     Q_INVOKABLE void register_(QString, QString, QString, QString); //Illegal to name it register
 private:
     bool validInviteKey(QString, QString);
