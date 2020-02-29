@@ -51,13 +51,15 @@ Rectangle {
         Label {
             id: upLabel
             color: "#ffffff"
-            text: "Up: " + getUpload()
+            text: (getUpload() >= 1000) ? "Up: " + (getUpload()/1000) + " TiB"
+                                        : "Up: " + getUpload() + " GiB"
         }
 
         Label {
             id: downLabel
             color: "#ffffff"
-            text: "Down: " + getDownload()
+            text: (getDownload() >= 1000) ? "Down: " + (getDownload()/1000) + " TiB"
+                                        : "Down: " + getDownload() + " GiB"
         }
 
         Label {
