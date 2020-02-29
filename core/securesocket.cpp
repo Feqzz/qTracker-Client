@@ -5,7 +5,10 @@ SecureSocket::SecureSocket(QObject *parent):QObject(parent)
 {
 
 }
-
+void SecureSocket::test(QString str)
+{
+    qDebug() << "Hello " << str;
+}
 SecureSocket::~SecureSocket()
 {
     if(out)
@@ -19,22 +22,33 @@ SecureSocket::~SecureSocket()
 }
 void SecureSocket::send(QString msg)
 {
-    BIO_puts(web, msg.toLocal8Bit().data());
-    BIO_puts(out, "ResponseFromServer: \n");
+    bool success = setup();
+    qDebug() << "Setup finished: " << success << "\n";
+    if(success){
+        BIO_puts(web, msg.toLocal8Bit().data());
+        BIO_puts(out, "ResponseFromServer: \n");
+        int len = 0;
+        do {
+            /* https://www.openssl.org/docs/crypto/BIO_read.html */
+            len = BIO_read(web, buff, sizeof(buff));
 
-    int len = 0;
-    do {
-        /* https://www.openssl.org/docs/crypto/BIO_read.html */
-        len = BIO_read(web, buff, sizeof(buff));
+            if(len > 0)
+                BIO_write(out, buff, len);
 
-        if(len > 0)
-            BIO_write(out, buff, len);
+            /* BIO_should_retry returns TRUE unless there's an  */
+            /* error. We expect an error when the server        */
+            /* provides the response and closes the connection. */
 
-        /* BIO_should_retry returns TRUE unless there's an  */
-        /* error. We expect an error when the server        */
-        /* provides the response and closes the connection. */
+        } while (len > 0 || BIO_should_retry(web));
+        if(out)
+            BIO_free(out);
 
-    } while (len > 0 || BIO_should_retry(web));
+        if(web != NULL)
+            BIO_free_all(web);
+
+        if(NULL != ctx)
+            SSL_CTX_free(ctx);
+    }
 }
 bool SecureSocket::setup()
 {

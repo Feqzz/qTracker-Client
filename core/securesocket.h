@@ -26,7 +26,9 @@
 #include <openssl/x509v3.h>
 #include <openssl/opensslconf.h>
 
-class SecureSocket : public QObject
+#include "core/core.h"
+
+class SecureSocket : public QObject, public Core
 {
     Q_OBJECT
     //Q_PROPERTY(type name READ name WRITE setName NOTIFY nameChanged)
@@ -34,6 +36,7 @@ public:
     explicit SecureSocket(QObject *parent = nullptr);
     ~SecureSocket();
     Q_INVOKABLE void send(QString);
+    Q_INVOKABLE void test(QString);
 private:
     bool setup();
     char buff[100] = {};
@@ -46,7 +49,7 @@ private:
     //static void print_san_name(const char* label, X509* const cert);
     static int verify_callback(int preverify, X509_STORE_CTX* x509_ctx);
     static void print_error_string(unsigned long err, const char* const label);
-
+signals:
 };
 
 #endif // SECURESOCKET_H
