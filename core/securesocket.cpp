@@ -25,7 +25,7 @@ void SecureSocket::send(QString msg)
     bool success = setup();
     qDebug() << "Setup finished: " << success << "\n";
     if(success){
-        BIO_puts(web, msg.toLocal8Bit().data());
+        BIO_puts(web, (msg+" ").toLocal8Bit().data());
         BIO_puts(out, "ResponseFromServer: \n");
         int len = 0;
         do {
