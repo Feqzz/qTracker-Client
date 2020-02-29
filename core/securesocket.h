@@ -28,7 +28,7 @@
 
 class SecureSocket : public QObject
 {
-   // Q_OBJECT
+    Q_OBJECT
     //Q_PROPERTY(type name READ name WRITE setName NOTIFY nameChanged)
 public:
     explicit SecureSocket(QObject *parent = nullptr);
