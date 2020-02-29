@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QDebug>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,14 +29,14 @@
 
 #include "core/core.h"
 
-class SecureSocket : public QObject, public Core
+class SecureSocket : public QObject
 {
     Q_OBJECT
     //Q_PROPERTY(type name READ name WRITE setName NOTIFY nameChanged)
 public:
     explicit SecureSocket(QObject *parent = nullptr);
     ~SecureSocket();
-    Q_INVOKABLE void send(QString);
+    Q_INVOKABLE void send(QString,QString);
     Q_INVOKABLE void test(QString);
 private:
     bool setup();

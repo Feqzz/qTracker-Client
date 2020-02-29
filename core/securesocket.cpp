@@ -20,26 +20,26 @@ SecureSocket::~SecureSocket()
     if(NULL != ctx)
         SSL_CTX_free(ctx);
 }
-void SecureSocket::send(QString msg)
+void SecureSocket::send(QString msg,QString key)
 {
     bool success = setup();
     qDebug() << "Setup finished: " << success << "\n";
     if(success){
-        BIO_puts(web, (msg+" ").toLocal8Bit().data());
-        BIO_puts(out, "ResponseFromServer: \n");
-        int len = 0;
-        do {
+        BIO_puts(web, (msg+" "+key+" ").toLocal8Bit().data());
+        //BIO_puts(out, "ResponseFromServer: \n");
+        //int len = 0;
+        //do {
             /* https://www.openssl.org/docs/crypto/BIO_read.html */
-            len = BIO_read(web, buff, sizeof(buff));
+           // len = BIO_read(web, buff, sizeof(buff));
 
-            if(len > 0)
-                BIO_write(out, buff, len);
+            //if(len > 0)
+               // BIO_write(out, buff, len);
 
             /* BIO_should_retry returns TRUE unless there's an  */
             /* error. We expect an error when the server        */
             /* provides the response and closes the connection. */
 
-        } while (len > 0 || BIO_should_retry(web));
+        //} while (len > 0 || BIO_should_retry(web));
         if(out)
             BIO_free(out);
 
