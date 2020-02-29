@@ -3,7 +3,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.12
 
-Window {
+Page {
     visible: true
     width: 1366
     height: 768

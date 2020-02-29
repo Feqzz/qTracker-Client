@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>PushButton.qml</file>
-        <file>mainPage.qml</file>
+        <file>home.qml</file>
+        <file>login.qml</file>
     </qresource>
 </RCC>
