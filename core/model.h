@@ -6,7 +6,6 @@ class Model
 {
 public:
     Model();
-protected:
     Database* db;
 };
 

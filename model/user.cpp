@@ -36,3 +36,8 @@ void User::changePassword(QString oldPassword, QString newPassword)
         qDebug() << "Old password did not match current password";
     }
 }
+
+int User::getId()
+{
+    return id;
+}

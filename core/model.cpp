@@ -4,5 +4,3 @@ Model::Model()
 {
     db = new Database();
 }
-
-

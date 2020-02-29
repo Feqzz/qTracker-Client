@@ -1,6 +1,6 @@
 #ifndef USER_H
 #define USER_H
-#include "app/core/model.h"
+#include "core/model.h"
 
 class User : public Model
 {
@@ -8,13 +8,14 @@ public:
     User(int);
     double getRatio();
     void changePassword(QString, QString);
-    int id;
+    int getId();
 private:
     QString username;
     QString password;
     double download;
     double upload;
     int privilege;
+    int id;
 };
 
 #endif // USER_H

@@ -6,6 +6,11 @@ Database::Database()
     this->isConnected = this->connect();
 }
 
+Database::~Database()
+{
+    db.close();
+}
+
 bool Database::connect()
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");

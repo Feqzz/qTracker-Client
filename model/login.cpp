@@ -1,27 +1,16 @@
-#include "loginwindow.h"
-#include "ui_loginwindow.h"
+#include "login.h"
 
-
-
-LogInWindow::LogInWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::LogInWindow)
+Login::Login(QObject *parent) : QObject(parent)
 {
-    ui->setupUi(this);
+
 }
 
-LogInWindow::~LogInWindow()
+void Login::test(QString str)
 {
-    delete ui;
+    qDebug() << "Hello " << str;
 }
 
-void LogInWindow::on_pushButton_clicked() //login button
-{
-    QString username = ui->lineEdit->text();
-    QString password = ui->lineEdit_2->text();
-    login(username, password);
-}
-
-void LogInWindow::login(QString username, QString password)
+void Login::login(QString username, QString password)
 {
      QSqlQuery q = db->query();
      q.prepare("SELECT id, password FROM user WHERE username = :username");
@@ -29,23 +18,24 @@ void LogInWindow::login(QString username, QString password)
      if (q.exec())
      {
         QString hashedPassword = db->hash(password);
-
         q.next();
         QString dbHashedPassword = q.value(1).toString();
         if(hashedPassword == dbHashedPassword)
         {
             qDebug() << "User logged in!";
             int id = q.value(0).toInt();
-            tempUserId = id;
+            sessionUser = new User(id);
+            qDebug() << sessionUser->getId();
         }
         else
         {
             qDebug() << "Password did not match!";
         }
      }
+
 }
 
-void LogInWindow::register_(QString username, QString password, QString email, QString key)
+void Login::register_(QString username, QString password, QString email, QString key)
 {
     if (uniqueEmail(email))
     {
@@ -82,7 +72,7 @@ void LogInWindow::register_(QString username, QString password, QString email, Q
     }
 }
 
-bool LogInWindow::uniqueUsername(QString str)
+bool Login::uniqueUsername(QString str)
 {
     QSqlQuery q = db->query();
     q.prepare("SELECT username FROM user WHERE username = :username");
@@ -98,7 +88,7 @@ bool LogInWindow::uniqueUsername(QString str)
     }
 }
 
-bool LogInWindow::uniqueEmail(QString str)
+bool Login::uniqueEmail(QString str)
 {
     QSqlQuery q = db->query();
     q.prepare("SELECT email FROM user WHERE email = :email");
@@ -114,7 +104,7 @@ bool LogInWindow::uniqueEmail(QString str)
     }
 }
 
-bool LogInWindow::validInviteKey(QString key, QString email)
+bool Login::validInviteKey(QString key, QString email)
 {
     QSqlQuery q = db->query();
     q.prepare("SELECT inviteKey FROM invite WHERE inviteKey = :key AND recipientEmail = :email AND expDate > now()");
@@ -132,31 +122,9 @@ bool LogInWindow::validInviteKey(QString key, QString email)
     }
 }
 
-void LogInWindow::on_pushButton_6_clicked()
+QString Login::generateKey(QString email)
 {
-    QString email = ui->lineEdit_8->text();
-    QString username = ui->lineEdit_3->text();
-    QString password = ui->lineEdit_7->text();
-    QString key = ui->lineEdit_9->text();
-    register_(username, password, email, key);
-}
-
-void LogInWindow::on_pushButton_2_clicked()
-{
-    QString email = ui->lineEdit_10->text();
-    QString key = generateKey(email);
-    if (key != NULL)
-    {
-        ui->label_13->setText(key);
-        ui->label_13->update();
-    }
-}
-
-
-
-QString LogInWindow::generateKey(QString email)
-{
-    if(tempUserId)
+    if(sessionUser->getId())
     {
         QString key = QUuid::createUuid().toString(QUuid::Id128).left(12);
         qDebug() << "Key: " << key;
@@ -165,7 +133,7 @@ QString LogInWindow::generateKey(QString email)
         q.prepare("INSERT INTO invite (recipientEmail, sender, InviteKey, expDate) "
                   "VALUES (:email, :sender, :key, DATE_ADD( NOW(), INTERVAL 48 HOUR ))");
         q.bindValue(":email", email);
-        q.bindValue(":sender", tempUserId);
+        q.bindValue(":sender", sessionUser->getId());
         q.bindValue(":key", key);
         if (q.exec())
         {
@@ -182,7 +150,3 @@ QString LogInWindow::generateKey(QString email)
         return NULL;
     }
 }
-
-
-
-

@@ -10,6 +10,7 @@ class Database
 {
 public:
     Database();
+    ~Database();
     QSqlQuery query();
     QString hash(QString);
     void updatePassword(int, QString);
