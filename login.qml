@@ -20,6 +20,8 @@ Page{
             width: 1366
             height: 768
             color: "#141414"
+            //Enter login
+            signal accepted
 
             PushButton {
                 id: registerButton
@@ -88,6 +90,8 @@ Page{
                     placeholderText: "Password"
                     echoMode: "Password"
                     selectByMouse: true
+                    onAccepted: loginPage.accepted()
+
 
                 }
             }
@@ -181,6 +185,9 @@ Page{
                     selectByMouse: true
                 }
             }
+            onAccepted: {
+                loginUser(usernameField.text, passwordField.text, errorMessage)
+                }
         }
         states: [
             State {
