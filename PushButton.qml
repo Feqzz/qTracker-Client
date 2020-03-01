@@ -5,7 +5,7 @@ T.Button {
     id: control
     height: 30
 
-    font: Constants.font
+    //font: Constants.font
     implicitWidth: Math.max(
                        background ? background.implicitWidth : 0,
                        contentItem.implicitWidth + leftPadding + rightPadding)

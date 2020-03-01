@@ -57,7 +57,7 @@ Page{
                 anchors.top: parent.top
                 anchors.topMargin: 100
                 anchors.horizontalCenter: parent.horizontalCenter
-                font.family: Constants.font.family
+                //font.family: Constants.font.family
             }
 
             Column {
