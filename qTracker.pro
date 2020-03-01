@@ -50,3 +50,6 @@ HEADERS += \
     model/invite.h \
     model/user.h \
     model/login.h \
+
+DISTFILES += \
+    makeTables.sql
