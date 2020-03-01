@@ -26,7 +26,6 @@ QString Invite::generateKey(QString email, int id)
         {
             return NULL;
         }
-
     }
     else
     {
