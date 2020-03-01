@@ -23,6 +23,7 @@ Rectangle {
             id: emailField
             text: qsTr("")
             placeholderText: "Email"
+            selectByMouse: true
         }
 
         PushButton {

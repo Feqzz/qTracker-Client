@@ -76,6 +76,7 @@ Page{
                     text: qsTr("")
                     font.pixelSize: 16
                     placeholderText: qsTr("Username")
+                    selectByMouse: true
                 }
 
                 TextField {
@@ -86,6 +87,8 @@ Page{
                     font.pixelSize: 16
                     placeholderText: "Password"
                     echoMode: "Password"
+                    selectByMouse: true
+
                 }
             }
 
@@ -146,6 +149,7 @@ Page{
                     height: 32
                     text: qsTr("")
                     placeholderText: qsTr("Email")
+                    selectByMouse: true
                 }
 
                 TextField {
@@ -154,6 +158,7 @@ Page{
                     height: 32
                     text: qsTr("")
                     placeholderText: qsTr("Invite Code")
+                    selectByMouse: true
                 }
             }
         }
