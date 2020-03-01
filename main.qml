@@ -29,19 +29,30 @@ ApplicationWindow {
         stackView.replace(url);
     }
 
-    function loginUser(username, password) {
+    function loginUser(username, password, label) {
         if(login.login(username, password))
         {
             changePage("home");
+            label.text = "";
+
+        }
+        else
+        {
+            label.text = login.getErrorMessage();
         }
     }
 
     function registerUser(usernameField, passwordField,
-                          emailField, inviteField) {
+                          emailField, inviteField, label) {
 
         if(login.registerUser(usernameField, passwordField,
                                                    emailField, inviteField)) {
-            loginroot.state = "base state"
+            changePage("home");
+            label.text = "";
+        }
+        else
+        {
+            label.text = login.getErrorMessage();
         }
     }
 

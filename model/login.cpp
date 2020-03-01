@@ -35,6 +35,7 @@ bool Login::login(QString username, QString password)
         else
         {
             qDebug() << "Password did not match!";
+            errorMessage = "Password did not match!";
         }
      }
      return false;
@@ -60,22 +61,27 @@ bool Login::registerUser(QString username, QString password, QString email, QStr
                 {
                     qDebug() << "User registered";
                     login(username, password);
+                    return true;
                 }
             }
             else
             {
-                qDebug() << "Username already taken";
+                errorMessage = "Username already taken";
+                qDebug() << errorMessage;
             }
         }
         else
         {
-            qDebug() << "Not a valid invite key";
+            errorMessage = "Not a valid invite key";
+            qDebug() << errorMessage;
         }
     }
     else
     {
-        qDebug() << "Email already in use";
+        errorMessage = "Email already in use";
+        qDebug() << errorMessage;
     }
+    return false;
 }
 
 bool Login::uniqueUsername(QString str)
@@ -112,20 +118,30 @@ bool Login::uniqueEmail(QString str)
 
 bool Login::validInviteKey(QString key, QString email)
 {
-    QSqlQuery q = db->query();
-    q.prepare("SELECT inviteKey FROM invite WHERE inviteKey = :key AND recipientEmail = :email AND expDate > now()");
-    q.bindValue(":key", key);
-    q.bindValue(":email", email);
-    if (q.exec())
+    if (key != "")
     {
-        q.next();
-        return (key != q.value(0).toString()) ? false : true;
+        QSqlQuery q = db->query();
+        q.prepare("SELECT inviteKey FROM invite WHERE inviteKey = :key AND recipientEmail = :email AND expDate > now()");
+        q.bindValue(":key", key);
+        q.bindValue(":email", email);
+        if (q.exec())
+        {
+            q.next();
+            return (key == q.value(0).toString()) ? true : false;
+        }
+        else
+        {
+            qDebug("Failed to execute query while checking for vaild Invite");
+            return false;
+        }
     }
     else
     {
-        qDebug("Failed to execute query while checking for vaild Invite");
         return false;
     }
 }
 
-
+QString Login::getErrorMessage()
+{
+    return errorMessage;
+}

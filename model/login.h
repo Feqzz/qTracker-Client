@@ -14,6 +14,7 @@ public:
     Q_INVOKABLE void test(QString);
     Q_INVOKABLE bool login(QString, QString);
     Q_INVOKABLE bool registerUser(QString, QString, QString, QString);
+    Q_INVOKABLE QString getErrorMessage();
     //Q_INVOKABLE QString generateKey(QString);
 private:
     bool validInviteKey(QString, QString);
@@ -21,6 +22,7 @@ private:
     bool uniqueEmail(QString);
     int sessionId;
     User* user;
+    QString errorMessage; //Tenkte først å sende den som peker inn i login og register, men pekere i QML var litt vanskelig
 
 signals:
 };
