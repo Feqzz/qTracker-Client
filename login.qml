@@ -20,6 +20,8 @@ Page{
             width: 1366
             height: 768
             color: "#141414"
+            //Enter login
+            signal accepted
 
             PushButton {
                 id: registerButton
@@ -31,7 +33,7 @@ Page{
                 anchors.horizontalCenterOffset: 0
                 anchors.horizontalCenter: title.horizontalCenter
                 onClicked: registerUser(usernameField.text, passwordField.text,
-                                           emailField.text, inviteField.text)
+                                           emailField.text, inviteField.text, errorMessage)
             }
 
             PushButton {
@@ -44,7 +46,7 @@ Page{
                 anchors.verticalCenterOffset: 96
                 anchors.verticalCenter: column.verticalCenter
                 font.pixelSize: 32
-                onClicked: loginUser(usernameField.text, passwordField.text)
+                onClicked: loginUser(usernameField.text, passwordField.text, errorMessage)
             }
 
             Text {
@@ -57,7 +59,7 @@ Page{
                 anchors.top: parent.top
                 anchors.topMargin: 100
                 anchors.horizontalCenter: parent.horizontalCenter
-                font.family: Constants.font.family
+                //font.family: Constants.font.family
             }
 
             Column {
@@ -76,6 +78,7 @@ Page{
                     text: qsTr("")
                     font.pixelSize: 16
                     placeholderText: qsTr("Username")
+                    selectByMouse: true
                 }
 
                 TextField {
@@ -86,6 +89,10 @@ Page{
                     font.pixelSize: 16
                     placeholderText: "Password"
                     echoMode: "Password"
+                    selectByMouse: true
+                    onAccepted: loginPage.accepted()
+
+
                 }
             }
 
@@ -105,7 +112,10 @@ Page{
                     id: ma
                     hoverEnabled: true
                     anchors.fill: parent
-                    onClicked: loginroot.state = "registerState"
+                    onClicked: {
+                        loginroot.state = "registerState"
+                        errorMessage.text = ""
+                    }
                 }
             }
 
@@ -123,11 +133,28 @@ Page{
                     id: ma1
                     visible: false
                     hoverEnabled: true
-                    onClicked: loginroot.state = "base state"
+                    onClicked: {
+                        loginroot.state = "base state"
+                        errorMessage = ""
+                    }
                 }
                 anchors.verticalCenter: loginButton.verticalCenter
                 anchors.verticalCenterOffset: 64
                 font.pixelSize: 16
+            }
+
+            Label {
+                id: errorMessage
+                x: 280
+                y: 700
+                width: 240
+                height: 22
+                color: "#e90000"
+                text: "";
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: loginButton.verticalCenter
+                anchors.verticalCenterOffset: 96
+                anchors.horizontalCenterOffset: 32
             }
 
             Column {
@@ -146,6 +173,7 @@ Page{
                     height: 32
                     text: qsTr("")
                     placeholderText: qsTr("Email")
+                    selectByMouse: true
                 }
 
                 TextField {
@@ -154,8 +182,12 @@ Page{
                     height: 32
                     text: qsTr("")
                     placeholderText: qsTr("Invite Code")
+                    selectByMouse: true
                 }
             }
+            onAccepted: {
+                loginUser(usernameField.text, passwordField.text, errorMessage)
+                }
         }
         states: [
             State {
