@@ -44,8 +44,8 @@ Rectangle {
         Label {
             id: ratioLabel
             color: "#ffffff"
-            text: (getRatio() > 1) ? "Ratio: " + "<font color=\"#00e940\">" + getRatio() + "</font>"
-                                   : "Ratio: " + "<font color=\"#e90000\">" + getRatio() + "</font>"
+            text: (getRatio() > 1) ? "Ratio: " + "<font color=\"#00e940\">" + getRatio().toFixed(2) + "</font>"
+                                   : "Ratio: " + "<font color=\"#e90000\">" + getRatio().toFixed(2) + "</font>"
         }
 
         Label {
