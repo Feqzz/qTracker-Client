@@ -1,6 +1,8 @@
 QT += quick sql
 
-CONFIG += c++11
+CONFIG += c++11 console -Wno-deprecated-declarations
+
+LIBS += -L/usr/lib -lssl -lcrypto
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -17,6 +19,7 @@ SOURCES += \
         config.cpp \
         core/database.cpp \
         core/model.cpp \
+        core/securesocket.cpp \
         model/invite.cpp \
         model/login.cpp \
         main.cpp \
@@ -42,6 +45,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     core/database.h \
     core/model.h \
+    core/securesocket.h \
     login.h \
     model/invite.h \
     model/user.h \
