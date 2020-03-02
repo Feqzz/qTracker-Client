@@ -82,8 +82,7 @@ ApplicationWindow {
     }
 
     function checkPrivilege() {
-        //return user.getPrivilege();
-        return 1;
+        return user.getPrivilege();
     }
 
     function updateText(text, id) {
