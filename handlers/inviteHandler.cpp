@@ -22,6 +22,7 @@ bool InviteHandler::inviteUser(int inviterId, QString inviteeEmail)
     }
     else
     {
+        errorMessage = "Email already in use.";
         return false;
     }
 }

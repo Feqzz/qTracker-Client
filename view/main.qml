@@ -56,14 +56,16 @@ ApplicationWindow {
         }
     }
 
-    function generateInvite(email, inviteLabel) {
-        if(inviteHandler.inviteUser(user.getUsername(), email))
+    function generateInvite(email, label) {
+        if(inviteHandler.inviteUser(user.getId(), email))
         {
-            inviteLabel.text("User has been invited!")
+            label.color = "#ffffff"
+            label.text = "User has been invited!";
         }
         else
         {
-            inviteLabel.text = inviteHandler.getErrorMessage();
+            label.color = "#e90000";
+            label.text = inviteHandler.getErrorMessage();
         }
     }
 
