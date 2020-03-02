@@ -5,8 +5,8 @@ import QtQuick.Window 2.12
 
 Rectangle {
     id: root
-    width: 1366
-    height: 768
+    width: 1920
+    height: 1080
     color: "#141414"
 
     Text {
@@ -76,8 +76,14 @@ Rectangle {
 
         Label {
             id: rulesLabel
-            color: "#ffffff"
+            color: maRulesLabel.containsMouse ? "#d0d046" : "#ffffff"
             text: qsTr("Rules")
+            MouseArea {
+                id: maRulesLabel
+                hoverEnabled: true
+                anchors.fill: parent
+                onClicked: changePage("rules");
+            }
         }
 
         Label {

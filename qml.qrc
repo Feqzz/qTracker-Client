@@ -6,5 +6,6 @@
         <file>view/invite.qml</file>
         <file>view/login.qml</file>
         <file>view/main.qml</file>
+        <file>view/rules.qml</file>
     </qresource>
 </RCC>

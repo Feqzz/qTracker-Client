@@ -16,15 +16,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        config.cpp \
-        core/database.cpp \
+    config.cpp \
+    core/database.cpp \
     core/handler.cpp \
-        core/model.cpp \
-        core/securesocket.cpp \
+    core/model.cpp \
+    core/securesocket.cpp \
     handlers/inviteHandler.cpp \
     handlers/loginHandler.cpp \
-        main.cpp \
-        model/user.cpp \
+    handlers/texthandler.cpp \
+    main.cpp \
+    model/user.cpp \
 
 RESOURCES += qml.qrc \
 
@@ -50,6 +51,7 @@ HEADERS += \
     core/securesocket.h \
     handlers/inviteHandler.h \
     handlers/loginHandler.h \
+    handlers/texthandler.h \
     model/user.h \
 
 DISTFILES += \
