@@ -14,6 +14,13 @@ public:
     Q_INVOKABLE int getId();
     Q_INVOKABLE double getDownload();
     Q_INVOKABLE double getUpload();
+    Q_INVOKABLE QString getUsername();
+
+    void setUsername(QString _username);
+    void setDownload(int _download);
+    void setUpload(int _upload);
+    void setPrivelege(int _privelege);
+    void setId(int _id);
 private:
     QString username;
     QString password;

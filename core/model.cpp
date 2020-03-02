@@ -2,5 +2,6 @@
 
 Model::Model()
 {
+    //Kanskje fjerne denne? Kent.
     db = new Database();
 }

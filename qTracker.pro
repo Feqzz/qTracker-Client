@@ -18,10 +18,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         config.cpp \
         core/database.cpp \
+    core/handler.cpp \
         core/model.cpp \
         core/securesocket.cpp \
-        model/invite.cpp \
-        model/login.cpp \
+    handlers/inviteHandler.cpp \
+    handlers/loginHandler.cpp \
         main.cpp \
         model/user.cpp \
 
@@ -44,12 +45,13 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     core/database.h \
+    core/handler.h \
     core/model.h \
     core/securesocket.h \
+    handlers/inviteHandler.h \
+    handlers/loginHandler.h \
     login.h \
-    model/invite.h \
     model/user.h \
-    model/login.h \
 
 DISTFILES += \
     makeTables.sql

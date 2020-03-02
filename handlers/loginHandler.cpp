@@ -1,48 +1,59 @@
-#include "login.h"
+#include "loginHandler.h"
 
-Login::Login(QObject *parent) : QObject(parent)
+LoginHandler::LoginHandler(QObject* parent) : QObject(parent)
 {
 
 }
 
-Login::Login(User* a)
+bool LoginHandler::loginUser(User* user, QString username, QString password)
 {
-    user = a;
+    QSqlQuery q = db->query();
+    q.prepare("SELECT id, password FROM user WHERE username = :username");
+    q.bindValue(":username", username);
+    if (q.exec())
+    {
+       QString hashedPassword = db->hash(password);
+       q.next();
+       QString dbHashedPassword = q.value(1).toString();
+       if(hashedPassword == dbHashedPassword)
+       {
+           qDebug() << "User logged in!";
+           //int id = q.value(0).toInt();
+           if(fillUser(user, username))
+               return true;
+           else errorMessage = "An unknown error has occured";
+       }
+       else
+       {
+           qDebug() << "Password did not match!";
+           errorMessage = "Password did not match!";
+       }
+    }
+    return false;
 }
 
-void Login::test(QString str)
+bool LoginHandler::fillUser(User *user, QString username)
 {
-    qDebug() << "Hello " << str;
+    //Get Data from db based on username
+    user->setUsername("Ole");
+    user->setDownload(50);
+    user->setUpload(40);
+    user->setPrivelege(1);
+    user->setId(10);
+    return true;
 }
 
-bool Login::login(QString username, QString password)
+QString LoginHandler::getErrorMessage()
 {
-     QSqlQuery q = db->query();
-     q.prepare("SELECT id, password FROM user WHERE username = :username");
-     q.bindValue(":username", username);
-     if (q.exec())
-     {
-        QString hashedPassword = db->hash(password);
-        q.next();
-        QString dbHashedPassword = q.value(1).toString();
-        if(hashedPassword == dbHashedPassword)
-        {
-            qDebug() << "User logged in!";
-            int id = q.value(0).toInt();
-            user = new User(id);
-            return true;
-        }
-        else
-        {
-            qDebug() << "Password did not match!";
-            errorMessage = "Password did not match!";
-        }
-     }
-     return false;
-
+    return errorMessage;
 }
 
-bool Login::registerUser(QString username, QString password, QString email, QString key)
+bool LoginHandler::logoutUser(User *user)
+{
+    return true;
+}
+
+bool LoginHandler::registerUser(User* user, QString username, QString password, QString email, QString key)
 {
     if (uniqueEmail(email))
     {
@@ -60,7 +71,7 @@ bool Login::registerUser(QString username, QString password, QString email, QStr
                 if (q.exec())
                 {
                     qDebug() << "User registered";
-                    login(username, password);
+                    loginUser(user, username, password);
                     return true;
                 }
             }
@@ -84,7 +95,7 @@ bool Login::registerUser(QString username, QString password, QString email, QStr
     return false;
 }
 
-bool Login::uniqueUsername(QString str)
+bool LoginHandler::uniqueUsername(QString str)
 {
     QSqlQuery q = db->query();
     q.prepare("SELECT username FROM user WHERE username = :username");
@@ -100,7 +111,7 @@ bool Login::uniqueUsername(QString str)
     }
 }
 
-bool Login::uniqueEmail(QString str)
+bool LoginHandler::uniqueEmail(QString str)
 {
     QSqlQuery q = db->query();
     q.prepare("SELECT email FROM user WHERE email = :email");
@@ -116,7 +127,7 @@ bool Login::uniqueEmail(QString str)
     }
 }
 
-bool Login::validInviteKey(QString key, QString email)
+bool LoginHandler::validInviteKey(QString key, QString email)
 {
     if (key != "")
     {
@@ -139,9 +150,4 @@ bool Login::validInviteKey(QString key, QString email)
     {
         return false;
     }
-}
-
-QString Login::getErrorMessage()
-{
-    return errorMessage;
 }

@@ -2,11 +2,10 @@
 #include <QQmlApplicationEngine>
 #include <QQmlEngine>
 #include <QQmlContext>
-#include "model/login.h"
 #include "core/securesocket.h"
-#include "model/invite.h"
 #include "model/user.h"
-
+#include "handlers/loginHandler.h"
+#include "handlers/inviteHandler.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,21 +14,24 @@ int main(int argc, char *argv[])
 
     QScopedPointer<SecureSocket> secureSocket(new SecureSocket);
     User sessionUser;
-    QScopedPointer<Login> login(new Login(&sessionUser));
-    QScopedPointer<Invite> invite(new Invite);
     QScopedPointer<User> user(&sessionUser);
+    QScopedPointer<InviteHandler> inviteHandler(new InviteHandler());
+    QScopedPointer<LoginHandler> loginHandler(new LoginHandler());
 
     QQmlApplicationEngine engine;
-    const QUrl url(QStringLiteral("qrc:/main.qml"));
+    const QUrl url(QStringLiteral("qrc:/view/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
-    engine.rootContext()->setContextProperty("login", login.data());
+
     engine.rootContext()->setContextProperty("secureSocket", secureSocket.data());
-    engine.rootContext()->setContextProperty("invite", invite.data());
     engine.rootContext()->setContextProperty("user", user.data());
+
+    engine.rootContext()->setContextProperty("loginHandler", loginHandler.data());
+    engine.rootContext()->setContextProperty("inviteHandler", inviteHandler.data());
+
     engine.load(url);
 
     //

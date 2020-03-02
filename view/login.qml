@@ -1,6 +1,8 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.3
 import QtQuick.Window 2.12
+import "../component" as Components
+
 
 Page{
     visible: true
@@ -23,7 +25,7 @@ Page{
             //Enter login
             signal accepted
 
-            PushButton {
+            Components.PushButton {
                 id: registerButton
                 x: 503
                 y: 664
@@ -36,7 +38,7 @@ Page{
                                            emailField.text, inviteField.text, errorMessage)
             }
 
-            PushButton {
+            Components.PushButton {
                 id: loginButton
                 x: 488
                 y: 393

@@ -1,10 +1,10 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
-        <file>PushButton.qml</file>
-        <file>home.qml</file>
-        <file>login.qml</file>
-        <file>invite.qml</file>
-        <file>NavBar.qml</file>
+        <file>component/NavBar.qml</file>
+        <file>component/PushButton.qml</file>
+        <file>view/home.qml</file>
+        <file>view/invite.qml</file>
+        <file>view/login.qml</file>
+        <file>view/main.qml</file>
     </qresource>
 </RCC>

@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.3
+import "../component" as Components
 
 Rectangle {
     id: root
@@ -7,7 +8,7 @@ Rectangle {
     height: 768
     color: "#141414"
 
-    NavBar{
+    Components.NavBar{
         id: navBar
     }
 
@@ -26,7 +27,7 @@ Rectangle {
             selectByMouse: true
         }
 
-        PushButton {
+        Components.PushButton {
             id: inviteButton
             text: "Invite"
             anchors.horizontalCenter: emailField.horizontalCenter

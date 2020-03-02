@@ -2,6 +2,7 @@ import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick 2.12
 import QtQuick.Controls 2.3
+import "../component" as Components
 
 ApplicationWindow {
     id: rootWindow
@@ -19,18 +20,17 @@ ApplicationWindow {
 
     // After loading show initial Login Page
     Component.onCompleted: {
-        stackView.push("qrc:/login.qml")
-        login.login()
+        stackView.push("qrc:/view/login.qml")
     }
 
     function changePage(page) {
-        var template = "qrc:/%1.qml";
+        var template = "qrc:/view/%1.qml";
         var url = template.arg(page);
         stackView.replace(url);
     }
 
     function loginUser(username, password, label) {
-        if(login.login(username, password))
+        if(loginHandler.loginUser(user, username, password))
         {
             changePage("home");
             label.text = "";
@@ -38,27 +38,33 @@ ApplicationWindow {
         }
         else
         {
-            label.text = login.getErrorMessage();
+            label.text = loginHandler.getErrorMessage();
         }
     }
 
     function registerUser(usernameField, passwordField,
                           emailField, inviteField, label) {
 
-        if(login.registerUser(usernameField, passwordField,
+        if(loginHandler.registerUser(user, usernameField, passwordField,
                                                    emailField, inviteField)) {
             changePage("home");
             label.text = "";
         }
         else
         {
-            label.text = login.getErrorMessage();
+            label.text = loginHandler.getErrorMessage();
         }
     }
 
     function generateInvite(email, inviteLabel) {
-        var str = invite.generateKey(email);
-        inviteLabel.text(str);
+        if(inviteHandler.inviteUser(user.getUsername(), email))
+        {
+            inviteLabel.text("User has been invited!")
+        }
+        else
+        {
+            inviteLabel.text(inviteHandler.getErrorMessage());
+        }
     }
 
     function getRatio() {

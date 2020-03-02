@@ -41,6 +41,11 @@ double User::getDownload()
     return download;
 }
 
+QString User::getUsername()
+{
+    return username;
+}
+
 void User::changePassword(QString oldPassword, QString newPassword)
 {
     if (oldPassword == password)
@@ -56,4 +61,25 @@ void User::changePassword(QString oldPassword, QString newPassword)
 int User::getId()
 {
     return id;
+}
+
+void User::setUsername(QString _username)
+{
+    username = _username;
+}
+void User::setDownload(int _download)
+{
+    download = _download;
+}
+void User::setUpload(int _upload)
+{
+    upload = _upload;
+}
+void User::setPrivelege(int _privilege)
+{
+    privilege = _privilege;
+}
+void User::setId(int _id)
+{
+    id = _id;
 }
