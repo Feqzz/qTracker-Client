@@ -83,3 +83,8 @@ void User::setId(int _id)
 {
     id = _id;
 }
+
+int User::getPrivilege()
+{
+    return privilege;
+}

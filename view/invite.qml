@@ -4,8 +4,8 @@ import "../component" as Components
 
 Rectangle {
     id: root
-    width: 1366
-    height: 768
+    width: 1920
+    height: 1080
     color: "#141414"
 
     Components.NavBar{

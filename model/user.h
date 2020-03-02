@@ -15,7 +15,7 @@ public:
     Q_INVOKABLE double getDownload();
     Q_INVOKABLE double getUpload();
     Q_INVOKABLE QString getUsername();
-
+    Q_INVOKABLE int getPrivilege();
     void setUsername(QString _username);
     void setDownload(int _download);
     void setUpload(int _upload);

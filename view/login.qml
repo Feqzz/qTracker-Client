@@ -6,21 +6,21 @@ import "../component" as Components
 
 Page{
     visible: true
-    width: 1366
-    height: 768
+    width: 1920
+    height: 1080
     title: qsTr("Login :: qTracker 1.0");
 
     Rectangle {
         id: loginroot
         color: "#141414"
         property alias inviteLabel: inviteLabel
-        width: 1366
-        height: 768
+        width: 1920
+        height: 1080
 
         Rectangle {
             id: loginPage
-            width: 1366
-            height: 768
+            width: 1920
+            height: 1080
             color: "#141414"
             //Enter login
             signal accepted

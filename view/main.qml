@@ -7,8 +7,8 @@ import "../component" as Components
 ApplicationWindow {
     id: rootWindow
     visible: true
-    width: 1366
-    height: 768
+    width: 1920
+    height: 1080
     title: qsTr("QTracker")
 
     // Main stackview
@@ -80,5 +80,19 @@ ApplicationWindow {
 
     function getDownload() {
         return user.getDownload();
+    }
+
+    function checkPrivilege() {
+        return user.getPrivilege();
+    }
+
+    function updateText(text, id) {
+        if (textHandler.updateText(user.getId(), text, id)){
+
+        }
+    }
+
+    function getText(text, id) {
+        text.text = textHandler.getText(id);
     }
 }

@@ -6,6 +6,7 @@
 #include "model/user.h"
 #include "handlers/loginHandler.h"
 #include "handlers/inviteHandler.h"
+#include "handlers/texthandler.h"
 
 int main(int argc, char *argv[])
 {
@@ -17,6 +18,7 @@ int main(int argc, char *argv[])
         QScopedPointer<User> user(&sessionUser);
     QScopedPointer<InviteHandler> inviteHandler(new InviteHandler());
     QScopedPointer<LoginHandler> loginHandler(new LoginHandler());
+    QScopedPointer<TextHandler> textHandler(new TextHandler());
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/view/main.qml"));
@@ -28,9 +30,9 @@ int main(int argc, char *argv[])
 
     engine.rootContext()->setContextProperty("secureSocket", secureSocket.data());
     engine.rootContext()->setContextProperty("user", user.data());
-
     engine.rootContext()->setContextProperty("loginHandler", loginHandler.data());
     engine.rootContext()->setContextProperty("inviteHandler", inviteHandler.data());
+    engine.rootContext()->setContextProperty("textHandler", textHandler.data());
 
     engine.load(url);
 
