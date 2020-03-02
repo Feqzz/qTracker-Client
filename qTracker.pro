@@ -23,6 +23,7 @@ SOURCES += \
         model/invite.cpp \
         model/login.cpp \
         main.cpp \
+    model/rules.cpp \
         model/user.cpp \
 
 RESOURCES += qml.qrc \
@@ -48,6 +49,7 @@ HEADERS += \
     core/securesocket.h \
     login.h \
     model/invite.h \
+    model/rules.h \
     model/user.h \
     model/login.h \
 

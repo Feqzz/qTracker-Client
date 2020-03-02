@@ -6,5 +6,6 @@
         <file>login.qml</file>
         <file>invite.qml</file>
         <file>NavBar.qml</file>
+        <file>rules.qml</file>
     </qresource>
 </RCC>

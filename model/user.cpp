@@ -57,3 +57,8 @@ int User::getId()
 {
     return id;
 }
+
+int User::getPrivilege()
+{
+    return privilege;
+}

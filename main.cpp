@@ -6,6 +6,7 @@
 #include "core/securesocket.h"
 #include "model/invite.h"
 #include "model/user.h"
+#include "model/rules.h"
 
 
 int main(int argc, char *argv[])
@@ -17,6 +18,7 @@ int main(int argc, char *argv[])
     User sessionUser;
     QScopedPointer<Login> login(new Login(&sessionUser));
     QScopedPointer<Invite> invite(new Invite);
+    QScopedPointer<Rules> rules(new Rules);
     QScopedPointer<User> user(&sessionUser);
 
     QQmlApplicationEngine engine;
@@ -30,6 +32,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("secureSocket", secureSocket.data());
     engine.rootContext()->setContextProperty("invite", invite.data());
     engine.rootContext()->setContextProperty("user", user.data());
+    engine.rootContext()->setContextProperty("rules", rules.data());
     engine.load(url);
 
     //

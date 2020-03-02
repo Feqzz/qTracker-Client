@@ -6,8 +6,8 @@ import QtQuick.Controls 2.3
 ApplicationWindow {
     id: rootWindow
     visible: true
-    width: 1366
-    height: 768
+    width: 1920
+    height: 1080
     title: qsTr("QTracker")
 
     // Main stackview
@@ -71,5 +71,18 @@ ApplicationWindow {
 
     function getDownload() {
         return user.getDownload();
+    }
+
+    function checkPrivilege() {
+        //return user.getPrivilege();
+        return 1;
+    }
+
+    function updateText(text) {
+        rules.updateText(text)
+    }
+
+    function getText(text) {
+        text.text = rules.getText();
     }
 }
