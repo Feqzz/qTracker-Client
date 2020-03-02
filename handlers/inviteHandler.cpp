@@ -5,7 +5,7 @@ InviteHandler::InviteHandler(QObject* parent): QObject(parent)
 
 }
 
-bool InviteHandler::inviteUser(QString inviterName, QString inviteeEmail)
+bool InviteHandler::inviteUser(int inviterId, QString inviteeEmail)
 {
     QString key = QUuid::createUuid().toString(QUuid::Id128).left(12);
     qDebug() << "Key: " << key;
@@ -14,7 +14,7 @@ bool InviteHandler::inviteUser(QString inviterName, QString inviteeEmail)
     q.prepare("INSERT INTO invite (recipientEmail, sender, InviteKey, expDate) "
               "VALUES (:email, :sender, :key, DATE_ADD( NOW(), INTERVAL 48 HOUR ))");
     q.bindValue(":email", inviteeEmail);
-    q.bindValue(":sender", inviterName);
+    q.bindValue(":sender", inviterId);
     q.bindValue(":key", key);
     if (q.exec())
     {
@@ -24,5 +24,10 @@ bool InviteHandler::inviteUser(QString inviterName, QString inviteeEmail)
     {
         return false;
     }
+}
+
+QString InviteHandler::getErrorMessage()
+{
+    return errorMessage;
 }
 

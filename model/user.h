@@ -19,7 +19,7 @@ public:
     void setUsername(QString _username);
     void setDownload(int _download);
     void setUpload(int _upload);
-    void setPrivelege(int _privelege);
+    void setprivilege(int _privilege);
     void setId(int _id);
 private:
     QString username;

@@ -34,13 +34,25 @@ bool LoginHandler::loginUser(User* user, QString username, QString password)
 
 bool LoginHandler::fillUser(User *user, QString username)
 {
-    //Get Data from db based on username
-    user->setUsername("Ole");
-    user->setDownload(50);
-    user->setUpload(40);
-    user->setPrivelege(1);
-    user->setId(10);
-    return true;
+    QSqlQuery q = db->query();
+    q.prepare("SELECT id, download, upload, privilege FROM user WHERE username = :username");
+    q.bindValue(":username", username);
+    if(q.exec())
+    {
+        user->setUsername(username);
+        q.next();
+        user->setId(q.value(0).toInt());
+
+        user->setDownload(q.value(1).toInt());
+
+        user->setUpload(q.value(2).toInt());
+
+        user->setprivilege(q.value(3).toInt());
+
+
+        return true;
+    }
+    return false;
 }
 
 QString LoginHandler::getErrorMessage()

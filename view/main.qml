@@ -63,7 +63,7 @@ ApplicationWindow {
         }
         else
         {
-            inviteLabel.text(inviteHandler.getErrorMessage());
+            inviteLabel.text = inviteHandler.getErrorMessage();
         }
     }
 

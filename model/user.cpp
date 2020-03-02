@@ -75,7 +75,7 @@ void User::setUpload(int _upload)
 {
     upload = _upload;
 }
-void User::setPrivelege(int _privilege)
+void User::setprivilege(int _privilege)
 {
     privilege = _privilege;
 }

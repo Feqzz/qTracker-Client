@@ -50,7 +50,6 @@ HEADERS += \
     core/securesocket.h \
     handlers/inviteHandler.h \
     handlers/loginHandler.h \
-    login.h \
     model/user.h \
 
 DISTFILES += \
