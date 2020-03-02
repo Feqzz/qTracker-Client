@@ -41,6 +41,7 @@ bool LoginHandler::fillUser(User *user, QString username)
     {
         user->setUsername(username);
         q.next();
+        qDebug() << "fillUser id: " << q.value(0).toInt();
         user->setId(q.value(0).toInt());
 
         user->setDownload(q.value(1).toInt());

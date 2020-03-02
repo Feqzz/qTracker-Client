@@ -57,7 +57,9 @@ ApplicationWindow {
     }
 
     function generateInvite(email, inviteLabel) {
-        if(inviteHandler.inviteUser(user.getUsername(), email))
+        var inviteKey = inviteHandler.inviteUser(user.getId(),email);
+
+        if(inviteKey && secureSocket.sendMessage(0,[email,inviteKey],2))
         {
             inviteLabel.text("User has been invited!")
         }

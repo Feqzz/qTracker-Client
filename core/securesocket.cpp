@@ -5,49 +5,71 @@ SecureSocket::SecureSocket(QObject *parent):QObject(parent)
 {
 
 }
-void SecureSocket::test(QString str)
-{
-    qDebug() << "Hello " << str;
-}
 SecureSocket::~SecureSocket()
 {
     if(out)
+    {
         BIO_free(out);
-
+    }
     if(web != NULL)
+    {
         BIO_free_all(web);
-
+    }
     if(NULL != ctx)
+    {
         SSL_CTX_free(ctx);
+    }
 }
-void SecureSocket::sendInviteEmailAndKey(QString email,QString key)
+
+/*std::vector<QString> createVector(QString[] arr, int length)
+{
+
+}*/
+
+bool SecureSocket::sendMessage(int code,QVariantList list)
 {
     bool success = setup();
-    qDebug() << "Setup finished: " << success << "\n";
-    if(success){
-        BIO_puts(web, ("1"+email+"\n"+key+"\n").toLocal8Bit().data());
+    if(success)
+    {
+        QString message = QString::number(code)+"\n";
+        char buff[100] = {};
+        for(int i=0;i<list.size();i++)
+        {
+            message += list.at(i).toString()+"\n";
+        }
+        BIO_puts(web, message.toLocal8Bit().data());
         //BIO_puts(out, "ResponseFromServer: \n");
-        //int len = 0;
-        //do {
+        int len = 0;
+        do {
             /* https://www.openssl.org/docs/crypto/BIO_read.html */
-           // len = BIO_read(web, buff, sizeof(buff));
+            len = BIO_read(web, buff, sizeof(buff));
+            //qDebug() << "\n len:" << len;
+            if(len > 0)
+            {
+                //BIO_write(out, buff, len);
+                //returns true if char is 1
+                if(out)
+                    BIO_free(out);
 
-            //if(len > 0)
-               // BIO_write(out, buff, len);
+                if(web != NULL)
+                    BIO_free_all(web);
 
+                if(NULL != ctx)
+                    SSL_CTX_free(ctx);
+                return (int)buff[0]==49;
+                /*for(int x=0;x<100;x++){
+                    qDebug() << buff[x];
+                }*/
+            }
             /* BIO_should_retry returns TRUE unless there's an  */
             /* error. We expect an error when the server        */
             /* provides the response and closes the connection. */
 
-        //} while (len > 0 || BIO_should_retry(web));
-        if(out)
-            BIO_free(out);
-
-        if(web != NULL)
-            BIO_free_all(web);
-
-        if(NULL != ctx)
-            SSL_CTX_free(ctx);
+        } while (len > 0 || BIO_should_retry(web));
+    }
+    else
+    {
+        qDebug() << "Setup failed!\n";
     }
 }
 bool SecureSocket::setup()
@@ -265,27 +287,18 @@ bool SecureSocket::setup()
     /**************************************************************************************/
     /**************************************************************************************/
 
-
-    //BIO_puts(out, "\nFetching: \n\n");
-
-    //int len = 0;
-    //do {
     /* https://www.openssl.org/docs/crypto/BIO_read.html */
-    // len = BIO_read(web, buff, sizeof(buff));
-
-    //if(len > 0)
-    //   BIO_write(out, buff, len);
-
     /* BIO_should_retry returns TRUE unless there's an  */
     /* error. We expect an error when the server        */
     /* provides the response and closes the connection. */
+    /*BIO_puts(out, "\nFetching: \n\n");
 
-    //} while (len > 0 || BIO_should_retry(web));
 
 
-    //} while (0);
 
-    /*if(out)
+   // } while (0);
+
+   /* if(out)
         BIO_free(out);
 
     if(web != NULL)

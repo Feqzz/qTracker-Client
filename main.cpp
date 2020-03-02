@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 
     QScopedPointer<SecureSocket> secureSocket(new SecureSocket);
     User sessionUser;
-    QScopedPointer<User> user(&sessionUser);
+        QScopedPointer<User> user(&sessionUser);
     QScopedPointer<InviteHandler> inviteHandler(new InviteHandler());
     QScopedPointer<LoginHandler> loginHandler(new LoginHandler());
 

@@ -27,6 +27,8 @@
 #include <openssl/x509v3.h>
 #include <openssl/opensslconf.h>
 
+#include <vector>
+
 class SecureSocket : public QObject
 {
     Q_OBJECT
@@ -34,11 +36,9 @@ class SecureSocket : public QObject
 public:
     explicit SecureSocket(QObject *parent = nullptr);
     ~SecureSocket();
-    Q_INVOKABLE void sendInviteEmailAndKey(QString,QString);
-    Q_INVOKABLE void test(QString);
+    Q_INVOKABLE bool sendMessage(int,QVariantList);
 private:
     bool setup();
-    char buff[100] = {};
     SSL_CTX* ctx = NULL;
     BIO *web = NULL, *out = NULL;
     SSL *ssl = NULL;
