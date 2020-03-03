@@ -1,4 +1,4 @@
-#include "texthandler.h"
+#include "textHandler.h"
 
 TextHandler::TextHandler(QObject* parent) : QObject(parent)
 {
