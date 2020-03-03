@@ -83,13 +83,11 @@ ApplicationWindow {
         }
     }
 
-    function resetPassword(email,loginroot,label){
-        console.log(email);
+    function resetPassword(email,label){
         var newPassword = loginHandler.resetPassword(email);
-        console.log(newPassword);
         if(newPassword && secureSocket.sendMessage(1,[email,newPassword],2))
         {
-            loginroot.state = "base state";
+            label.text = "Email has been sent, check spam folder"
         }
         else
         {
