@@ -19,6 +19,7 @@ public:
     Q_INVOKABLE QString getEmail();
     Q_INVOKABLE QString getDateJoined();
     Q_INVOKABLE int getInvitedCount();
+    Q_INVOKABLE int getPoints();
     void setUsername(QString _username);
     void setDownload(int _download);
     void setUpload(int _upload);
@@ -27,6 +28,7 @@ public:
     void setEmail(QString _email);
     void setDateJoined(QString _dateJoined);
     void setPassword(QString _password);
+    void setPoints(int _points);
 private:
     QString username;
     QString password;
@@ -36,6 +38,7 @@ private:
     double upload;
     int privilege;
     int id;
+    int points;
 signals:
 };
 

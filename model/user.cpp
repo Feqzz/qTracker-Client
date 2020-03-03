@@ -71,7 +71,6 @@ int User::getInvitedCount()
     int count = 0;
     if (q.exec())
     {
-
         while (q.next())
         {
             count++;
@@ -87,6 +86,11 @@ int User::getInvitedCount()
 int User::getId()
 {
     return id;
+}
+
+int User::getPoints()
+{
+    return points;
 }
 
 bool User::changePassword(QString oldPassword, QString newPassword)
@@ -138,4 +142,9 @@ void User::setDateJoined(QString _dateJoined)
 void User::setPassword(QString _password)
 {
     password = _password;
+}
+
+void User::setPoints(int _points)
+{
+    points = _points;
 }
