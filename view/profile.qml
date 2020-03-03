@@ -23,7 +23,7 @@ Rectangle {
         Label {
             id: emailLabel
             color: "#ffffff"
-            text: "Email: " + getEmail()
+            text: "E-mail: " + getEmail()
         }
 
         Label {
