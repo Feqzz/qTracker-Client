@@ -1,4 +1,4 @@
-import QtQuick 2.12
+import QtQuick 2.14
 import QtQuick.Window 2.12
 import QtQuick 2.12
 import QtQuick.Controls 2.3
@@ -16,6 +16,26 @@ ApplicationWindow {
         id: stackView
         focus: true
         anchors.fill: parent
+
+
+        replaceEnter: Transition {
+
+                PropertyAnimation {
+                    property: "opacity"
+                    from: 0
+                    to:1
+                    duration: 0
+                }
+            }
+            replaceExit: Transition {
+                PropertyAnimation {
+                    property: "opacity"
+                    duration: 0
+                    from: 1
+                    to:0
+
+                }
+            }
     }
 
     // After loading show initial Login Page
@@ -23,16 +43,37 @@ ApplicationWindow {
         stackView.push("qrc:/view/login.qml")
     }
 
+    function pushPage(page) {
+        var template = "qrc:/view/%1.qml";
+        var url = template.arg(page);
+
+        stackView.push(url);
+    }
+
+    function popToPage(page) {
+        var template = "qrc:/view/%1.qml";
+        var url = template.arg(page);
+
+        stackView.pop(url);
+    }
+
     function changePage(page) {
         var template = "qrc:/view/%1.qml";
         var url = template.arg(page);
+
         stackView.replace(url);
+    }
+
+    function logout()
+    {
+        loginHandler.logoutUser(user);
+        popToPage("login");
     }
 
     function loginUser(username, password, label) {
         if(loginHandler.loginUser(user, username, password))
         {
-            changePage("home");
+            pushPage("home");
             label.text = "";
 
         }

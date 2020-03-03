@@ -109,6 +109,18 @@ Rectangle {
             color: "#ffffff"
             text: "Points: "
         }
+
+        Label {
+            id: logoutLabel
+            color: maLogoutLabel.containsMouse ? "#d0d046" : "#ffffff"
+            text: qsTr("Logout")
+            MouseArea {
+                id: maLogoutLabel
+                hoverEnabled: true
+                anchors.fill: parent
+                onClicked: logout();
+            }
+        }
     }
 }
 

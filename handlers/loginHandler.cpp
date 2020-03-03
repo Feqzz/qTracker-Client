@@ -63,6 +63,11 @@ QString LoginHandler::getErrorMessage()
 
 bool LoginHandler::logoutUser(User *user)
 {
+    user->setUsername("");
+    user->setId(0);
+    user->setDownload(0);
+    user->setUpload(0);
+    user->setprivilege(0);
     return true;
 }
 
