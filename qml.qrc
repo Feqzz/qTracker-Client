@@ -7,5 +7,6 @@
         <file>view/login.qml</file>
         <file>view/main.qml</file>
         <file>view/rules.qml</file>
+        <file>view/profile.qml</file>
     </qresource>
 </RCC>

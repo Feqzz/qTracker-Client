@@ -23,7 +23,7 @@ SOURCES += \
     core/securesocket.cpp \
     handlers/inviteHandler.cpp \
     handlers/loginHandler.cpp \
-    handlers/texthandler.cpp \
+    handlers/textHandler.cpp \
     main.cpp \
     model/user.cpp \
 
@@ -51,7 +51,7 @@ HEADERS += \
     core/securesocket.h \
     handlers/inviteHandler.h \
     handlers/loginHandler.h \
-    handlers/texthandler.h \
+    handlers/textHandler.h \
     model/user.h \
 
 DISTFILES += \

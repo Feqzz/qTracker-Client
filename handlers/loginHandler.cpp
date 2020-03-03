@@ -18,7 +18,6 @@ bool LoginHandler::loginUser(User* user, QString username, QString password)
        if(hashedPassword == dbHashedPassword)
        {
            qDebug() << "User logged in!";
-           //int id = q.value(0).toInt();
            if(fillUser(user, username))
                return true;
            else errorMessage = "An unknown error has occured";
@@ -35,7 +34,7 @@ bool LoginHandler::loginUser(User* user, QString username, QString password)
 bool LoginHandler::fillUser(User *user, QString username)
 {
     QSqlQuery q = db->query();
-    q.prepare("SELECT id, download, upload, privilege FROM user WHERE username = :username");
+    q.prepare("SELECT id, download, upload, privilege, email, createdAt FROM user WHERE username = :username");
     q.bindValue(":username", username);
     if(q.exec())
     {
@@ -50,6 +49,9 @@ bool LoginHandler::fillUser(User *user, QString username)
 
         user->setprivilege(q.value(3).toInt());
 
+        user->setEmail(q.value(4).toString());
+
+        user->setDateJoined(q.value(5).toString());
 
         return true;
     }
