@@ -176,6 +176,9 @@ ApplicationWindow {
             label.color = "#e90000";
             label.text = "The new password didn't match";
         }
+    }
 
+    function getPoints() {
+        return user.getPoints();
     }
 }

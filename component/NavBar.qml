@@ -75,6 +75,12 @@ Rectangle {
         }
 
         Label {
+            id: pointsLabel
+            color: "#ffffff"
+            text: "Points: " + getPoints()
+        }
+
+        Label {
             id: donateLabel
             color: "#ffffff"
             text: qsTr("Donate")
@@ -110,11 +116,7 @@ Rectangle {
             }
         }
 
-        Label {
-            id: pointsLabel
-            color: "#ffffff"
-            text: "Points: "
-        }
+
 
         /*
         Label {
