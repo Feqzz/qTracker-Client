@@ -14,7 +14,7 @@ public:
     Q_INVOKABLE bool logoutUser(User* user);
     Q_INVOKABLE bool registerUser(User* user, QString, QString, QString, QString);
     Q_INVOKABLE QString getErrorMessage();
-
+    Q_INVOKABLE QString resetPassword(QString);
 private:
     QString errorMessage;
     bool fillUser(User *user, QString username);

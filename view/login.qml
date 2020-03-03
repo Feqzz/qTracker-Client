@@ -127,14 +127,14 @@ Page{
                 y: 505
                 width: 240
                 height: 22
-                color: ma2.containsMouse ? "#d0d046" : "#ffffff"
+                color: forgotPasswordMouseArea.containsMouse ? "#d0d046" : "#ffffff"
                 text: qsTr("Forgot your password? Click here..")
                 font.pixelSize: 16
                 anchors.verticalCenterOffset: 64+32
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: loginButton.verticalCenter
                 MouseArea {
-                    id: ma2
+                    id: forgotPasswordMouseArea
                     hoverEnabled: true
                     anchors.fill: parent
                     onClicked: {
@@ -150,17 +150,16 @@ Page{
                 y: 429
                 width: 240
                 height: 22
-                color: ma1.containsMouse ? "#d0d046" : "#ffffff"
+                color: goBackMouseArea.containsMouse ? "#d0d046" : "#ffffff"
                 text: qsTr("Already have an account? Log in..")
                 anchors.horizontalCenter: parent.horizontalCenter
                 visible: false
                 MouseArea {
-                    id: ma1
+                    id: goBackMouseArea
                     visible: false
                     hoverEnabled: true
                     onClicked: {
                         loginroot.state = "base state"
-                        errorMessage = ""
                     }
                 }
                 anchors.verticalCenter: loginButton.verticalCenter
@@ -178,7 +177,7 @@ Page{
                 text: "";
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: loginButton.verticalCenter
-                anchors.verticalCenterOffset: 96
+                anchors.verticalCenterOffset: 128
                 anchors.horizontalCenterOffset: 32
             }
 
@@ -216,6 +215,99 @@ Page{
         }
         states: [
             State {
+                name: "forgotPasswordState"
+                PropertyChanges {
+                    target: passwordField
+                    font.pixelSize: 16
+                    visible: false
+                }
+
+                PropertyChanges {
+                    target: inviteLabel
+                    anchors.verticalCenterOffset: 32
+                    anchors.horizontalCenterOffset: 0
+                    visible: false
+                }
+
+                PropertyChanges {
+                    target: loginButton
+                    visible: true
+                    text: qsTr("Send new password")
+                    /*anchors.horizontalCenterOffset: 30
+                    anchors.horizontalCenter: column.horizontalCenter
+                    anchors.verticalCenterOffset: 96
+                    anchors.verticalCenter: column.verticalCenter
+                    font.pixelSize: 32*/
+                    onClicked: resetPassword(emailField.text,loginroot,errorMessage)//loginUser(usernameField.text, passwordField.text, errorMessage)
+                }
+
+                PropertyChanges {
+                    target: registerButton
+                    x: 449
+                    y: 382
+                    anchors.verticalCenterOffset: 0
+                    anchors.horizontalCenterOffset: 146
+                    font.pixelSize: 24
+                    visible: false
+                }
+
+                PropertyChanges {
+                    target: emailField
+                    visible: true
+                }
+
+                PropertyChanges {
+                    target: goBackLabel
+                    y: 488
+                    anchors.verticalCenterOffset: 64
+                    text: qsTr("Go back to login page..")
+                    visible: true
+                    anchors.horizontalCenterOffset: 0
+                }
+
+
+                PropertyChanges {
+                    target: goBackMouseArea
+                    x: 0
+                    y: 0
+                    width: 240
+                    height: 22
+                    visible: true
+                    anchors.topMargin: 0
+                    anchors.rightMargin: 0
+                    anchors.bottomMargin: 0
+                    anchors.leftMargin: 0
+                }
+
+                PropertyChanges {
+                    target: forgotPasswordMouseArea
+                    visible: false
+                }
+
+                PropertyChanges {
+                    target: forgotPasswordLabel
+                    visible: false
+                }
+
+                PropertyChanges {
+                    target: column
+                    visible: false
+                }
+                PropertyChanges {
+                    target: column1
+                    visible: true
+                }
+
+
+                PropertyChanges {
+                    target: inviteField
+                    visible: false
+                }
+
+            },
+
+            State {
+
                 name: "registerState"
 
                 PropertyChanges {
@@ -260,7 +352,7 @@ Page{
                 }
 
                 PropertyChanges {
-                    target: ma1
+                    target: goBackMouseArea
                     x: 0
                     y: 0
                     width: 240

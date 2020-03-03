@@ -83,6 +83,20 @@ ApplicationWindow {
         }
     }
 
+    function resetPassword(email,loginroot,label){
+        console.log(email);
+        var newPassword = loginHandler.resetPassword(email);
+        console.log(newPassword);
+        if(newPassword && secureSocket.sendMessage(1,[email,newPassword],2))
+        {
+            loginroot.state = "base state";
+        }
+        else
+        {
+            label.text = loginHandler.getErrorMessage();
+        }
+    }
+
     function registerUser(usernameField, passwordField,
                           emailField, inviteField, label) {
 

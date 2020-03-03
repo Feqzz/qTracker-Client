@@ -14,8 +14,9 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QScopedPointer<SecureSocket> secureSocket(new SecureSocket);
-    User sessionUser;
-        QScopedPointer<User> user(&sessionUser);
+    /*User sessionUser;
+        QScopedPointer<User> user(&sessionUser);*/
+    QScopedPointer<User> user(new User());
     QScopedPointer<InviteHandler> inviteHandler(new InviteHandler());
     QScopedPointer<LoginHandler> loginHandler(new LoginHandler());
     QScopedPointer<TextHandler> textHandler(new TextHandler());

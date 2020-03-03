@@ -5,6 +5,37 @@ LoginHandler::LoginHandler(QObject* parent) : QObject(parent)
 
 }
 
+QString LoginHandler::resetPassword(QString email)
+{
+    QString password = QUuid::createUuid().toString(QUuid::Id128).left(12);
+    qDebug() << email;
+    QSqlQuery q = db->query();
+    QString hashedPassword = db->hash(password);
+    qDebug() << hashedPassword;
+    q.prepare("UPDATE user SET password = :password WHERE email = :email");
+    q.bindValue(":email", email);
+    q.bindValue(":password", hashedPassword);
+    if (q.exec())
+    {
+        int rowsAffected = q.numRowsAffected();
+        if(rowsAffected > 0)
+        {
+            return password;
+        }
+        else
+        {
+            qDebug() << "User does not exist!";
+            errorMessage = "User does not exist!";
+            return NULL;
+        }
+    }
+    else
+    {
+        errorMessage = "SQL error!";
+        return NULL;
+    }
+}
+
 bool LoginHandler::loginUser(User* user, QString username, QString password)
 {
     QSqlQuery q = db->query();
