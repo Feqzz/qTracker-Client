@@ -119,4 +119,22 @@ ApplicationWindow {
     function getInvitedCount() {
         return user.getInvitedCount();
     }
+
+    function changePassword(oldPassword, newPassword, confirmPassword, label) {
+        if (newPassword === confirmPassword) {
+            if (user.changePassword(oldPassword, newPassword)) {
+                label.color = "#00e940";
+                label.text = "Succesfully changed password!";
+            }
+            else {
+                label.color = "#e90000";
+                label.text = "Wrong old password";
+            }
+
+        } else {
+            label.color = "#e90000";
+            label.text = "The new password didn't match";
+        }
+
+    }
 }

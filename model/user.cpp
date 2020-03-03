@@ -82,7 +82,6 @@ int User::getInvitedCount()
         qDebug() << "Failed to execute getInvitedCount query";
     }
     return count;
-
 }
 
 int User::getId()
@@ -90,15 +89,18 @@ int User::getId()
     return id;
 }
 
-void User::changePassword(QString oldPassword, QString newPassword)
+bool User::changePassword(QString oldPassword, QString newPassword)
 {
-    if (oldPassword == password)
+    if (db->hash(oldPassword) == password)
     {
         db->updatePassword(id, newPassword);
+        password = db->hash(newPassword);
+        return true;
     }
     else
     {
         qDebug() << "Old password did not match current password";
+        return false;
     }
 }
 
@@ -131,4 +133,9 @@ void User::setEmail(QString _email)
 void User::setDateJoined(QString _dateJoined)
 {
     dateJoined = _dateJoined;
+}
+
+void User::setPassword(QString _password)
+{
+    password = _password;
 }

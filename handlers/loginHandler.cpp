@@ -34,7 +34,7 @@ bool LoginHandler::loginUser(User* user, QString username, QString password)
 bool LoginHandler::fillUser(User *user, QString username)
 {
     QSqlQuery q = db->query();
-    q.prepare("SELECT id, download, upload, privilege, email, createdAt FROM user WHERE username = :username");
+    q.prepare("SELECT id, download, upload, privilege, email, createdAt, password FROM user WHERE username = :username");
     q.bindValue(":username", username);
     if(q.exec())
     {
@@ -52,6 +52,8 @@ bool LoginHandler::fillUser(User *user, QString username)
         user->setEmail(q.value(4).toString());
 
         user->setDateJoined(q.value(5).toString());
+
+        user->setPassword(q.value(6).toString());
 
         return true;
     }

@@ -10,7 +10,7 @@ public:
     explicit User(QObject *parent = nullptr);
     User(int);
     Q_INVOKABLE double getRatio();
-    void changePassword(QString, QString);
+    Q_INVOKABLE bool changePassword(QString, QString);
     Q_INVOKABLE int getId();
     Q_INVOKABLE double getDownload();
     Q_INVOKABLE double getUpload();
@@ -26,6 +26,7 @@ public:
     void setId(int _id);
     void setEmail(QString _email);
     void setDateJoined(QString _dateJoined);
+    void setPassword(QString _password);
 private:
     QString username;
     QString password;

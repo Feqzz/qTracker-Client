@@ -8,8 +8,6 @@ Rectangle {
     height: 768
     color: "#141414"
 
-
-
     C.NavBar {
         id: navBar
     }
@@ -65,39 +63,61 @@ Rectangle {
     Column {
         id: column
         x: 583
-        y: 245
+        y: 328
+        visible: false
+        anchors.verticalCenterOffset: -100
         anchors.horizontalCenter: navBar.horizontalCenter
         anchors.verticalCenter: navBar.verticalCenter
         spacing: 32
 
         TextField {
             id: oldPasswordField
-            text: qsTr("Text Field")
-            visible: false
+            text: qsTr("")
+            placeholderText: "Old Password"
+            visible: true
+            echoMode: "Password"
+            selectByMouse: true
         }
 
         TextField {
             id: newPasswordField
-            text: qsTr("Text Field")
-            visible: false
+            text: qsTr("")
+            placeholderText: "New Password"
+            visible: true
+            echoMode: "Password"
+            selectByMouse: true
         }
 
         TextField {
             id: confirmPasswordField
-            text: qsTr("Text Field")
-            visible: false
+            text: qsTr("")
+            placeholderText: "Confirm Password"
+            visible: true
+            echoMode: "Password"
+            selectByMouse: true
         }
 
         C.PushButton {
             id: submitChangeButton
             text: "Submit Changes"
-            visible: false
             anchors.horizontalCenterOffset: 32
             anchors.horizontalCenter: confirmPasswordField.horizontalCenter
-            anchors.verticalCenterOffset: 64
-            anchors.verticalCenter: confirmPasswordField.verticalCenter
+            visible: true
+            onClicked: changePassword(oldPasswordField.text, newPasswordField.text, confirmPasswordField.text, message)
         }
+
+        Label {
+            id: message
+            text: " ";
+            width: 240
+            height: 22
+
+        }
+
     }
+
+
+
     states: [
         State {
             name: "changePasswordState"
