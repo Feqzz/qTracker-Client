@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS user
     password VARCHAR(255) NOT NULL,
     upload DOUBLE,
     download DOUBLE,
+    points INT,
     privilege INT,
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
 );
