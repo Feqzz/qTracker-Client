@@ -116,6 +116,7 @@ Rectangle {
             text: "Points: "
         }
 
+        /*
         Label {
             id: logoutLabel
             color: maLogoutLabel.containsMouse ? "#d0d046" : "#ffffff"
@@ -127,6 +128,7 @@ Rectangle {
                 onClicked: logout();
             }
         }
+        */
     }
 }
 

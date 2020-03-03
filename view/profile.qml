@@ -50,11 +50,21 @@ Rectangle {
             text: "Invited: " + getInvitedCount()
         }
 
-        C.PushButton {
-            id: changePasswordButton
+        Row {
+            id: row
+            spacing: 32
 
-            text: "Change Password"
-            onClicked: root.state = "changePasswordState"
+            C.PushButton {
+                id: changePasswordButton
+                text: "Change Password"
+                onClicked: root.state = "changePasswordState"
+            }
+
+            C.PushButton {
+                id: logoutButton
+                text: "Log Out"
+                onClicked: logout()
+            }
         }
     }
 
