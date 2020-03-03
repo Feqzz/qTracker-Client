@@ -33,7 +33,7 @@ void Database::updatePassword(int id, QString password)
 {
     QSqlQuery q(this->db);
     q.prepare("UPDATE user SET password = :password WHERE id = :id");
-    q.bindValue(":password", password);
+    q.bindValue(":password", hash(password));
     q.bindValue(":id", id);
     if (q.exec())
     {

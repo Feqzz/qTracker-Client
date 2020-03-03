@@ -37,8 +37,14 @@ Rectangle {
 
         Label {
             id: profileLabel
-            color: "#ffffff"
-            text: qsTr("Profile")
+            color: maProfileLabel.containsMouse ? "#d0d046" : "#ffffff"
+            text: "Profile"
+            MouseArea {
+                id: maProfileLabel
+                hoverEnabled: true
+                anchors.fill: parent
+                onClicked: changePage("profile");
+            }
         }
 
         Label {

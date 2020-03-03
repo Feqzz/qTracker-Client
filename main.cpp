@@ -6,7 +6,7 @@
 #include "model/user.h"
 #include "handlers/loginHandler.h"
 #include "handlers/inviteHandler.h"
-#include "handlers/texthandler.h"
+#include "handlers/textHandler.h"
 
 int main(int argc, char *argv[])
 {

@@ -9,7 +9,7 @@ User::User(int id) : id(id)
 {
     QSqlQuery q = db->query();
     q.prepare("SELECT username, password, upload,"
-              " download, privilege FROM user WHERE id = :id");
+              " download, privilege, email, createdAt FROM user WHERE id = :id");
     q.bindValue(":id", id);
     if (q.exec())
     {
@@ -19,6 +19,8 @@ User::User(int id) : id(id)
         upload = q.value(2).toDouble();
         download = q.value(3).toDouble();
         privilege = q.value(4).toInt();
+        email = q.value(5).toString();
+        dateJoined = q.value(6).toString();
     }
     else
     {
@@ -46,21 +48,60 @@ QString User::getUsername()
     return username;
 }
 
-void User::changePassword(QString oldPassword, QString newPassword)
+int User::getPrivilege()
 {
-    if (oldPassword == password)
+    return privilege;
+}
+
+QString User::getEmail()
+{
+    return email;
+}
+
+QString User::getDateJoined()
+{
+    return dateJoined;
+}
+
+int User::getInvitedCount()
+{
+    QSqlQuery q = db->query();
+    q.prepare("SELECT * FROM invite WHERE sender = :sender");
+    q.bindValue(":sender", id);
+    int count = 0;
+    if (q.exec())
     {
-        db->updatePassword(id, newPassword);
+
+        while (q.next())
+        {
+            count++;
+        }
     }
     else
     {
-        qDebug() << "Old password did not match current password";
+        qDebug() << "Failed to execute getInvitedCount query";
     }
+    return count;
 }
 
 int User::getId()
 {
     return id;
+}
+
+bool User::changePassword(QString oldPassword, QString newPassword)
+{
+    if (db->hash(oldPassword) == password)
+    {
+        db->updatePassword(id, newPassword);
+        password = db->hash(newPassword);
+        return true;
+    }
+    else
+    {
+        qDebug() << "Old password did not match current password";
+        return false;
+    }
 }
 
 void User::setUsername(QString _username)
@@ -84,7 +125,17 @@ void User::setId(int _id)
     id = _id;
 }
 
-int User::getPrivilege()
+void User::setEmail(QString _email)
 {
-    return privilege;
+    email = _email;
+}
+
+void User::setDateJoined(QString _dateJoined)
+{
+    dateJoined = _dateJoined;
+}
+
+void User::setPassword(QString _password)
+{
+    password = _password;
 }

@@ -1,4 +1,4 @@
-#include "texthandler.h"
+#include "textHandler.h"
 
 TextHandler::TextHandler(QObject* parent) : QObject(parent)
 {
@@ -13,7 +13,6 @@ QString TextHandler::getText(int id)
     if (q.exec())
     {
         q.next();
-        qDebug() << q.value(0).toString();
         return q.value(0).toString();
     }
     else
