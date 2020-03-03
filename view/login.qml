@@ -122,6 +122,29 @@ Page{
             }
 
             Label {
+                id: forgotPasswordLabel
+                x: 392
+                y: 505
+                width: 240
+                height: 22
+                color: ma2.containsMouse ? "#d0d046" : "#ffffff"
+                text: qsTr("Forgot your password? Click here..")
+                font.pixelSize: 16
+                anchors.verticalCenterOffset: 64+32
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: loginButton.verticalCenter
+                MouseArea {
+                    id: ma2
+                    hoverEnabled: true
+                    anchors.fill: parent
+                    onClicked: {
+                        loginroot.state = "forgotPasswordState"
+                        errorMessage.text = ""
+                    }
+                }
+            }
+
+            Label {
                 id: goBackLabel
                 x: 280
                 y: 429
