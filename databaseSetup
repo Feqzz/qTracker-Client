@@ -1,0 +1,23 @@
+#!/bin/bash
+configFile="config.cpp"
+sqlFile="makeTables.sql"
+searchstring="="
+while IFS= read -r line; do
+	if [[ $line == *"dbHostName"* ]]; then
+		subString=$(echo $line| cut -d'=' -f 2)
+		dbHostName=${subString:2:${#subString}-4}
+	fi
+	if [[ $line == *"dbDatabaseName"* ]]; then
+  		subString=$(echo $line| cut -d'=' -f 2)
+		dbDatabaseName=${subString:2:${#subString}-4}
+	fi
+	if [[ $line == *"dbUserName"* ]]; then
+  		subString=$(echo $line| cut -d'=' -f 2)
+		dbUserName=${subString:2:${#subString}-4}
+	fi
+	if [[ $line == *"dbPassword"* ]]; then
+  		subString=$(echo $line| cut -d'=' -f 2)
+		dbPassword=${subString:2:${#subString}-4}
+	fi
+done < "$configFile"
+mysql -u $dbUserName -p$dbPassword -h $dbHostName $dbDatabaseName < $sqlFile
