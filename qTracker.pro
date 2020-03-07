@@ -21,6 +21,7 @@ SOURCES += \
     core/handler.cpp \
     core/model.cpp \
     core/securesocket.cpp \
+    handlers/adminHandler.cpp \
     handlers/inviteHandler.cpp \
     handlers/loginHandler.cpp \
     handlers/textHandler.cpp \
@@ -49,6 +50,7 @@ HEADERS += \
     core/handler.h \
     core/model.h \
     core/securesocket.h \
+    handlers/adminHandler.h \
     handlers/inviteHandler.h \
     handlers/loginHandler.h \
     handlers/textHandler.h \

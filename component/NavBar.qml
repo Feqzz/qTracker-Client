@@ -116,21 +116,18 @@ Rectangle {
             }
         }
 
-
-
-        /*
         Label {
-            id: logoutLabel
-            color: maLogoutLabel.containsMouse ? "#d0d046" : "#ffffff"
-            text: qsTr("Logout")
+            id: adminLabel
+            color: maadminLabel.containsMouse ? "#d0d046" : "#ffffff"
+            text: qsTr("Admin")
             MouseArea {
-                id: maLogoutLabel
+                id: maadminLabel
                 hoverEnabled: true
                 anchors.fill: parent
-                onClicked: logout();
+                onClicked: changePage("admin");
             }
+            visible: checkPrivilege()
         }
-        */
     }
 }
 
