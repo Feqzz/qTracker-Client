@@ -17,7 +17,7 @@ Rectangle {
         anchors.verticalCenterOffset: -150
         anchors.horizontalCenterOffset: 200
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: rparent.verticalCenter
+        anchors.verticalCenter: parent.verticalCenter
         spacing: 8
 
         Row {
@@ -81,6 +81,7 @@ Rectangle {
 
                     function applyFilter(name) {
                         var userList = adminHandler.getUsersByName(name);
+                        console.log(userList);
                         model.clear();
                         for (var i = 0; i < userList.length; ++i) {
                             model.append(userList[i]);

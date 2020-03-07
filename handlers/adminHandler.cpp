@@ -21,6 +21,24 @@ bool AdminHandler::changeUserPrivilege(int userId, int priv)
     }
 }
 
+std::vector<QString> AdminHandler::getUsersByName(QString string)
+{
+    std::vector<QString> names;
+    QSqlQuery q = db->query();
+    string = "%"+string+"%";
+    q.prepare("SELECT username FROM user WHERE username LIKE :string");
+    q.bindValue(":string", string);
+
+    if(q.exec()&&q.size()>0)
+    {
+        while (q.next()) {
+            QString name = q.value(0).toString();
+            names.push_back(name);
+        }
+    }
+    return names;
+}
+
 bool AdminHandler::removeUser(int userId)
 {
     QSqlQuery q = db->query();
