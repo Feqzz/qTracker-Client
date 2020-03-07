@@ -4,8 +4,8 @@ import "../component" as C
 
 Rectangle {
     id: root
-    width: 1366
-    height: 768
+    width: 1920
+    height: 1080
     color: "#141414"
 
     C.NavBar {
@@ -14,10 +14,10 @@ Rectangle {
 
     Column {
         id: column
-        anchors.verticalCenterOffset: -150
-        anchors.horizontalCenterOffset: 200
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: 0
+        anchors.horizontalCenterOffset: 0
+        anchors.horizontalCenter: navBar.horizontalCenter
+        anchors.verticalCenter: navBar.verticalCenter
         spacing: 8
 
         Row {
@@ -52,19 +52,19 @@ Rectangle {
                 onTextChanged: {
                     //timer.restart();
                     if (text.length > 0) {
-                        model.applyFilter(text);
+                        listModel.applyFilter(text);
                     }
                 }
 
 
             }
 
-            C.PushButton {
+            /*C.PushButton {
                 id: searchButton
 
                 height: 40
                 text: "Search"
-            }
+            }*/
         }
 
         ScrollView {
@@ -76,19 +76,49 @@ Rectangle {
             ListView {
                 id: listView
                 width: 100; height: 100
-                model: ListModel {
-                    id: model
 
-                    function applyFilter(name) {
-                        var userList = adminHandler.getUsersByName(name);
-                        console.log(userList);
-                        model.clear();
-                        for (var i = 0; i < userList.length; ++i) {
-                            model.append(userList[i]);
+                model: listModel
+                delegate: Component {
+                    Item{
+                        width: 180; height: 40
+                        Column{
+                            Text{
+                                text: '<b>Name:</b> ' + name
+                                color:"white"
+                            }
+                            Text{
+                                text: '<b>Privilege:</b> ' + privlege
+                                color:"white"
+                            }
                         }
+                        MouseArea{
+                            hoverEnabled: true
+                            anchors.fill: parent
+                            onClicked: {
+                                //var newPrivilege = adminHandler.
+                                console.log(id+" "+privlege);
+                            }
+                        }}
+                }
+            }
+            ListModel {
+                id: listModel
+                function applyFilter(text) {
+                    var userList = adminHandler.getUsersByName(text);
+                    listModel.clear();
+                    for (var userId in userList) {
+                        var valueList = userList[userId];
+                        append(createListElement(userId,valueList));
                     }
                 }
 
+                function createListElement(userId,valueList) {
+                    return {
+                        id:userId,
+                        name: valueList[0],
+                        privlege: valueList[1]
+                    };
+                }
             }
         }
     }

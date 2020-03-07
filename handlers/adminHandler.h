@@ -12,7 +12,7 @@ public:
     Q_INVOKABLE bool changeUserPrivilege(int userId, int priv);
     Q_INVOKABLE bool removeUser(int userId);
     Q_INVOKABLE bool removeTorrent(int torrentId);
-    Q_INVOKABLE std::vector<QString> getUsersByName(QString);
+    Q_INVOKABLE QVariantMap getUsersByName(QString);
 };
 
 #endif // ADMINHANDLER_H

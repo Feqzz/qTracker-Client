@@ -7,8 +7,8 @@ import "../component" as Components
 ApplicationWindow {
     id: rootWindow
     visible: true
-    width: 1520
-    height: 780
+    width: 1920
+    height: 1080
     title: qsTr("qTracker")
 
     // Main stackview
@@ -41,8 +41,7 @@ ApplicationWindow {
     // After loading show initial Login Page
     Component.onCompleted: {
 
-        stackView.push("qrc:/view/home.qml")
-        loginHandler.loginUser("test", "123",NULL);
+        stackView.push("qrc:/view/login.qml")
 
     }
 
