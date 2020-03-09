@@ -14,10 +14,8 @@ Rectangle {
 
     Column {
         id: column
-        x: 583
-        y: 166
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: navBar.verticalCenter
+        anchors.horizontalCenter: navBar.horizontalCenter
         spacing: 32
 
         TextField {
