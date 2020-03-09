@@ -26,8 +26,15 @@ QVariantMap AdminHandler::getUsersByName(QString string)
     QMap<QString, QVariant> map;
     QSqlQuery q = db->query();
     string = "%"+string+"%";
-    q.prepare("SELECT id,username,privilege FROM user WHERE username LIKE :string");
-    q.bindValue(":string", string);
+    if (string.isEmpty())
+    {
+        q.prepare("SELECT id, username, privilege FROM user");
+    }
+    else
+    {
+        q.prepare("SELECT id, username, privilege FROM user WHERE username LIKE :string");
+        q.bindValue(":string", string);
+    }
 
     if(q.exec()&&q.size()>0)
     {

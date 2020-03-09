@@ -12,7 +12,7 @@ public:
     Q_INVOKABLE bool changeUserPrivilege(int userId, int priv);
     Q_INVOKABLE bool removeUser(int userId);
     Q_INVOKABLE bool removeTorrent(int torrentId);
-    Q_INVOKABLE QVariantMap getUsersByName(QString);
+    Q_INVOKABLE QVariantMap getUsersByName(QString); //Empty string for all users
 };
 
 #endif // ADMINHANDLER_H
