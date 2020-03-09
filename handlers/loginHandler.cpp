@@ -39,19 +39,32 @@ QString LoginHandler::resetPassword(QString email)
 bool LoginHandler::loginUser(User* user, QString username, QString password)
 {
     QSqlQuery q = db->query();
-    q.prepare("SELECT id, password FROM user WHERE username = :username");
+    q.prepare("SELECT id, password, privilege FROM user WHERE username = :username");
     q.bindValue(":username", username);
     if (q.exec())
     {
        QString hashedPassword = db->hash(password);
        q.next();
        QString dbHashedPassword = q.value(1).toString();
+       int userPrivilege = q.value(2).toInt();
        if(hashedPassword == dbHashedPassword)
        {
-           qDebug() << "User logged in!";
-           if(fillUser(user, username))
-               return true;
-           else errorMessage = "An unknown error has occured";
+           if (userPrivilege > -1)
+           {
+               qDebug() << "User logged in!";
+               if(fillUser(user, username))
+               {
+                   return true;
+               }
+               else
+               {
+                   errorMessage = "An unknown error has occured";
+               }
+           }
+           else
+           {
+               errorMessage = "This account has been banned";
+           }
        }
        else
        {
