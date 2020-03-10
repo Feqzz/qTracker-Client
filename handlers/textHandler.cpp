@@ -25,7 +25,7 @@ QString TextHandler::getText(int id)
 bool TextHandler::updateText(int userId, QString text, int id)
 {
     QSqlQuery q = db->query();
-    q.prepare("UPDATE text SET text = :text, lastEditedBy = :user WHERE id = :id");
+    q.prepare("UPDATE text SET text = :text, lastEditedBy = :user, lastEditedAt = NOW() WHERE id = :id");
     q.bindValue(":text", text);
     q.bindValue(":user", userId);
     q.bindValue(":id", id);
