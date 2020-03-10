@@ -20,6 +20,7 @@ public:
     Q_INVOKABLE QString getDateJoined();
     Q_INVOKABLE int getInvitedCount();
     Q_INVOKABLE int getPoints();
+    Q_INVOKABLE QString getTorrentPass();
     void setUsername(QString _username);
     void setDownload(int _download);
     void setUpload(int _upload);
@@ -29,11 +30,13 @@ public:
     void setDateJoined(QString _dateJoined);
     void setPassword(QString _password);
     void setPoints(int _points);
+    void setTorrentPass(QString _torrentPass);
 private:
     QString username;
     QString password;
     QString email;
     QString dateJoined;
+    QString torrentPass;
     double download;
     double upload;
     int privilege;
