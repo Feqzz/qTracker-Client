@@ -93,6 +93,11 @@ int User::getPoints()
     return points;
 }
 
+QString User::getTorrentPass()
+{
+    return torrentPass;
+}
+
 bool User::changePassword(QString oldPassword, QString newPassword)
 {
     if (db->hash(oldPassword) == password)
@@ -147,4 +152,9 @@ void User::setPassword(QString _password)
 void User::setPoints(int _points)
 {
     points = _points;
+}
+
+void User::setTorrentPass(QString _torrentPass)
+{
+    torrentPass = _torrentPass;
 }

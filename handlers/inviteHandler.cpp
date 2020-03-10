@@ -8,8 +8,8 @@ InviteHandler::InviteHandler(QObject* parent): QObject(parent)
 QString InviteHandler::inviteUser(int inviterId, QString inviteeEmail)
 {
     QString key = QUuid::createUuid().toString(QUuid::Id128).left(12);
-    //qDebug() << "Key: " << key;
-    //qDebug() << "inviteUser id: " << inviterId;
+    qDebug() << "Key: " << key;
+    qDebug() << "inviteUser id: " << inviterId;
     QSqlQuery q = db->query();
     q.prepare("INSERT INTO invite (recipientEmail, sender, InviteKey, expDate) "
               "VALUES (:email, :sender, :key, DATE_ADD( NOW(), INTERVAL 48 HOUR ))");
