@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS user
     canLeech TINYINT NOT NULL DEFAULT 1,
     peersLimit INT NOT NULL DEFAULT 0,
     torrentsLimit INT NOT NULL DEFAULT 0,
-    torrentPass CHAR(32) NOT NULL DEFAULT 0
+    torrentPass CHAR(32) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS invite
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS scrapeLog
 CREATE TABLE IF NOT EXISTS files
 (
     fileId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    infoHash BINARY(20) NOT NULL,
+    infoHash BINARY(20) NOT NULL UNIQUE,
     leechers INT NOT NULL DEFAULT 0,
     seeders INT NOT NULL DEFAULT 0,
     completed INT NOT NULL DEFAULT 0,
@@ -112,8 +112,8 @@ CREATE TABLE IF NOT EXISTS announceLog
 );
 
 /* password:123 */
-INSERT INTO user (username, email, password, upload, download, points, privilege)
-VALUES ("test", "tarves@gmail.com", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 50, 1);
+INSERT INTO user (username, email, password, upload, download, points, privilege, torrentPass)
+VALUES ("test", "tarves@gmail.com", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 50, 1, "test");
 
 INSERT INTO text (page, text, lastEditedAt, lastEditedBy)
 VALUES ("rules", "The database works!", CURRENT_TIMESTAMP, 1);

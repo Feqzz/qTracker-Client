@@ -117,11 +117,23 @@ Rectangle {
         }
 
         Label {
+            id: uploadLabel
+            color: maUploadLabel.containsMouse ? "#d0d046" : "#ffffff"
+            text: qsTr("Upload")
+            MouseArea {
+                id: maUploadLabel
+                hoverEnabled: true
+                anchors.fill: parent
+                onClicked: changePage("upload");
+            }
+        }
+
+        Label {
             id: adminLabel
-            color: maadminLabel.containsMouse ? "#d0d046" : "#ffffff"
+            color: maAdminLabel.containsMouse ? "#d0d046" : "#ffffff"
             text: qsTr("Admin")
             MouseArea {
-                id: maadminLabel
+                id: maAdminLabel
                 hoverEnabled: true
                 anchors.fill: parent
                 onClicked: changePage("admin");

@@ -79,7 +79,7 @@ bool LoginHandler::fillUser(User *user, QString username)
 {
     QSqlQuery q = db->query();
     q.prepare("SELECT id, download, upload, privilege, email, createdAt, "
-              "password, points FROM user WHERE username = :username");
+              "password, points, torrentPass FROM user WHERE username = :username");
     q.bindValue(":username", username);
     if(q.exec())
     {
@@ -101,6 +101,8 @@ bool LoginHandler::fillUser(User *user, QString username)
         user->setPassword(q.value(6).toString());
 
         user->setPoints(q.value(7).toInt());
+
+        user->setTorrentPass(q.value(8).toString());
 
         return true;
     }
@@ -132,8 +134,8 @@ bool LoginHandler::registerUser(User* user, QString username, QString password, 
             {
                 QString hashedPassword = db->hash(password);
                 QSqlQuery q = db->query();
-                q.prepare("INSERT INTO user (username, password, email, points)"
-                          "VALUES (:username, :password, :email, 0)");
+                q.prepare("INSERT INTO user (username, password, email, points, torrentPass)"
+                          "VALUES (:username, :password, :email, 0, substring(MD5(RAND()),1,32))");
                 q.bindValue(":username", username);
                 q.bindValue(":password", hashedPassword);
                 q.bindValue(":email", email);
