@@ -85,7 +85,8 @@ Rectangle {
                 return {
                     id:userId,
                     username: valueList[0],
-                    privilege: valueList[1]
+                    privilege: valueList[1],
+                    canLeech: valueList[2]
                 };
             }
 
@@ -151,12 +152,17 @@ Rectangle {
             TableViewColumn {
                 role: "username"
                 title: "Username"
-                width: 500
+                width: 333
                 }
             TableViewColumn {
                 role: "privilege"
                 title: "Privilege"
-                width: 500
+                width: 333
+            }
+            TableViewColumn {
+                role: "canLeech"
+                title: "Leeching privilege"
+                width: 333
             }
             onClicked:  {
                 if (listModel.get(currentRow)) {
@@ -178,6 +184,7 @@ Rectangle {
                 text: "Ban"
                 onClicked: {
                     adminHandler.changeUserPrivilege(currentUser.id, -1);
+                    adminHandler.changeLeechingPrivilege(currentUser.id, 0);
                     listModel.applyFilter(searchField.text);
                     tableView.focus = true;
                     refreshButtons(currentUser);
@@ -190,6 +197,7 @@ Rectangle {
                 text: "Unban"
                 onClicked: {
                     adminHandler.changeUserPrivilege(currentUser.id, 0);
+                    adminHandler.changeLeechingPrivilege(currentUser.id, 1);
                     listModel.applyFilter(searchField.text);
                     tableView.focus = true;
                     refreshButtons(currentUser);

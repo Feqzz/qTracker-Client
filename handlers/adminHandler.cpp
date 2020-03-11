@@ -21,6 +21,22 @@ bool AdminHandler::changeUserPrivilege(int userId, int priv)
     }
 }
 
+bool AdminHandler::changeLeechingPrivilege(int userId, bool canLeech)
+{
+    QSqlQuery q = db->query();
+    q.prepare("UPDATE user SET canLeech = :canLeech WHERE id = :id");
+    q.bindValue(":canLeech", canLeech);
+    q.bindValue(":id", userId);
+    if (q.exec())
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 QVariantMap AdminHandler::getUsersByName(QString string)
 {
     QMap<QString, QVariant> map;
@@ -32,7 +48,7 @@ QVariantMap AdminHandler::getUsersByName(QString string)
     }
     else
     {
-        q.prepare("SELECT id, username, privilege FROM user WHERE username LIKE :string");
+        q.prepare("SELECT id, username, privilege, canLeech FROM user WHERE username LIKE :string");
         q.bindValue(":string", string);
     }
 
@@ -40,7 +56,7 @@ QVariantMap AdminHandler::getUsersByName(QString string)
     {
         while (q.next()) {
             QVariantList values;
-            values <<q.value(1).toString()<<q.value(2).toString();
+            values << q.value(1).toString() << q.value(2).toString() << q.value(3).toString();
             map[q.value(0).toString()] = values;
         }
     }
