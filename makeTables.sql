@@ -72,9 +72,9 @@ CREATE TABLE IF NOT EXISTS filesUsers
 (
     fileId INT NOT NULL,
     userId INT NOT NULL,
-    isActive TINYINT NOT NULL,
-    announced INT NOT NULL,
-    completed INT NOT NULL,
+    isActive TINYINT NOT NULL DEFAULT 1,
+    announced INT NOT NULL DEFAULT 1,
+    completed INT NOT NULL DEFAULT 0,
     downloaded BIGINT UNSIGNED NOT NULL,
     `left` BIGINT UNSIGNED NOT NULL,
     uploaded BIGINT UNSIGNED NOT NULL,
