@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS scrapeLog
 CREATE TABLE IF NOT EXISTS files
 (
     fileId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    infoHash VARCHAR(255) NOT NULL UNIQUE,
+    infoHash VARCHAR(191) NOT NULL UNIQUE,
     leechers INT NOT NULL DEFAULT 0,
     seeders INT NOT NULL DEFAULT 0,
     completed INT NOT NULL DEFAULT 0,
@@ -113,7 +113,8 @@ CREATE TABLE IF NOT EXISTS announceLog
 
 /* password:123 */
 INSERT INTO user (username, email, password, upload, download, points, privilege, torrentPass)
-VALUES ("test", "tarves@gmail.com", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 50, 1, "test");
+VALUES ("test", "tarves@gmail.com", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 50, 1, "test"),
+ ("test1", "tarves1@gmail.com", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 50, 1, "test1");
 
 INSERT INTO text (page, text, lastEditedAt, lastEditedBy)
 VALUES ("rules", "The database works!", CURRENT_TIMESTAMP, 1);
