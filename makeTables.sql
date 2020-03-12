@@ -79,6 +79,7 @@ CREATE TABLE IF NOT EXISTS filesUsers
     `left` BIGINT UNSIGNED NOT NULL,
     uploaded BIGINT UNSIGNED NOT NULL,
     modifiedTime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    timeSeeded INT DEFAULT 0,
     UNIQUE KEY (fileId, userId),
     FOREIGN KEY (userId) REFERENCES user(id),
     FOREIGN KEY (fileId) REFERENCES files(fileId)
