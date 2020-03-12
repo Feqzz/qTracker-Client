@@ -113,8 +113,11 @@ CREATE TABLE IF NOT EXISTS announceLog
 
 /* password:123 */
 INSERT INTO user (username, email, password, upload, download, points, privilege, torrentPass)
-VALUES ("test", "tarves@gmail.com", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 50, 1, "test"),
- ("test1", "tarves1@gmail.com", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 50, 1, "test1");
+VALUES ("taraldqBit", "taraldqBit", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 50, 1, "taraldqBit"),
+("stianqBit", "stianqBit", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 50, 1, "stianqBit"),
+("stianDeluge", "stianDeluge", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 50, 1, "stianDeluge"),
+("stianrTorrent", "stianrTorrent", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 50, 1, "stianrTorrent"),
+ ("taraldDeluge", "taraldDeluge", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 50, 1, "taraldDeluge");
 
 INSERT INTO text (page, text, lastEditedAt, lastEditedBy)
 VALUES ("rules", "The database works!", CURRENT_TIMESTAMP, 1);
