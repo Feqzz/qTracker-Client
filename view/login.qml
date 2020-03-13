@@ -94,6 +94,7 @@ Page{
                     font.pixelSize: 16
                     placeholderText: qsTr("Username")
                     selectByMouse: true
+                    focus: true
                 }
 
                 TextField {
