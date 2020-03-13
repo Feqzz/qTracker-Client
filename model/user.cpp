@@ -16,8 +16,8 @@ User::User(int id) : id(id)
         q.next();
         username = q.value(0).toString();
         password = q.value(1).toString();
-        upload = q.value(2).toDouble();
-        download = q.value(3).toDouble();
+        upload = q.value(2).toUInt();
+        download = q.value(3).toUInt();
         privilege = q.value(4).toInt();
         email = q.value(5).toString();
         dateJoined = q.value(6).toString();
@@ -28,19 +28,60 @@ User::User(int id) : id(id)
     }
 }
 
+bool User::updateUsersData()
+{
+    QSqlQuery q = db->query();
+    q.prepare("UPDATE user AS u "
+              "SET "
+              "download = (SELECT IFNULL(SUM(downloaded), 0) FROM filesUsers WHERE userId = u.id), "
+              "upload = (SELECT IFNULL(SUM(uploaded), 0) FROM filesUsers WHERE userId = u.id)");
+   if (q.exec())
+   {
+       return refreshUserData();
+       //return true;
+
+   }
+   else
+   {
+       qDebug() << "Failed to update download/upload for all users";
+       return false;
+   }
+}
+
+bool User::refreshUserData()
+{
+    QSqlQuery q = db->query();
+    q.prepare("SELECT download, upload FROM user WHERE id = :id");
+    q.bindValue(":id", id);
+    if (q.exec())
+    {
+        q.next();
+        download = q.value(0).toULongLong();
+        upload = q.value(1).toULongLong();
+        return true;
+    }
+    else
+    {
+        qDebug() << "Failed to retrieve updated download/upload for user";
+        return false;
+    }
+}
+
+
+
 double User::getRatio()
 {
     return upload/download;
 }
 
-double User::getUpload()
+int User::getUpload()
 {
-    return upload;
+    return upload/1000000;
 }
 
-double User::getDownload()
+int User::getDownload()
 {
-    return download;
+    return download/1000000;
 }
 
 QString User::getUsername()
@@ -117,11 +158,11 @@ void User::setUsername(QString _username)
 {
     username = _username;
 }
-void User::setDownload(int _download)
+void User::setDownload(uint64_t _download)
 {
     download = _download;
 }
-void User::setUpload(int _upload)
+void User::setUpload(uint64_t _upload)
 {
     upload = _upload;
 }
