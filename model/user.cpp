@@ -71,7 +71,7 @@ bool User::refreshUserData()
 
 double User::getRatio()
 {
-    return upload/download;
+    return double(upload/1000)/double(download/1000);
 }
 
 int User::getUpload()
