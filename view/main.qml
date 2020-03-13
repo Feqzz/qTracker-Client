@@ -130,11 +130,11 @@ ApplicationWindow {
     }
 
     function getUpload() {
-        return user.getUpload();
+        return user.getUpload()/1000;
     }
 
     function getDownload() {
-        return user.getDownload();
+        return user.getDownload()/1000;
     }
 
     function checkPrivilege() {
@@ -194,5 +194,13 @@ ApplicationWindow {
 
     function getPoints() {
         return user.getPoints();
+    }
+
+    function updateUsersData() {
+        if (user.updateUsersData()) {
+            console.log("Updated Users Data");
+        } else {
+            console.log("Failed to update Users Data");
+        }
     }
 }

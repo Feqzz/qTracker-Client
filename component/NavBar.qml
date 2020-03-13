@@ -50,22 +50,22 @@ Rectangle {
         Label {
             id: ratioLabel
             color: "#ffffff"
-            text: (getRatio() > 1) ? "Ratio: " + "<font color=\"#00e940\">" + getRatio().toFixed(2) + "</font>"
+            text: (getRatio() >= 1) ? "Ratio: " + "<font color=\"#00e940\">" + getRatio().toFixed(2) + "</font>"
                                    : "Ratio: " + "<font color=\"#e90000\">" + getRatio().toFixed(2) + "</font>"
         }
 
         Label {
             id: upLabel
             color: "#ffffff"
-            text: (getUpload() >= 1000) ? "Up: " + (getUpload()/1000) + " TiB"
-                                        : "Up: " + getUpload() + " GiB"
+            text: (getUpload() >= 1000) ? "Up: " + (getUpload()/1000).toFixed(2) + " TiB"
+                                        : "Up: " + getUpload().toFixed(2) + " GiB"
         }
 
         Label {
             id: downLabel
             color: "#ffffff"
-            text: (getDownload() >= 1000) ? "Down: " + (getDownload()/1000) + " TiB"
-                                        : "Down: " + getDownload() + " GiB"
+            text: (getDownload() >= 1000) ? "Down: " + (getDownload()/1000).toFixed(2) + " TiB"
+                                        : "Down: " + getDownload().toFixed(2) + " GiB"
         }
 
         Label {
