@@ -1,5 +1,6 @@
 #include "securesocket.h"
 #include "config.cpp"
+#include <iostream>
 
 SecureSocket::SecureSocket(QObject *parent):QObject(parent)
 {
@@ -26,6 +27,26 @@ SecureSocket::~SecureSocket()
 
 }*/
 
+QString SecureSocket::getFileString(QString fileUrl)
+{
+    QString fileUrlSubstring = fileUrl.mid(7);
+
+
+    QFile file(fileUrlSubstring);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        qDebug() << "Failed to read file at: "<< fileUrlSubstring;
+            return nullptr;
+    }
+    QString output = "";
+    while (!file.atEnd())
+    {
+        QByteArray line = file.readLine();
+        output += line;
+    }
+    return output;
+}
+
 bool SecureSocket::sendMessage(int code,QVariantList list)
 {
     bool success = setup();
@@ -33,10 +54,14 @@ bool SecureSocket::sendMessage(int code,QVariantList list)
     {
         QString message = QString::number(code)+"\n";
         char buff[100] = {};
+       // qDebug() <<"array size: "<< list.size();
+        //qDebug() <<"array size: "<< list.at(1);
         for(int i=0;i<list.size();i++)
         {
+            qDebug() << "loop: "<<i<<" string: "<<list.at(i).toString();
             message += list.at(i).toString()+"\n";
         }
+        qDebug() << "Message: " << message;
         BIO_puts(web, message.toLocal8Bit().data());
         //BIO_puts(out, "ResponseFromServer: \n");
         int len = 0;

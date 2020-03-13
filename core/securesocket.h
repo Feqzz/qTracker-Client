@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QDebug>
+#include <QFile>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,6 +28,8 @@
 #include <openssl/x509v3.h>
 #include <openssl/opensslconf.h>
 
+#include <fstream>
+#include <iterator>
 #include <vector>
 
 class SecureSocket : public QObject
@@ -37,6 +40,7 @@ public:
     explicit SecureSocket(QObject *parent = nullptr);
     ~SecureSocket();
     Q_INVOKABLE bool sendMessage(int,QVariantList);
+    Q_INVOKABLE QString getFileString(QString);
 private:
     bool setup();
     SSL_CTX* ctx = NULL;
