@@ -33,13 +33,11 @@ bool User::updateUsersData()
     QSqlQuery q = db->query();
     q.prepare("UPDATE user AS u "
               "SET "
-              "download = (SELECT IFNULL(SUM(downloaded), 0) FROM filesUsers WHERE userId = u.id), "
-              "upload = (SELECT IFNULL(SUM(uploaded), 0) FROM filesUsers WHERE userId = u.id)");
+              "download = (SELECT IFNULL(SUM(totalDownloaded), 0) FROM userTorrentTotals WHERE userId = u.id), "
+              "upload = (SELECT IFNULL(SUM(totalUploaded), 0) FROM userTorrentTotals WHERE userId = u.id)");
    if (q.exec())
    {
        return refreshUserData();
-       //return true;
-
    }
    else
    {
