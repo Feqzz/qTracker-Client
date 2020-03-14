@@ -40,7 +40,7 @@ public:
     explicit SecureSocket(QObject *parent = nullptr);
     ~SecureSocket();
     Q_INVOKABLE bool sendMessage(int,QVariantList);
-    Q_INVOKABLE QString getFileString(QString);
+    Q_INVOKABLE bool sendFile(int,int,QString);
 private:
     bool setup();
     SSL_CTX* ctx = NULL;

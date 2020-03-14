@@ -40,9 +40,11 @@ Rectangle {
             visible: false;
             onAccepted:function(){
                 //console.log(fileDialog.fileUrl);
-                var bytes = secureSocket.getFileString(fileDialog.fileUrl);
+                //var bytes = secureSocket.getFileString(fileDialog.fileUrl);
                 //console.log(bytes);
-                secureSocket.sendMessage(2,[user.getId(),bytes]);
+                //secureSocket.sendFile(2,user.getId(),fileDialog.fileUrl)
+                //secureSocket.sendMessage(2,[user.getId(),bytes]);
+                torrentFileParser.parse(fileDialog.fileUrl)
             }
             onRejected: {
                 console.log("Canceled")

@@ -27,7 +27,7 @@ SecureSocket::~SecureSocket()
 
 }*/
 
-QString SecureSocket::getFileString(QString fileUrl)
+bool SecureSocket::sendFile(int code,int id,QString fileUrl)
 {
     QString fileUrlSubstring = fileUrl.mid(7);
 
@@ -36,15 +36,62 @@ QString SecureSocket::getFileString(QString fileUrl)
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qDebug() << "Failed to read file at: "<< fileUrlSubstring;
-            return nullptr;
+            return false;
     }
-    QString output = "";
-    while (!file.atEnd())
+    QByteArray bytes = file.readLine();
+    bool success = setup();
+    if(success)
     {
-        QByteArray line = file.readLine();
-        output += line;
+        QString message = "\n"+QString::number(id)+"\n"+QString::number(code)+"\n";
+
+       /*
+
+       // qDebug() <<"array size: "<< list.size();
+        //qDebug() <<"array size: "<< list.at(1);
+        for(int i=0;i<list.size();i++)
+        {
+            //qDebug() << "loop: "<<i<<" string: "<<list.at(i).toString();
+            message += list.at(i).toString()+"\n";
+        }*/
+        //qDebug() << "Message: " << message;
+        qDebug() << "bytes:\n" << bytes;
+        BIO_puts(web, bytes);
+        //QString message = QString::number(code)+"\n";
+        BIO_puts(web, message.toLocal8Bit());
+        //BIO_puts(out, "ResponseFromServer: \n");
+        int len = 0;
+        char buff[100] = {};
+        do {
+            /* https://www.openssl.org/docs/crypto/BIO_read.html */
+            len = BIO_read(web, buff, sizeof(buff));
+            //qDebug() << "\n len:" << len;
+            if(len > 0)
+            {
+                //BIO_write(out, buff, len);
+                //returns true if char is 1
+                if(out)
+                    BIO_free(out);
+
+                if(web != NULL)
+                    BIO_free_all(web);
+
+                if(NULL != ctx)
+                    SSL_CTX_free(ctx);
+                return (int)buff[0]==49;
+                /*for(int x=0;x<100;x++){
+                    qDebug() << buff[x];
+                }*/
+            }
+            /* BIO_should_retry returns TRUE unless there's an  */
+            /* error. We expect an error when the server        */
+            /* provides the response and closes the connection. */
+
+        } while (len > 0 || BIO_should_retry(web));
     }
-    return output;
+    else
+    {
+        qDebug() << "Setup failed!\n";
+    }
 }
 
 bool SecureSocket::sendMessage(int code,QVariantList list)
@@ -58,10 +105,10 @@ bool SecureSocket::sendMessage(int code,QVariantList list)
         //qDebug() <<"array size: "<< list.at(1);
         for(int i=0;i<list.size();i++)
         {
-            qDebug() << "loop: "<<i<<" string: "<<list.at(i).toString();
+            //qDebug() << "loop: "<<i<<" string: "<<list.at(i).toString();
             message += list.at(i).toString()+"\n";
         }
-        qDebug() << "Message: " << message;
+        //qDebug() << "Message: " << message;
         BIO_puts(web, message.toLocal8Bit().data());
         //BIO_puts(out, "ResponseFromServer: \n");
         int len = 0;

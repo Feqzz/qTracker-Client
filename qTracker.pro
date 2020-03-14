@@ -1,8 +1,8 @@
 QT += quick sql
 
-CONFIG += c++11 console -Wno-deprecated-declarations
+CONFIG += c++17 console -Wno-deprecated-declarations
 
-LIBS += -L/usr/lib -lssl -lcrypto
+LIBS += -L/usr/lib -lssl -lcrypto -I/usr/include
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -21,6 +21,7 @@ SOURCES += \
     core/handler.cpp \
     core/model.cpp \
     core/securesocket.cpp \
+    core/torrentfileparser.cpp \
     handlers/adminHandler.cpp \
     handlers/inviteHandler.cpp \
     handlers/loginHandler.cpp \
@@ -46,10 +47,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    core/bencode.hpp \
     core/database.h \
     core/handler.h \
     core/model.h \
     core/securesocket.h \
+    core/torrentfileparser.h \
     handlers/adminHandler.h \
     handlers/inviteHandler.h \
     handlers/loginHandler.h \

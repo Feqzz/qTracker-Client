@@ -4,6 +4,7 @@
 #include <QQmlContext>
 #include "core/securesocket.h"
 #include "model/user.h"
+#include "core/torrentfileparser.h"
 #include "handlers/loginHandler.h"
 #include "handlers/inviteHandler.h"
 #include "handlers/textHandler.h"
@@ -15,6 +16,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QScopedPointer<SecureSocket> secureSocket(new SecureSocket);
+    QScopedPointer<TorrentFileParser> torrentFileParser(new TorrentFileParser);
     /*User sessionUser;
         QScopedPointer<User> user(&sessionUser);*/
     QScopedPointer<User> user(new User());
@@ -32,6 +34,7 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
 
     engine.rootContext()->setContextProperty("secureSocket", secureSocket.data());
+    engine.rootContext()->setContextProperty("torrentFileParser", torrentFileParser.data());
     engine.rootContext()->setContextProperty("user", user.data());
     engine.rootContext()->setContextProperty("loginHandler", loginHandler.data());
     engine.rootContext()->setContextProperty("inviteHandler", inviteHandler.data());
