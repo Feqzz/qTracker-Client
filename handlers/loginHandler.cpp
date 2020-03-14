@@ -88,9 +88,9 @@ bool LoginHandler::fillUser(User *user, QString username)
 
         user->setId(q.value(0).toInt());
 
-        user->setDownload(q.value(1).toInt());
+        user->setDownload(q.value(1).toULongLong());
 
-        user->setUpload(q.value(2).toInt());
+        user->setUpload(q.value(2).toULongLong());
 
         user->setprivilege(q.value(3).toInt());
 

@@ -13,6 +13,11 @@ Page {
         id: navBar
 
     }
+
+    Component.onCompleted: {
+        updateUsersData();
+    }
+
 }
 
 /*##^## Designer {

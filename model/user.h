@@ -12,8 +12,8 @@ public:
     Q_INVOKABLE double getRatio();
     Q_INVOKABLE bool changePassword(QString, QString);
     Q_INVOKABLE int getId();
-    Q_INVOKABLE double getDownload();
-    Q_INVOKABLE double getUpload();
+    Q_INVOKABLE int getDownload();
+    Q_INVOKABLE int getUpload();
     Q_INVOKABLE QString getUsername();
     Q_INVOKABLE int getPrivilege();
     Q_INVOKABLE QString getEmail();
@@ -21,9 +21,11 @@ public:
     Q_INVOKABLE int getInvitedCount();
     Q_INVOKABLE int getPoints();
     Q_INVOKABLE QString getTorrentPass();
+    Q_INVOKABLE bool updateUsersData();
+    bool refreshUserData();
     void setUsername(QString _username);
-    void setDownload(int _download);
-    void setUpload(int _upload);
+    void setDownload(uint64_t _download);
+    void setUpload(uint64_t _upload);
     void setprivilege(int _privilege);
     void setId(int _id);
     void setEmail(QString _email);
@@ -37,8 +39,8 @@ private:
     QString email;
     QString dateJoined;
     QString torrentPass;
-    double download;
-    double upload;
+    uint64_t download;
+    uint64_t upload;
     int privilege;
     int id;
     int points;
