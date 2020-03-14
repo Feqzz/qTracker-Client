@@ -11,8 +11,42 @@ struct FileStruct
     int length;
 };
 
+
+QByteArray TorrentFileParser::getInfoHash(QString encodedInfo)
+{
+    QCryptographicHash hasher(QCryptographicHash::Sha1);
+    /*std::ifstream ifs;
+    ifs.open(fileUrlSubstring.toLocal8Bit(), std::ifstream::in);
+    std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+    //qDebug() << QString::fromStdString(str);
+
+    unsigned first = str.find("infod") + 7;
+    unsigned last = str.find(":piece lengthi");
+    std::string strNew = str.substr (first,last-first);
+    qDebug() << QString::fromStdString(strNew) << "\n";
+*/
+    qDebug() << encodedInfo << "\n";
+    //QByteArray infoHash = hasher.hash(QString::fromStdString(strNew).toLocal8Bit(), QCryptographicHash::Sha1);
+
+    //Med Url Enc
+    //QByteArray urlEnc = QUrl(encodedInfo).toEncoded();
+    //QByteArray infoHash = hasher.hash((urlEnc), QCryptographicHash::Sha1);
+
+    //Uten
+    QByteArray infoHash = hasher.hash((encodedInfo).toUtf8(), QCryptographicHash::Sha1);
+
+    QString hashAsString = infoHash.toHex();
+    qDebug() << "HASH: " << hashAsString << "\n";
+    return infoHash;
+}
+
+
+
+
 void TorrentFileParser::parse(QString url)
 {
+    QCryptographicHash hasher(QCryptographicHash::Sha1);
+
     QString announceUrl;
     int creationDate;
     QString comment;
@@ -20,6 +54,7 @@ void TorrentFileParser::parse(QString url)
     int pieceLength;
     QString pieces;
     bool privateTorrent = false;
+    QByteArray infoHash;
 
     std::vector<FileStruct> filesVector;
 
@@ -36,6 +71,9 @@ void TorrentFileParser::parse(QString url)
 
     std::ifstream ifs;
     ifs.open(fileUrlSubstring.toLocal8Bit(), std::ifstream::in);
+
+    //infoHash = getInfoHash(fileUrlSubstring);
+
     auto data = bencode::decode(ifs, bencode::no_check_eof);
     auto all = boost::get<bencode::dict>(data);
 
@@ -89,6 +127,8 @@ void TorrentFileParser::parse(QString url)
     }
     //std::cout << "Length of info: " << info.size() << "\n";
 
+    auto encodedInfo = bencode::encode(info);
+    infoHash = getInfoHash(QString::fromStdString(encodedInfo));
 
 
     pos = info.find("piece length");
@@ -177,21 +217,21 @@ void TorrentFileParser::parse(QString url)
     }
 
 
-    qDebug() << "AnnounceUrl" << announceUrl << "\n";
-    qDebug() << "CreationDate: " << creationDate << "\n";
-    qDebug() << "Comment" << comment << "\n";
-    qDebug() << "Created By: " << createdBy << "\n";
-    qDebug() << "Piece Length" << pieceLength << "\n";
-    qDebug() << "Pieces" << pieces << "\n";
-    qDebug() << "Private Torrent" << privateTorrent << "\n";
-    qDebug() << "File(s):\n";
-    for(auto file : filesVector)
+    //qDebug() << "AnnounceUrl" << announceUrl << "\n";
+    //qDebug() << "CreationDate: " << creationDate << "\n";
+    //qDebug() << "Comment" << comment << "\n";
+    //qDebug() << "Created By: " << createdBy << "\n";
+    //qDebug() << "Piece Length" << pieceLength << "\n";
+    //qDebug() << "Pieces" << pieces << "\n";
+    //qDebug() << "Private Torrent" << privateTorrent << "\n";
+    //qDebug() << "File(s):\n";
+    /*for(auto file : filesVector)
     {
         for(auto p : file.path)
         {
             qDebug() << "   PathVal: " << p << "\n";
         }
         qDebug() << "   FileLength: " << file.length << "\n\n";
-
-    }
+    }*/
+    qDebug() << "InfoHash: " << infoHash << "\n";
 }

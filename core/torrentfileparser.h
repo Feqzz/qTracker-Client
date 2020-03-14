@@ -4,9 +4,10 @@
 #include <QObject>
 #include <QFile>
 #include <QDebug>
-
+#include <QCryptographicHash>
 #include "core/bencode.hpp"
-
+#include <QTextCodec>
+ #include <QUrl>
 #include <iostream>
 #include <fstream>
 #include <cstdio>
@@ -18,6 +19,7 @@ class TorrentFileParser : public QObject
 public:
     explicit TorrentFileParser(QObject *parent = nullptr);
     Q_INVOKABLE void parse(QString);
+    Q_INVOKABLE QByteArray getInfoHash(QString);
 };
 
 #endif // TORRENTFILEPARSER_H
