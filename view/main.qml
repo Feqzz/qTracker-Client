@@ -40,7 +40,6 @@ ApplicationWindow {
 
     // After loading show initial Login Page
     Component.onCompleted: {
-
         stackView.push("qrc:/view/upload.qml")
 
     }

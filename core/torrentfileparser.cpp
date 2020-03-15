@@ -31,7 +31,6 @@ QByteArray TorrentFileParser::getInfoHash(QString encodedInfo)
     //Med Url Enc
     //QByteArray urlEnc = QUrl(encodedInfo).toEncoded();
     //QByteArray infoHash = hasher.hash((urlEnc), QCryptographicHash::Sha1);
-
     //Uten
     QByteArray infoHash = hasher.hash((encodedInfo).toUtf8(), QCryptographicHash::Sha1);
 
@@ -41,7 +40,45 @@ QByteArray TorrentFileParser::getInfoHash(QString encodedInfo)
 }
 
 
+void TorrentFileParser::readFile(QString url)
+{
+    QString fileUrlSubstring = url.mid(7);
+    std::ifstream ifs;
+    ifs.open(fileUrlSubstring.toLocal8Bit(), std::ifstream::in);
 
+    std::vector<char> list;
+    char c = ifs.get();
+    while (ifs.good()) {
+        list.push_back(c);
+        c = ifs.get();
+    }
+    ifs.close();
+
+    bool f = false;
+    QByteArray barr;
+    for(size_t x=0;x<list.size()-1;x++){
+        if(!f)
+        {
+            char first = list.at(x);
+            char second = list.at(x+1);
+            char third = list.at(x+2);
+            char fourth = list.at(x+3);
+            if(first == 'i'&& second == 'n'&& third == 'f'&& fourth == 'o'){
+                f=true;
+                x+=4;
+            }
+        }
+        if(f)
+        {
+            barr.push_back(list.at(x));
+        }
+    }
+    QCryptographicHash hasher(QCryptographicHash::Sha1);
+    QByteArray infoHash = hasher.hash(barr, QCryptographicHash::Sha1);
+
+    QString hashAsString = infoHash.toHex();
+    qDebug() << "HASH: " << hashAsString << "\n";
+}
 
 void TorrentFileParser::parse(QString url)
 {
@@ -128,6 +165,7 @@ void TorrentFileParser::parse(QString url)
     //std::cout << "Length of info: " << info.size() << "\n";
 
     auto encodedInfo = bencode::encode(info);
+    //qDebug() << info;
     infoHash = getInfoHash(QString::fromStdString(encodedInfo));
 
 

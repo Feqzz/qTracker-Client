@@ -11,7 +11,9 @@
 #include <iostream>
 #include <fstream>
 #include <cstdio>
+#include <vector>
 #include <stdio.h>
+#include <QCoreApplication>
 
 class TorrentFileParser : public QObject
 {
@@ -19,6 +21,7 @@ class TorrentFileParser : public QObject
 public:
     explicit TorrentFileParser(QObject *parent = nullptr);
     Q_INVOKABLE void parse(QString);
+    Q_INVOKABLE void readFile(QString);
     Q_INVOKABLE QByteArray getInfoHash(QString);
 };
 
