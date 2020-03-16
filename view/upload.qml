@@ -44,7 +44,7 @@ Rectangle {
                 //console.log(bytes);
                 //secureSocket.sendFile(2,user.getId(),fileDialog.fileUrl)
                 //secureSocket.sendMessage(2,[user.getId(),bytes]);
-                torrentFileParser.readFile(fileDialog.fileUrl)
+                torrentFileParser.getInfoHashFromFile(fileDialog.fileUrl)
                // torrentFileParser.getInfoHashFromFile(fileDialog.fileUrl)
             }
             onRejected: {

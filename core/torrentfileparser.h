@@ -26,6 +26,7 @@ public:
     Q_INVOKABLE void getInfoHashFromFile(QString);
 private:
     int rec(std::vector<char>*,int);
+    QByteArray infoBytes;
     std::vector<std::string> keys;
 };
 

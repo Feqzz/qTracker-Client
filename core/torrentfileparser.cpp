@@ -49,6 +49,7 @@ QByteArray TorrentFileParser::getInfoHash(QString encodedInfo)
 void TorrentFileParser::getInfoHashFromFile(QString url)
 {
     QString fileUrlSubstring = url.mid(7);
+    qDebug() << "FileUrl: " << fileUrlSubstring;
     std::ifstream ifs;
     ifs.open(fileUrlSubstring.toLocal8Bit(), std::ifstream::in);
 
@@ -60,8 +61,16 @@ void TorrentFileParser::getInfoHashFromFile(QString url)
     }
     ifs.close();
     rec(list,0);
+    /*for(int x=0;x<infoBytes.size();x++){
+       std::cout << infoBytes.at(x);
+    }
+    std::cout << "\n";*/
+    QCryptographicHash hasher(QCryptographicHash::Sha1);
+    QByteArray infoHash = hasher.hash(infoBytes, QCryptographicHash::Sha1);
 
-    QByteArray barr;
+    QString hashAsString = infoHash.toHex();
+    // qDebug() << "FILE INFO BYTES: " << barr.toHex();
+    qDebug() << "BENCODE PARSE HASH: " << hashAsString;
 
 }
 
@@ -73,6 +82,9 @@ int TorrentFileParser::rec(std::vector<char>* list,int i){
      * d,i,l ends with e
      * number ends after the number+1
     */
+
+    static bool infoFound = false;
+    static std::vector<bool> hm;
     for(size_t x=i;x<list->size();x++){
         char c = list->at(x);
         //starting conditions
@@ -80,39 +92,90 @@ int TorrentFileParser::rec(std::vector<char>* list,int i){
             std::string number = "";
             int count = 0;
             while(((int)list->at(x+count) >= 48 && (int)list->at(x+count) <= 57)){
+                if(infoFound){
+                    infoBytes.push_back(list->at(x+count));
+                }
                 number+=list->at(x+count);
                 count++;
             }
 
             int j = std::stoi(number);
-            qDebug() << "Found number " << j << "start: " <<x;
+
+            for(int z=0;z<=j;z++){
+                if(infoFound){
+                    infoBytes.push_back(list->at(x+count+z));
+                }
+            }
+
+            //info is always 4 length
+            if(!infoFound && j==4){
+                //qDebug() << "Checking for infod at: "<<x+count;
+                std::string infodString = "";
+                infodString+=list->at(x+count+1);
+                infodString+=list->at(x+count+2);
+                infodString+=list->at(x+count+3);
+                infodString+=list->at(x+count+4);
+                infoFound=(infodString.compare("info")) == 0;
+                if(infoFound){
+                   // qDebug() << "Found infod at: "<<x+count;
+                    //hm.push_back(true);
+                }
+            }
+            //qDebug() << "Found string with length: " << j << "start index: " <<x+1;
+            //qDebug() << "Found string with length: " << j << "end index: " <<x+j+count+2;
             int ending = rec(list,x+j+count+1);
-            qDebug() << "Found to siffer number " << j << "end: " <<ending;
+
             return ending;
 
         }
-        if(c=='d'||c=='l'){
-            qDebug() << "Found " << c << " start: " <<x;
+        if(c=='d'){
+            if(infoFound){
+                hm.push_back(true);
+                infoBytes.push_back(c);
+            }
+            //qDebug() << "Found dict with start index: " <<x+1;
             int ending =rec(list,x+1);
-            qDebug() << "Found " << c << " end: " <<ending;
-            return ending;
+           // qDebug() << "Found dict with end index: " <<ending+2;
+            return ending+1;
+        }
+        if(c=='l'){
+            if(infoFound){
+                hm.push_back(true);
+                infoBytes.push_back(c);
+            }
+            //qDebug() << "Found list with start index: " <<x+1;
+            int ending =rec(list,x+1);
+            //qDebug() << "Found list with end index: " <<ending+2;
+            return ending+1;
         }
         if(c=='i'){
-            qDebug() << "Found i start: " <<x;
+            //qDebug() << "Found integer with start index: " <<x+1;
             int y = 0;
             while(c!='e'){
                 c=list->at(x+y);
+                if(infoFound){
+                    infoBytes.push_back(c);
+                }
                 y++;
             }
+            //qDebug() << "Found integer with end index: " <<x+y+1;
             int ending = rec(list,x+y);
-            qDebug() << "Found i end: " <<ending;
+
             return ending;
         }
         if(c=='e'){
-            return x;
+            if(infoFound){
+                infoBytes.push_back(c);
+                //qDebug() << hm.size()<<" Popped e vector: " << x;
+                hm.pop_back();
+            }
+            if(hm.empty()){
+                infoFound=false;
+                //qDebug() << "Stopped infod at: " << x;
+            }
+            return rec(list,x+1);
         }
     }
-
 }
 
 void TorrentFileParser::readFile(QString url)
