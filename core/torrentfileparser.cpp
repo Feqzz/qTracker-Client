@@ -60,6 +60,7 @@ void TorrentFileParser::getInfoHashFromFile(QString url)
     }
     ifs.close();
     rec(list,0);
+
     QByteArray barr;
 
 }
@@ -76,37 +77,42 @@ int TorrentFileParser::rec(std::vector<char>* list,int i){
         char c = list->at(x);
         //starting conditions
         if(((int)c >= 48 && (int)c <= 57)){
-            if(((int)list->at(x+1) >= 48 && (int)list->at(x+1) <= 57)){
-                std::string number = "";
-                number+=c;
-                number+=list->at(x+1);
-                int j = std::stoi(number);
-                qDebug() << "Found to siffer number " << j << "at: " <<x;
-                rec(list,x+j+3);
-                break;
-            } else {
-                qDebug() << "Found number " << (int)c-48 << "at: " <<x;
-                rec(list,x+2+(int)c-48);
-                break;
+            std::string number = "";
+            int count = 0;
+            while(((int)list->at(x+count) >= 48 && (int)list->at(x+count) <= 57)){
+                number+=list->at(x+count);
+                count++;
             }
-            qDebug() << "Unable to parse number";
+
+            int j = std::stoi(number);
+            qDebug() << "Found number " << j << "start: " <<x;
+            int ending = rec(list,x+j+count+1);
+            qDebug() << "Found to siffer number " << j << "end: " <<ending;
+            return ending;
+
         }
         if(c=='d'||c=='l'){
-            qDebug() << "Found " << c << " at: " <<x;
-            rec(list,x+1);
-            break;
+            qDebug() << "Found " << c << " start: " <<x;
+            int ending =rec(list,x+1);
+            qDebug() << "Found " << c << " end: " <<ending;
+            return ending;
         }
         if(c=='i'){
-            qDebug() << "Found i at: " <<x;
+            qDebug() << "Found i start: " <<x;
             int y = 0;
             while(c!='e'){
-                c=list->at(y);
+                c=list->at(x+y);
                 y++;
             }
-            rec(list,x+y+1);
-            break;
+            int ending = rec(list,x+y);
+            qDebug() << "Found i end: " <<ending;
+            return ending;
+        }
+        if(c=='e'){
+            return x;
         }
     }
+
 }
 
 void TorrentFileParser::readFile(QString url)
