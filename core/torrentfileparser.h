@@ -7,7 +7,7 @@
 #include <QCryptographicHash>
 #include "core/bencode.hpp"
 #include <QTextCodec>
- #include <QUrl>
+#include <QUrl>
 #include <iostream>
 #include <fstream>
 #include <cstdio>
@@ -23,6 +23,10 @@ public:
     Q_INVOKABLE void parse(QString);
     Q_INVOKABLE void readFile(QString);
     Q_INVOKABLE QByteArray getInfoHash(QString);
+    Q_INVOKABLE void getInfoHashFromFile(QString);
+private:
+    int rec(std::vector<char>*,int);
+    std::vector<std::string> keys;
 };
 
 #endif // TORRENTFILEPARSER_H

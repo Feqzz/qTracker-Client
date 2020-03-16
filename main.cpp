@@ -15,10 +15,13 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
 
+    /*TorrentFileParser *t = new TorrentFileParser();
+    QString fileName = "file:://home/tarves/Downloads/friends.jpg.torrent";
+    t->getInfoHashFromFile(fileName);
+    t->readFile(fileName);*/
+
     QScopedPointer<SecureSocket> secureSocket(new SecureSocket);
     QScopedPointer<TorrentFileParser> torrentFileParser(new TorrentFileParser);
-    /*User sessionUser;
-        QScopedPointer<User> user(&sessionUser);*/
     QScopedPointer<User> user(new User());
     QScopedPointer<InviteHandler> inviteHandler(new InviteHandler());
     QScopedPointer<LoginHandler> loginHandler(new LoginHandler());

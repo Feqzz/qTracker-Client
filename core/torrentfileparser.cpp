@@ -12,8 +12,11 @@ struct FileStruct
 };
 
 
+
+
 QByteArray TorrentFileParser::getInfoHash(QString encodedInfo)
 {
+    //qDebug() << "InfoHash: " << encodedInfo << "\n";
     QCryptographicHash hasher(QCryptographicHash::Sha1);
     /*std::ifstream ifs;
     ifs.open(fileUrlSubstring.toLocal8Bit(), std::ifstream::in);
@@ -25,23 +28,90 @@ QByteArray TorrentFileParser::getInfoHash(QString encodedInfo)
     std::string strNew = str.substr (first,last-first);
     qDebug() << QString::fromStdString(strNew) << "\n";
 */
-    qDebug() << encodedInfo << "\n";
+    //qDebug() << encodedInfo << "\n";
     //QByteArray infoHash = hasher.hash(QString::fromStdString(strNew).toLocal8Bit(), QCryptographicHash::Sha1);
 
     //Med Url Enc
     //QByteArray urlEnc = QUrl(encodedInfo).toEncoded();
     //QByteArray infoHash = hasher.hash((urlEnc), QCryptographicHash::Sha1);
     //Uten
+    QByteArray infoBytes = encodedInfo.toUtf8();
+
+    qDebug() << "DECODED INFO BYTES: " << infoBytes.toHex();
+
     QByteArray infoHash = hasher.hash((encodedInfo).toUtf8(), QCryptographicHash::Sha1);
 
     QString hashAsString = infoHash.toHex();
-    qDebug() << "HASH: " << hashAsString << "\n";
+    //qDebug() << "DECODED HASH: " << hashAsString;
     return infoHash;
 }
 
+void TorrentFileParser::getInfoHashFromFile(QString url)
+{
+    QString fileUrlSubstring = url.mid(7);
+    std::ifstream ifs;
+    ifs.open(fileUrlSubstring.toLocal8Bit(), std::ifstream::in);
+
+    std::vector<char> *list = new std::vector<char>();
+    char c = ifs.get();
+    while (ifs.good()) {
+        list->push_back(c);
+        c = ifs.get();
+    }
+    ifs.close();
+    rec(list,0);
+    QByteArray barr;
+
+}
+
+
+
+int TorrentFileParser::rec(std::vector<char>* list,int i){
+    /*
+     * Should start with d,i,l or a number
+     * d,i,l ends with e
+     * number ends after the number+1
+    */
+    for(size_t x=i;x<list->size();x++){
+        char c = list->at(x);
+        //starting conditions
+        if(((int)c >= 48 && (int)c <= 57)){
+            if(((int)list->at(x+1) >= 48 && (int)list->at(x+1) <= 57)){
+                std::string number = "";
+                number+=c;
+                number+=list->at(x+1);
+                int j = std::stoi(number);
+                qDebug() << "Found to siffer number " << j << "at: " <<x;
+                rec(list,x+j+3);
+                break;
+            } else {
+                qDebug() << "Found number " << (int)c-48 << "at: " <<x;
+                rec(list,x+2+(int)c-48);
+                break;
+            }
+            qDebug() << "Unable to parse number";
+        }
+        if(c=='d'||c=='l'){
+            qDebug() << "Found " << c << " at: " <<x;
+            rec(list,x+1);
+            break;
+        }
+        if(c=='i'){
+            qDebug() << "Found i at: " <<x;
+            int y = 0;
+            while(c!='e'){
+                c=list->at(y);
+                y++;
+            }
+            rec(list,x+y+1);
+            break;
+        }
+    }
+}
 
 void TorrentFileParser::readFile(QString url)
 {
+
     QString fileUrlSubstring = url.mid(7);
     std::ifstream ifs;
     ifs.open(fileUrlSubstring.toLocal8Bit(), std::ifstream::in);
@@ -73,11 +143,13 @@ void TorrentFileParser::readFile(QString url)
             barr.push_back(list.at(x));
         }
     }
+
     QCryptographicHash hasher(QCryptographicHash::Sha1);
     QByteArray infoHash = hasher.hash(barr, QCryptographicHash::Sha1);
 
     QString hashAsString = infoHash.toHex();
-    qDebug() << "HASH: " << hashAsString << "\n";
+    // qDebug() << "FILE INFO BYTES: " << barr.toHex();
+    qDebug() << "FILE HASH: " << hashAsString;
 }
 
 void TorrentFileParser::parse(QString url)
@@ -169,6 +241,7 @@ void TorrentFileParser::parse(QString url)
     infoHash = getInfoHash(QString::fromStdString(encodedInfo));
 
 
+
     pos = info.find("piece length");
     if (pos == info.end()) {
         std::cout << "Not found piece length\n";
@@ -217,7 +290,7 @@ void TorrentFileParser::parse(QString url)
     }
     else
     {
-        std::cout << "Length of files: " << files.size() << "\n";
+        //std::cout << "Length of files: " << files.size() << "\n";
 
 
         for(auto file : files)
@@ -271,5 +344,5 @@ void TorrentFileParser::parse(QString url)
         }
         qDebug() << "   FileLength: " << file.length << "\n\n";
     }*/
-    qDebug() << "InfoHash: " << infoHash << "\n";
+
 }
