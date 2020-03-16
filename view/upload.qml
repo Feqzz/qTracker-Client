@@ -39,13 +39,8 @@ Rectangle {
             folder: shortcuts.home
             visible: false;
             onAccepted:function(){
-                //console.log(fileDialog.fileUrl);
-                //var bytes = secureSocket.getFileString(fileDialog.fileUrl);
-                //console.log(bytes);
-                //secureSocket.sendFile(2,user.getId(),fileDialog.fileUrl)
-                //secureSocket.sendMessage(2,[user.getId(),bytes]);
                 torrentFileParser.getInfoHashFromFile(fileDialog.fileUrl)
-               // torrentFileParser.getInfoHashFromFile(fileDialog.fileUrl)
+                torrentFileParser.parse(fileDialog.fileUrl)
             }
             onRejected: {
                 console.log("Canceled")

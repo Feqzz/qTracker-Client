@@ -397,21 +397,21 @@ void TorrentFileParser::parse(QString url)
     }
 
 
-    //qDebug() << "AnnounceUrl" << announceUrl << "\n";
-    //qDebug() << "CreationDate: " << creationDate << "\n";
-    //qDebug() << "Comment" << comment << "\n";
-    //qDebug() << "Created By: " << createdBy << "\n";
-    //qDebug() << "Piece Length" << pieceLength << "\n";
-    //qDebug() << "Pieces" << pieces << "\n";
-    //qDebug() << "Private Torrent" << privateTorrent << "\n";
-    //qDebug() << "File(s):\n";
-    /*for(auto file : filesVector)
+    qDebug() << "AnnounceUrl" << announceUrl << "\n";
+    qDebug() << "CreationDate: " << creationDate << "\n";
+    qDebug() << "Comment" << comment << "\n";
+    qDebug() << "Created By: " << createdBy << "\n";
+    qDebug() << "Piece Length" << pieceLength << "\n";
+    qDebug() << "Pieces" << pieces << "\n";
+    qDebug() << "Private Torrent" << privateTorrent << "\n";
+    qDebug() << "File(s):\n";
+    for(auto file : filesVector)
     {
         for(auto p : file.path)
         {
             qDebug() << "   PathVal: " << p << "\n";
         }
         qDebug() << "   FileLength: " << file.length << "\n\n";
-    }*/
+    }
 
 }

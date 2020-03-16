@@ -26,6 +26,7 @@ SOURCES += \
     handlers/inviteHandler.cpp \
     handlers/loginHandler.cpp \
     handlers/textHandler.cpp \
+    handlers/uploadhandler.cpp \
     main.cpp \
     model/user.cpp \
 
@@ -57,6 +58,7 @@ HEADERS += \
     handlers/inviteHandler.h \
     handlers/loginHandler.h \
     handlers/textHandler.h \
+    handlers/uploadhandler.h \
     model/user.h \
 
 DISTFILES += \
