@@ -21,11 +21,11 @@ class TorrentFileParser : public QObject
 public:
     explicit TorrentFileParser(QObject *parent = nullptr);
     Q_INVOKABLE void parse(QString);
-    Q_INVOKABLE void readFile(QString);
-    Q_INVOKABLE QByteArray getInfoHash(QString);
+    //Q_INVOKABLE void readFile(QString);
+    //Q_INVOKABLE QByteArray getInfoHash(QString);
     Q_INVOKABLE void getInfoHashFromFile(QString);
 private:
-    int rec(std::vector<char>*,int);
+    int recursiveParser(std::vector<char>*,int);
     QByteArray infoBytes;
     std::vector<std::string> keys;
 };
