@@ -152,6 +152,7 @@ Rectangle {
             text: "Upload"
             onClicked: function(){
                 uploadHandler.setTitle(titleTextField.text)
+                uploadHandler.setTorrentPass(user.getTorrentPass())
                 var success = uploadHandler.uploadFile()
                 console.log(success)
             }

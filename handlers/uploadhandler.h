@@ -19,6 +19,7 @@ public:
     Q_INVOKABLE void setUrl(QString);
     Q_INVOKABLE void setTitle(QString);
     Q_INVOKABLE void setId(int);
+    Q_INVOKABLE void setTorrentPass(QString);
     Q_INVOKABLE bool uploadFile();
 private:
     bool uploadDict(std::map<std::string, bencode::data>);
@@ -27,6 +28,7 @@ private:
     QByteArray getPieces(bencode::string);
     QString url;
     QString title;
+    QString torrentPass;
     int id;
 };
 

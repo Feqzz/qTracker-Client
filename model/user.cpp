@@ -9,7 +9,8 @@ User::User(int id) : id(id)
 {
     QSqlQuery q = db->query();
     q.prepare("SELECT username, password, upload,"
-              " download, privilege, email, createdAt FROM user WHERE id = :id");
+              " download, privilege, email, createdAt, "
+              "torrentPass FROM user WHERE id = :id");
     q.bindValue(":id", id);
     if (q.exec())
     {
@@ -21,6 +22,7 @@ User::User(int id) : id(id)
         privilege = q.value(4).toInt();
         email = q.value(5).toString();
         dateJoined = q.value(6).toString();
+        torrentPass = q.value(7).toString();
     }
     else
     {

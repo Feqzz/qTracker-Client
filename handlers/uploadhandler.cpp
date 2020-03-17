@@ -4,7 +4,10 @@ UploadHandler::UploadHandler(QObject* parent) : QObject(parent)
 {
 
 }
-
+void UploadHandler::setTorrentPass(QString _torrentPass)
+{
+    this->torrentPass = _torrentPass;
+}
 void UploadHandler::setUrl(QString _url)
 {
     this->url = _url;
@@ -153,12 +156,19 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
     QString torrentValues = "VALUES (?,?";
 
     std::map<std::string, bencode::data>::iterator iterator;
-    /*iterator= dict.find("announce");
+    iterator= dict.find("announce");
     if (iterator == dict.end()) {
         std::cout << "Not found announce\n";
     } else {
-        announceUrl = QString::fromStdString(boost::get<bencode::string>(iterator->second));
-    }*/
+        QString announceUrl = QString::fromStdString(boost::get<bencode::string>(iterator->second));
+        QStringList l = announceUrl.split("/");
+        QString fileTorrentPass = l[l.length()-2];
+        if(torrentPass.compare(fileTorrentPass)!=0)
+        {
+            qDebug() << "File torrentPass " << fileTorrentPass << " User torrentPass " << torrentPass;
+            return false;
+        }
+    }
 
     iterator = dict.find("info");
     if (iterator == dict.end()) {

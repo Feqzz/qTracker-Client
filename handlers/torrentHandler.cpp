@@ -4,6 +4,8 @@ TorrentHandler::TorrentHandler(QObject *parent) : QObject(parent)
 {
 
 }
+
+
 bool TorrentHandler::downloadFile(int torrentId, QString torrentPass)
 {
     QString title;

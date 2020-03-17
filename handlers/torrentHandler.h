@@ -15,6 +15,7 @@ public:
     explicit TorrentHandler(QObject *parent = nullptr);
     Q_INVOKABLE QVariantMap getTorrentsByName(QString); //Empty String for the top 10 torrents
     Q_INVOKABLE bool downloadFile(int,QString);
+
 private:
     struct FileStruct
     {
@@ -22,6 +23,7 @@ private:
         qlonglong length;
     };
     std::vector<FileStruct> getTorrentFiles(int);
+
 };
 
 #endif // TORRENTHANDLER_H
