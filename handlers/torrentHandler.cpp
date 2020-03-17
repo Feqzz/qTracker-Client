@@ -33,7 +33,7 @@ void TorrentHandler::downloadFile(int torrentId,QString torrentPass)
             privateTorrent = q.value(7).toBool();
             std::vector<TorrentHandler::FileStruct> t = getTorrentFiles(torrentId);
             std::map<std::string, bencode::data> all;
-            QString announceURL = "http://www."+trackerHostName+"/"+torrentPass+"/announce";
+            QString announceURL = "http://www."+trackerHostName+":"+trackerPort+"/"+torrentPass+"/announce";
             all.insert(std::pair<std::string,bencode::data>("announce",announceURL.toStdString()));
             if(encoding.length()>0)
             {
