@@ -71,13 +71,13 @@ bool UploadHandler::insertTorrentData(std::vector<QVariant> torrentVars,std::vec
 {
     db->startTransaction();
     QSqlQuery q = db->query();
-    qDebug() << torrentQuery;
+    //qDebug() << torrentQuery;
     q.prepare(torrentQuery);
 
     for(size_t x=0;x<torrentVars.size();x++)
     {
-        qDebug() << torrentVars.at(x);
-        q.bindValue(x+1, torrentVars.at(x));
+       // qDebug() << torrentVars.at(x);
+        q.bindValue(x, torrentVars.at(x));
     }
     bool torrentQuerySuccess = q.exec();
     if(torrentQuerySuccess)
@@ -89,8 +89,8 @@ bool UploadHandler::insertTorrentData(std::vector<QVariant> torrentVars,std::vec
         for(auto file : files)
         {
             q.prepare(torrentFileQuery);
-            q.bindValue(1, torrentId);
-            q.bindValue(2, file.length);
+            q.bindValue(0, torrentId);
+            q.bindValue(1, file.length);
             bool torrentFileQuerySuccess = q.exec();
             if(torrentFileQuerySuccess)
             {
@@ -99,11 +99,12 @@ bool UploadHandler::insertTorrentData(std::vector<QVariant> torrentVars,std::vec
                 for(auto p : file.path)
                 {
                     q.prepare(torrentFilePathQuery);
-                    q.bindValue(1, torrentFileId);
-                    q.bindValue(2, p);
+                    q.bindValue(0, torrentFileId);
+                    q.bindValue(1, p);
                     bool torrentFilePathQuerySuccess = q.exec();
                     if(!torrentFilePathQuerySuccess)
                     {
+                        qDebug() << q.lastError();
                         db->rollBack();
                         return false;
                     }
@@ -111,6 +112,7 @@ bool UploadHandler::insertTorrentData(std::vector<QVariant> torrentVars,std::vec
             }
             else
             {
+                qDebug() << q.lastError();
                 db->rollBack();
                 qDebug() << "SQL failed on torrentFile insert";
                 return false;
@@ -120,6 +122,7 @@ bool UploadHandler::insertTorrentData(std::vector<QVariant> torrentVars,std::vec
     }
     else
     {
+        qDebug() << q.lastError();
         db->rollBack();
         qDebug() << "SQL failed on torrent insert";
         return false;
@@ -195,7 +198,7 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
     } else {
         sqlVariables.push_back(boost::get<bencode::integer>(iterator->second));
         torrentQuery+=",createdDate";
-        torrentValues+=",?";
+        torrentValues+=",FROM_UNIXTIME(?)";
         //std::cout << "CreationDate: " << value << "\n";
     }
 

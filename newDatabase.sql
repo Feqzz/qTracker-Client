@@ -62,8 +62,8 @@ CREATE TABLE IF NOT EXISTS torrent
     comment VARCHAR(255),
     createdByClient VARCHAR(255),
     createdDate DATETIME,
-    pieceLength INT NOT NULL,
-    piece LONGBLOB NOT NULL,
+    pieceLength BIGINT UNSIGNED NOT NULL,
+    piece BLOB NOT NULL,
     private TINYINT,
     FOREIGN KEY (uploader) REFERENCES user(id)
 );
