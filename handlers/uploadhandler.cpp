@@ -20,6 +20,17 @@ bool UploadHandler::uploadFile()
 {
     //Removes 'file::/' from the start of url
     QString absFileUrl = url.mid(7);
+
+    QStringList fileTitle = absFileUrl.split('/');
+    QString fileName = fileTitle[fileTitle.length()-1];
+
+    QString onlyTitle = fileName.mid(0,fileName.length()-8);
+    if(title.length()<=0)
+    {
+        title = onlyTitle;
+    }
+    qDebug() << "File title: " << title;
+
     std::ifstream ifs;
     ifs.open(absFileUrl.toUtf8(), std::ios::binary);
 
@@ -137,8 +148,9 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
     std::vector<QVariant> sqlVariables;
 
     sqlVariables.push_back(id);
-    QString torrentQuery = "INSERT INTO torrent (uploader";
-    QString torrentValues = "VALUES (?";
+    sqlVariables.push_back(title);
+    QString torrentQuery = "INSERT INTO torrent (uploader,title";
+    QString torrentValues = "VALUES (?,?";
 
     std::map<std::string, bencode::data>::iterator iterator;
     /*iterator= dict.find("announce");
