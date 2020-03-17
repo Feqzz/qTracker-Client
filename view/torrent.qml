@@ -40,7 +40,7 @@ Rectangle {
 
      ListView {
          id: listView
-         anchors.fill: flick
+
          model: torrentModel
          spacing: 16
          delegate: listDelegate
@@ -71,14 +71,15 @@ Rectangle {
             }
         }
 
-        function createListElement(userId, valueList) {
+        function createListElement(title, valueList) {
             return {
-                title: userId,
+                title: title,
                 uploaderUsername: valueList[0],
                 leechers: valueList[1],
                 seeders: valueList[2],
                 completed: valueList[3],
-                uploadDate: valueList[4]
+                uploadDate: valueList[4],
+                torrentId: valueList[5]
             };
         }
     }
@@ -144,20 +145,29 @@ Rectangle {
                         color: "white"
                     }
 
-                    Text {
+                    /*Text {
                         id: uploadDateText
                         text: uploadDate
                         font.pixelSize: 15
                         color: "white"
-                    }
+                    }*/
+
+
 
                     Image {
                         anchors.verticalCenter: parent.verticalCenter
                         source: "../images/download.png"
                         width: 32
                         height: 32
-                        //onClicked: fruitModel.setProperty(index, "cost", cost + 0.25)
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                console.log(torrentId)
+                            }
+                        }
                     }
+
 
                     Text {
                         id: emptyText //Need some empty space for the scrollbar
@@ -165,11 +175,9 @@ Rectangle {
                         font.pixelSize: 15
                         color: "white"
                     }
+                }
             }
         }
-    }
-
-
 
          Component.onCompleted: {
              torrentModel.applyFilter("");

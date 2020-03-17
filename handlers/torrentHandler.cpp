@@ -15,12 +15,14 @@ QVariantMap TorrentHandler::getTorrentsByName(QString string)
         q.prepare
         (
             "SELECT "
+                    "torrent.id, "
                     "title, "
                     "username, "
                     "leechers, "
                     "seeders, "
                     "completed, "
-                    "uploadDate "
+                    "uploadDate, "
+                    "torrent.id "
             "FROM "
                     "torrent, "
                     "user "
@@ -39,7 +41,8 @@ QVariantMap TorrentHandler::getTorrentsByName(QString string)
                     "leechers, "
                     "seeders, "
                     "completed, "
-                    "uploadDate "
+                    "uploadDate, "
+                    "torrent.id "
             "FROM "
                     "torrent, "
                     "user "
@@ -56,14 +59,14 @@ QVariantMap TorrentHandler::getTorrentsByName(QString string)
         while (q.next()) {
             QVariantList values;
             values << q.value(1).toString() << q.value(2).toString() <<
-                      q.value(3).toString() << q.value(4).toString();
+                      q.value(3).toString() << q.value(4).toString() <<
+                      q.value(5).toString() << q.value(6).toString();
             map[q.value(0).toString()] = values;
-            qDebug() << q.value(4).toString();
         }
     }
     else
     {
-        qDebug() << "Failed query";
+        qDebug() << "Failed get Torrents query";
     }
     return map;
 }
