@@ -40,7 +40,7 @@ Rectangle {
             visible: false;
             onAccepted:function(){
                 torrentFileParser.getInfoHashFromFile(fileDialog.fileUrl)
-                torrentFileParser.parse(fileDialog.fileUrl)
+                torrentFileParser.createFile(fileDialog.fileUrl)
             }
             onRejected: {
                 console.log("Canceled")

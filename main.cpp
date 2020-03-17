@@ -15,6 +15,10 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
 
+    /*TorrentFileParser *t = new TorrentFileParser();
+    t->createFile();
+    t->getInfoHashFromFile("file:://home/tarves/ttest.torrent");*/
+
     QScopedPointer<SecureSocket> secureSocket(new SecureSocket);
     QScopedPointer<TorrentFileParser> torrentFileParser(new TorrentFileParser);
     QScopedPointer<User> user(new User());
@@ -40,8 +44,6 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("adminHandler", adminHandler.data());
 
     engine.load(url);
-
-    //
 
     return app.exec();
 }

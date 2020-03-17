@@ -10,6 +10,9 @@
 #include <QUrl>
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <locale>
+#include <codecvt>
 #include <cstdio>
 #include <vector>
 #include <stdio.h>
@@ -24,6 +27,7 @@ public:
     //Q_INVOKABLE void readFile(QString);
     //Q_INVOKABLE QByteArray getInfoHash(QString);
     Q_INVOKABLE void getInfoHashFromFile(QString);
+    Q_INVOKABLE void createFile(QString);
 private:
     int recursiveParser(std::vector<char>*,int);
     QByteArray infoBytes;

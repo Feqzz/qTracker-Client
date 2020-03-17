@@ -16,9 +16,9 @@ struct FileStruct
 
 //QByteArray TorrentFileParser::getInfoHash(QString encodedInfo)
 //{
-    //qDebug() << "InfoHash: " << encodedInfo << "\n";
-    //QCryptographicHash hasher(QCryptographicHash::Sha1);
-    /*std::ifstream ifs;
+//qDebug() << "InfoHash: " << encodedInfo << "\n";
+//QCryptographicHash hasher(QCryptographicHash::Sha1);
+/*std::ifstream ifs;
     ifs.open(fileUrlSubstring.toLocal8Bit(), std::ifstream::in);
     std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
     //qDebug() << QString::fromStdString(str);
@@ -28,14 +28,14 @@ struct FileStruct
     std::string strNew = str.substr (first,last-first);
     qDebug() << QString::fromStdString(strNew) << "\n";
     */
-    //qDebug() << encodedInfo << "\n";
-    //QByteArray infoHash = hasher.hash(QString::fromStdString(strNew).toLocal8Bit(), QCryptographicHash::Sha1);
+//qDebug() << encodedInfo << "\n";
+//QByteArray infoHash = hasher.hash(QString::fromStdString(strNew).toLocal8Bit(), QCryptographicHash::Sha1);
 
-    //Med Url Enc
-    //QByteArray urlEnc = QUrl(encodedInfo).toEncoded();
-    //QByteArray infoHash = hasher.hash((urlEnc), QCryptographicHash::Sha1);
-    //Uten
-    /*QByteArray infoBytes = encodedInfo.toUtf8();
+//Med Url Enc
+//QByteArray urlEnc = QUrl(encodedInfo).toEncoded();
+//QByteArray infoHash = hasher.hash((urlEnc), QCryptographicHash::Sha1);
+//Uten
+/*QByteArray infoBytes = encodedInfo.toUtf8();
 
     qDebug() << "DECODED INFO BYTES: " << infoBytes.toHex();
 
@@ -45,6 +45,80 @@ struct FileStruct
     //qDebug() << "DECODED HASH: " << hashAsString;
     return infoHash;
 }*/
+
+void TorrentFileParser::createFile(QString url)
+{
+    QString fileUrlSubstring = url.mid(7);
+    QString readUrl = "/home/tarves/ttest.torrent";
+    QString writeUrl = "/home/tarves/ttest.altered.torrent";
+    QString announceUrl;
+
+
+    std::ifstream ifs;
+    ifs.open(fileUrlSubstring.toUtf8(), std::ios::binary);
+
+    auto data = bencode::decode(ifs, bencode::no_check_eof);
+    auto all = boost::get<bencode::dict>(data);
+
+    std::map<std::string, bencode::data>::iterator it;
+    it=all.find("announce");
+    it->second = "http://www.feqzz.no/announce";
+
+    /*std::ofstream ofs;
+    ofs.open(writeUrl.toUtf8(), std::ios::binary);
+    bencode::encode(ofs, all);
+    ofs.close();*/
+
+    //Litt teit å lagre fil, så lese fil
+
+    /*it = all.find("info");
+    auto info = boost::get<bencode::dict>(it->second);
+    std::ofstream infoofs;
+    infoofs.open((readUrl+".info").toUtf8(), std::ios::binary);
+    bencode::encode(infoofs, info);
+    infoofs.close();
+
+    QByteArray qba;
+    std::ifstream is ((readUrl+".info").toUtf8(), std::ifstream::binary);
+    while(!is.eof()){
+        qba.append(is.get());
+    }
+
+    std::cout << "\n";
+    std::cout << "ROUNDTRIP hex \n";
+    for(int x=0;x<qba.size();x++){
+       std::cout << std::hex << (int)qba.at(x);
+    }
+    std::cout << "\n";
+    QCryptographicHash hasher(QCryptographicHash::Sha1);
+    QByteArray infoHash = hasher.hash(qba, QCryptographicHash::Sha1);
+    QString hashAsString = infoHash.toHex();
+    qDebug() << "ROUNDTRIP HASH: " << hashAsString;*/
+
+
+    it = all.find("info");
+    auto info = boost::get<bencode::dict>(it->second);
+
+    std::stringstream is;
+    bencode::encode(is, info);
+    std::string s = is.str();
+    QByteArray qba;
+    for(size_t x=0;x<s.length();x++){
+        qba.push_back(s[x]);
+    }
+
+
+    /*std::cout << "\n";
+    std::cout << "ROUNDTRIP 2 hex \n";
+    for(int x=0;x<qba.size();x++){
+        std::cout << std::hex << (int)qba.at(x);
+    }*/
+    QCryptographicHash hasher(QCryptographicHash::Sha1);
+    QByteArray infoHash = hasher.hash(qba, QCryptographicHash::Sha1);
+    QString hashAsString = infoHash.toHex();
+    qDebug() << "ROUNDTRIP HASH: " << hashAsString;
+
+}
 
 void TorrentFileParser::getInfoHashFromFile(QString url)
 {
@@ -61,8 +135,10 @@ void TorrentFileParser::getInfoHashFromFile(QString url)
     }
     ifs.close();
     recursiveParser(list,0);
-    /*for(int x=0;x<infoBytes.size();x++){
-       std::cout << infoBytes.at(x);
+   /* std::cout << "\n";
+    std::cout << "Korrekt hex \n";
+    for(int x=0;x<infoBytes.size();x++){
+        std::cout << std::hex << (int)infoBytes.at(x);
     }
     std::cout << "\n";*/
     QCryptographicHash hasher(QCryptographicHash::Sha1);
@@ -70,7 +146,7 @@ void TorrentFileParser::getInfoHashFromFile(QString url)
 
     QString hashAsString = infoHash.toHex();
     // qDebug() << "FILE INFO BYTES: " << barr.toHex();
-    qDebug() << "BENCODE PARSE HASH: " << hashAsString;
+    qDebug() << "BENCODE   HASH: " << hashAsString;
 
 }
 
@@ -117,7 +193,7 @@ int TorrentFileParser::recursiveParser(std::vector<char>* list,int i){
                 infodString+=list->at(x+count+4);
                 infoFound=(infodString.compare("info")) == 0;
                 if(infoFound){
-                   // qDebug() << "Found infod at: "<<x+count;
+                    // qDebug() << "Found infod at: "<<x+count;
                     //hm.push_back(true);
                 }
             }
@@ -135,7 +211,7 @@ int TorrentFileParser::recursiveParser(std::vector<char>* list,int i){
             }
             //qDebug() << "Found dict with start index: " <<x+1;
             int ending =recursiveParser(list,x+1);
-           // qDebug() << "Found dict with end index: " <<ending+2;
+            // qDebug() << "Found dict with end index: " <<ending+2;
             return ending+1;
         }
         if(c=='l'){
@@ -223,7 +299,7 @@ int TorrentFileParser::recursiveParser(std::vector<char>* list,int i){
 
 void TorrentFileParser::parse(QString url)
 {
-   // QCryptographicHash hasher(QCryptographicHash::Sha1);
+    // QCryptographicHash hasher(QCryptographicHash::Sha1);
 
     QString announceUrl;
     int creationDate;
