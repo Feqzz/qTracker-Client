@@ -108,8 +108,8 @@ Rectangle {
             Text {
                 id: uploadUrlText
                 anchors.verticalCenter: torrentUploadRectangle.verticalCenter
-                anchors.horizontalCenter: torrentUploadRectangle.horizontalCenter
-                anchors.horizontalCenterOffset: -50
+                //anchors.horizontalCenter: torrentUploadRectangle.horizontalCenter
+                x: 250
                 text: "No file selected." //Not implemented yet
                 color: "#ffffff"
             }
@@ -129,7 +129,7 @@ Rectangle {
                 anchors.verticalCenter: titleRectangle.verticalCenter
                 anchors.horizontalCenter: titleRectangle.horizontalCenter
                 anchors.verticalCenterOffset: 24
-                width: 700
+                width: 650
                 height: 40
                 text: ""
                 placeholderText: "Title"

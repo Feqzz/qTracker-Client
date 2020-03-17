@@ -36,7 +36,7 @@ void TorrentFileParser::getTorrentFile(int torrentId)
             privateTorrent = q.value(7).toBool();
             std::vector<TorrentFileParser::FileStruct> t = getTorrentFiles(torrentId);
             std::map<std::string, bencode::data> all;
-            all.insert(std::pair<std::string,bencode::data>("announce",trackerHostName.toStdString()));
+            all.insert(std::pair<std::string,bencode::data>("announce", trackerHostName.toStdString()));
             if(encoding.length()>0)
             {
 
