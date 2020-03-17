@@ -5,6 +5,7 @@
 #include "core/securesocket.h"
 #include "model/user.h"
 #include "core/torrentfileparser.h"
+#include "handlers/uploadhandler.h"
 #include "handlers/loginHandler.h"
 #include "handlers/inviteHandler.h"
 #include "handlers/textHandler.h"
@@ -20,7 +21,7 @@ int main(int argc, char *argv[])
     t->getInfoHashFromFile("file:://home/tarves/ttest.torrent");*/
 
     QScopedPointer<SecureSocket> secureSocket(new SecureSocket);
-    QScopedPointer<TorrentFileParser> torrentFileParser(new TorrentFileParser);
+    QScopedPointer<UploadHandler> uploadHandler(new UploadHandler);
     QScopedPointer<User> user(new User());
     QScopedPointer<InviteHandler> inviteHandler(new InviteHandler());
     QScopedPointer<LoginHandler> loginHandler(new LoginHandler());
@@ -36,7 +37,7 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
 
     engine.rootContext()->setContextProperty("secureSocket", secureSocket.data());
-    engine.rootContext()->setContextProperty("torrentFileParser", torrentFileParser.data());
+    engine.rootContext()->setContextProperty("uploadHandler", uploadHandler.data());
     engine.rootContext()->setContextProperty("user", user.data());
     engine.rootContext()->setContextProperty("loginHandler", loginHandler.data());
     engine.rootContext()->setContextProperty("inviteHandler", inviteHandler.data());

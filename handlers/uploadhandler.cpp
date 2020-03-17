@@ -1,8 +1,18 @@
 #include "uploadhandler.h"
 
-uploadHandler::uploadHandler(QObject* parent) : QObject(parent)
+UploadHandler::UploadHandler(QObject* parent) : QObject(parent)
 {
 
+}
+
+void UploadHandler::setUrl(QString _url)
+{
+    this->url = _url;
+}
+
+void UploadHandler::setTitle(QString _title)
+{
+    this->title = _title;
 }
 
 struct FileStruct
@@ -11,10 +21,10 @@ struct FileStruct
     int length;
 };
 
-bool uploadHandler::readFile(QString qtAbsFileUrl)
+bool UploadHandler::uploadFile()
 {
     //Removes 'file::/' from the start of url
-    QString absFileUrl = qtAbsFileUrl.mid(7);
+    QString absFileUrl = url.mid(7);
     std::ifstream ifs;
     ifs.open(absFileUrl.toUtf8(), std::ios::binary);
 
@@ -25,7 +35,7 @@ bool uploadHandler::readFile(QString qtAbsFileUrl)
 
 }
 
-QString uploadHandler::getInfoHash(std::map<std::string, bencode::data> infoDict){
+QString UploadHandler::getInfoHash(std::map<std::string, bencode::data> infoDict){
 
     std::stringstream is;
     bencode::encode(is, infoDict);
@@ -48,7 +58,7 @@ QString uploadHandler::getInfoHash(std::map<std::string, bencode::data> infoDict
     return hashAsString;
 }
 
-QByteArray uploadHandler::getPieces(bencode::string pieces)
+QByteArray UploadHandler::getPieces(bencode::string pieces)
 {
     QByteArray qba;
     for(size_t x=0;x<pieces.length();x++){
@@ -57,7 +67,7 @@ QByteArray uploadHandler::getPieces(bencode::string pieces)
     return qba;
 }
 
-bool uploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
+bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
 
 
 
@@ -216,16 +226,16 @@ bool uploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
         }
 
     }
-     QString query = "INSERT INTO torrent (";
-     for(auto file : filesVector)
-     {
-         for(auto p : file.path)
-         {
-             qDebug() << "   PathVal: " << p << "\n";
-         }
-         qDebug() << "   FileLength: " << file.length << "\n\n";
-     }
-     qDebug() << query;
+    QString query = "INSERT INTO torrent (";
+    for(auto file : filesVector)
+    {
+        for(auto p : file.path)
+        {
+            qDebug() << "   PathVal: " << p << "\n";
+        }
+        qDebug() << "   FileLength: " << file.length << "\n\n";
+    }
+    qDebug() << query;
     /* QSqlQuery q = db->query();
      q.prepare(query);
      //q.bindValue(":username", username);

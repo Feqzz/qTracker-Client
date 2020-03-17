@@ -39,6 +39,19 @@ Rectangle {
                 font.pixelSize: 24
             }
         }
+        FileDialog {
+            id: fileDialog
+            title: "Please choose a file"
+            folder: shortcuts.home
+            visible: false;
+            onAccepted:function(){
+                uploadHandler.setUrl(fileDialog.fileUrl)
+                uploadUrlText.text = fileDialog.fileUrl
+            }
+            onRejected: {
+                console.log("Canceled")
+            }
+        }
 
         Rectangle {
             id: announceUrlRectangle
@@ -88,6 +101,7 @@ Rectangle {
                 anchors.horizontalCenter: torrentUploadRectangle.horizontalCenter
                 anchors.horizontalCenterOffset: -200
                 text: "Browse..."
+                onClicked: fileDialog.visible = true;
             }
 
             Text {
@@ -135,6 +149,10 @@ Rectangle {
         C.PushButton {
             id: confirmUploadButton
             text: "Upload"
+            onClicked: function(){
+                uploadHandler.setTitle(titleTextField.text)
+                uploadHandler.uploadFile()
+            }
         }
     }
 }
