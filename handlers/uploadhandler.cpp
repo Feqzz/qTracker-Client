@@ -220,10 +220,11 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
         std::cout << "Not found Private\n";
     } else {
         number = boost::get<bencode::integer>(iterator->second);
+        sqlVariables.push_back(number == 1);
+        torrentValues+=",?";
+        torrentQuery+=",private";
     }
-    sqlVariables.push_back(number == 1);
-    torrentValues+=",?";
-    torrentQuery+=",private";
+
 
     iterator = dict.find("info");
     bencode::dict info;

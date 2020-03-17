@@ -17,7 +17,8 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     //TorrentFileParser *t = new TorrentFileParser();
-    //t->getTorrentFile(2);
+    //t->setTorrentPass("test");
+   // t->getTorrentFile(2);
     //t->createFile();
     //t->getInfoHashFromFile("file:://home/tarves/ttest.torrent");
 
