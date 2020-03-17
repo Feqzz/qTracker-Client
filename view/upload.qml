@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.3
 import QtQuick.Dialogs 1.0
-import "../component" as Components
+import "../component" as C
 
 Rectangle {
     id: root
@@ -9,7 +9,7 @@ Rectangle {
     height: 1080
     color: "#141414"
 
-    Components.NavBar{
+    C.NavBar{
         id: navBar
     }
 
@@ -19,44 +19,122 @@ Rectangle {
         anchors.horizontalCenter: navBar.horizontalCenter
         spacing: 32
 
-        /*Label {
-            id: text
-            color: "#ffffff"
-            text: "Here is your upload thingy:"
-        }
-        TextEdit {
-            id: torrentPassLabel
-            color: "#ffffff"
-            text: "https://www.tarves.no:1337/" + user.getTorrentPass() + "/announce"
-            selectByKeyboard: true
-            selectByMouse: true
-            selectedTextColor: "#d0d046"
-            readOnly: true
-        }*/
-        FileDialog {
-            id: fileDialog
-            title: "Please choose a file"
-            folder: shortcuts.home
-            visible: false;
-            onAccepted:function(){
-                torrentFileParser.getInfoHashFromFile(fileDialog.fileUrl)
-                torrentFileParser.createFile(fileDialog.fileUrl)
-            }
-            onRejected: {
-                console.log("Canceled")
+        Rectangle {
+            id: infoRectangle
+            width: 720
+            height: 128
+            color: "#303030"
+            radius: 16
+            border.width: 0
+
+            Text {
+                id: infoText
+
+                width: 680
+                height: 70
+                anchors.verticalCenter: infoRectangle.verticalCenter
+                anchors.horizontalCenter: infoRectangle.horizontalCenter
+                color: "#ffffff"
+                text: qsTr("Please use your personal announce URL below when creating \n a new torrent.")
+                font.pixelSize: 24
             }
         }
-        Components.PushButton {
-            id: uploadButton
-            text: "Upload file"
-            visible: true
-            anchors.verticalCenter: title.verticalCenter
-            anchors.verticalCenterOffset: 0
-            anchors.horizontalCenter: title.horizontalCenter
-            anchors.horizontalCenterOffset: 0
-            onClicked: function(){
-                fileDialog.visible = true;
-            };
+
+        Rectangle {
+            id: announceUrlRectangle
+            width: 720
+            height: 72
+            color: "#303030"
+            radius: 16
+            border.width: 0
+
+            TextEdit {
+                id: torrentPassLabel
+                width: 680
+                height: 36
+                anchors.verticalCenter: announceUrlRectangle.verticalCenter
+                anchors.horizontalCenter: announceUrlRectangle.horizontalCenter
+                color: "#ffffff"
+                text: "https://www.tarves.no:1337/" + user.getTorrentPass() + "/announce"
+                selectByKeyboard: true
+                selectByMouse: true
+                selectedTextColor: "#d0d046"
+                readOnly: true
+                font.pixelSize: 20
+            }
+        }
+
+        Rectangle {
+            id: torrentUploadRectangle
+            width: 720
+            height: 72
+            color: "#303030"
+            radius: 16
+            border.width: 0
+
+            Text {
+                id: uploadText
+                anchors.verticalCenter: torrentUploadRectangle.verticalCenter
+                anchors.horizontalCenter: torrentUploadRectangle.horizontalCenter
+                anchors.horizontalCenterOffset: -300
+                text: "File"
+                color: "#ffffff"
+                font.pixelSize: 24
+            }
+
+            C.PushButton {
+                id: uploadButton
+                anchors.verticalCenter: torrentUploadRectangle.verticalCenter
+                anchors.horizontalCenter: torrentUploadRectangle.horizontalCenter
+                anchors.horizontalCenterOffset: -200
+                text: "Browse..."
+            }
+
+            Text {
+                id: uploadUrlText
+                anchors.verticalCenter: torrentUploadRectangle.verticalCenter
+                anchors.horizontalCenter: torrentUploadRectangle.horizontalCenter
+                anchors.horizontalCenterOffset: -50
+                text: "No file selected." //Not implemented yet
+                color: "#ffffff"
+            }
+        }
+
+        Rectangle {
+            id: titleRectangle
+
+            width: 720
+            height: 128
+            color: "#303030"
+            radius: 16
+            border.width: 0
+
+            TextField {
+                id: titleTextField
+                anchors.verticalCenter: titleRectangle.verticalCenter
+                anchors.horizontalCenter: titleRectangle.horizontalCenter
+                anchors.verticalCenterOffset: 24
+                width: 700
+                height: 40
+                text: ""
+                placeholderText: "Title"
+                font.pointSize: 16
+            }
+
+            Text {
+                id: titleText
+                anchors.verticalCenter: titleRectangle.verticalCenter
+                anchors.horizontalCenter: titleRectangle.horizontalCenter
+                anchors.verticalCenterOffset: -32
+                color: "#ffffff"
+                text: qsTr("Please enter a title")
+                font.pixelSize: 24
+            }
+        }
+
+        C.PushButton {
+            id: confirmUploadButton
+            text: "Upload"
         }
     }
 }
