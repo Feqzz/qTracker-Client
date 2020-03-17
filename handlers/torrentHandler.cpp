@@ -13,9 +13,12 @@ void TorrentHandler::downloadFile(int torrentId, QString torrentPass)
     qlonglong createdtime;
     qlonglong pieceLength;
     QByteArray pieces;
-    bool privateTorrent;
+    int privateTorrent;
 
-    QString torrentQuery = "SELECT title,encoding,comment,createdByClient,UNIX_TIMESTAMP(createdDate) as createdtime,pieceLength,piece,private FROM torrent WHERE id = ?;";
+    QString torrentQuery = "SELECT title,encoding,comment,createdByClient,"
+                           "UNIX_TIMESTAMP(createdDate) AS createdtime,"
+                           "pieceLength,piece,"
+                           "IF(ISNULL(private),2,private) AS private FROM torrent WHERE id = ?;";
     QSqlQuery q = db->query();
     q.prepare(torrentQuery);
     q.bindValue(0, torrentId);
@@ -30,7 +33,7 @@ void TorrentHandler::downloadFile(int torrentId, QString torrentPass)
             createdtime = q.value(4).toLongLong();
             pieceLength = q.value(5).toLongLong();
             pieces = q.value(6).toByteArray();
-            privateTorrent = q.value(7).toBool();
+            privateTorrent = q.value(7).toInt();
             std::vector<TorrentHandler::FileStruct> t = getTorrentFiles(torrentId);
             std::map<std::string, bencode::data> all;
             QString announceURL = "http://www."+trackerHostName+":"+trackerPort+"/"+torrentPass+"/announce";
@@ -56,9 +59,9 @@ void TorrentHandler::downloadFile(int torrentId, QString torrentPass)
             info.insert(std::pair<std::string,bencode::data>("piece length",pieceLength));
             info.insert(std::pair<std::string,bencode::data>("pieces",pieces.toStdString()));
             info.insert(std::pair<std::string,bencode::data>("name",title.toStdString()));
-            if(privateTorrent)
+            if(privateTorrent <= 1)
             {
-                info.insert(std::pair<std::string,bencode::data>("private",privateTorrent));
+                info.insert(std::pair<std::string,bencode::data>("private",privateTorrent==1));
             }
 
             //bencode::dict all;
