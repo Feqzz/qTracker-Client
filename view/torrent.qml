@@ -63,14 +63,8 @@ Rectangle {
 
 
 
-    ListModel {
-         id: animalsModel
-         ListElement { name: "Parrot"; size: "Small" }
-         ListElement { name: "Guinea pig"; size: "Small" }
-         ListElement { name: "Dog"; size: "Medium" }
-         ListElement { name: "Cat"; size: "Medium" }
-         ListElement { name: "Elephant"; size: "Large" }
-    }
+
+
 
 
     ListModel {
