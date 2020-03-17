@@ -11,5 +11,6 @@
         <file>view/admin.qml</file>
         <file>view/upload.qml</file>
         <file>view/torrent.qml</file>
+        <file>images/download.png</file>
     </qresource>
 </RCC>

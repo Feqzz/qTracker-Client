@@ -12,6 +12,57 @@ Rectangle {
         id: navBar
     }
 
+        Text {
+            id: torrentSearchText
+            anchors.verticalCenter: root.verticalCenter
+            anchors.horizontalCenter: root.horizontalCenter
+            anchors.verticalCenterOffset: -300
+            text: qsTr("Torrent Search")
+            font.pixelSize: 32
+            color: "#ffffff"
+        }
+
+        TextField {
+            id: searchField
+            anchors.verticalCenter: root.verticalCenter
+            anchors.horizontalCenter: root.horizontalCenter
+            anchors.verticalCenterOffset: -220
+            focus: true
+            width: 300
+            height: 40
+            text: qsTr("")
+            placeholderText: "Search"
+            selectByMouse: true
+            onTextChanged: torrentModel.applyFilter(text);
+        }
+
+        ScrollView {
+            id: flick
+            anchors.verticalCenter: root.verticalCenter
+            anchors.horizontalCenter: root.horizontalCenter
+            anchors.verticalCenterOffset: 0
+            clip: true
+            width: 700
+            height: 200
+            contentWidth: -1
+
+        }
+
+         ListView {
+             id: listView
+             anchors.fill: flick
+             model: torrentModel
+             spacing: 16
+             delegate: listDelegate
+
+             section.property: "size"
+             section.criteria: ViewSection.FullString
+         }
+
+
+
+
+
     ListModel {
          id: animalsModel
          ListElement { name: "Parrot"; size: "Small" }
@@ -23,20 +74,20 @@ Rectangle {
 
 
     ListModel {
-        id: test
+        id: torrentModel
         function applyFilter(text) {
             var torrentList = torrentHandler.getTorrentsByName(text);
-            listModel.clear();
+            torrentModel.clear();
             for (var title in torrentList) {
                 var valueList = torrentList[title];
                 append(createListElement(title, valueList));
             }
         }
 
-        function createListElement(userId,valueList) {
+        function createListElement(userId, valueList) {
             return {
                 title: userId,
-                UploaderUsername: valueList[0],
+                uploaderUsername: valueList[0],
                 leechers: valueList[1],
                 seeders: valueList[2],
                 completed: valueList[3],
@@ -46,39 +97,89 @@ Rectangle {
     }
 
          // The delegate for each section header
-    /*
-         Component {
-             id: sectionHeading
-             Rectangle {
-                 width: container.width
-                 height: childrenRect.height
-                 color: "lightsteelblue"
 
-                 Text {
-                     text: section
-                     font.bold: true
-                 }
-             }
-         } */
+    Component {
+            id: listDelegate
 
-        ScrollView {
-            id: flick
-            clip: true
-            width: 200
-            height: 700
-            contentWidth: -1
-            anchors.verticalCenterOffset: 50
-            anchors.verticalCenter: navBar.verticalCenter
-            anchors.horizontalCenter: navBar.horizontalCenter
+            Item {
+                id: delegateItem
+                width: listView.width; height: 55
+                clip: true
+
+                Row {
+                    anchors.verticalCenter: parent.verticalCenter
+                    spacing: 10
+
+
+
+                    Column {
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        Text {
+                            id: titleText
+                            text: title
+                            font.pixelSize: 24
+                            color: "white"
+                        }
+
+                        Text {
+                            id: uploaderText
+                            text: uploaderUsername
+                            font.pixelSize: 15
+                            color: "white"
+                        }
+                    }
+                }
+
+                Row {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    spacing: 10
+
+                    Text {
+                        id: completedText
+                        text: completed
+                        font.pixelSize: 15
+                        color: "white"
+                    }
+
+                    Text {
+                        id: seedersText
+                        text: seeders
+                        font.pixelSize: 15
+                        color: "white"
+                    }
+
+                    Text {
+                        id: leechersText
+                        text: leechers
+                        font.pixelSize: 15
+                        color: "white"
+                    }
+
+                    Text {
+                        id: uploadDateText
+                        text: uploadDate
+                        font.pixelSize: 15
+                        color: "white"
+                    }
+
+                    Image {
+                        anchors.verticalCenter: parent.verticalCenter
+                        source: "../images/download.png"
+                        width: 32
+                        height: 32
+                        //onClicked: fruitModel.setProperty(index, "cost", cost + 0.25)
+                    }
+
+
+            }
         }
+    }
 
-         ListView {
-             anchors.fill: flick
-             model: test
-             delegate: Text { text: name; color: "#ffffff"; }
 
-             section.property: "size"
-             section.criteria: ViewSection.FullString
-             section.delegate: sectionHeading
+
+         Component.onCompleted: {
+             torrentModel.applyFilter("");
          }
 }

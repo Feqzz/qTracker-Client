@@ -40,7 +40,7 @@ ApplicationWindow {
 
     // After loading show initial Login Page
     Component.onCompleted: {
-        stackView.push("qrc:/view/torrent.qml")
+        stackView.push("qrc:/view/login.qml")
 
     }
 

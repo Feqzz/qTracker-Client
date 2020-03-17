@@ -15,19 +15,18 @@ QVariantMap TorrentHandler::getTorrentsByName(QString string)
         q.prepare
         (
             "SELECT "
-                  "title, "
-                  "user.username, "
-                  "leechers, "
-                  "seeders, "
-                  "completed, "
-                  "uploadDate, "
-              "FROM "
-                  "torrent, "
-                  "user "
-              "WHERE "
-                  "id = user.id "
-              "GROUP BY title "
-              "ORDER BY count(completed)"
+                    "title, "
+                    "username, "
+                    "leechers, "
+                    "seeders, "
+                    "completed, "
+                    "uploadDate "
+            "FROM "
+                    "torrent, "
+                    "user "
+            "WHERE "
+                    "uploader = user.id "
+            "ORDER BY completed"
         );
     }
     else
@@ -36,19 +35,18 @@ QVariantMap TorrentHandler::getTorrentsByName(QString string)
         (
             "SELECT "
                     "title, "
-                    "user.username, "
+                    "username, "
                     "leechers, "
                     "seeders, "
                     "completed, "
-                    "uploadDate, "
+                    "uploadDate "
             "FROM "
                     "torrent, "
                     "user "
             "WHERE "
-                    "id = user.id, "
-                    "title LIKE :string"
-            "GROUP BY title "
-            "ORDER BY count(completed)"
+                    "uploader = user.id AND "
+                    "title LIKE :string "
+            "ORDER BY completed"
         );
         q.bindValue(":string", string);
     }
@@ -60,7 +58,12 @@ QVariantMap TorrentHandler::getTorrentsByName(QString string)
             values << q.value(1).toString() << q.value(2).toString() <<
                       q.value(3).toString() << q.value(4).toString();
             map[q.value(0).toString()] = values;
+            qDebug() << q.value(4).toString();
         }
+    }
+    else
+    {
+        qDebug() << "Failed query";
     }
     return map;
 }
