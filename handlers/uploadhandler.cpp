@@ -15,11 +15,6 @@ void UploadHandler::setTitle(QString _title)
     this->title = _title;
 }
 
-struct FileStruct
-{
-    std::vector<QString> path;
-    int length;
-};
 
 bool UploadHandler::uploadFile()
 {
@@ -58,6 +53,11 @@ QString UploadHandler::getInfoHash(std::map<std::string, bencode::data> infoDict
     return hashAsString;
 }
 
+void UploadHandler::setId(int _id)
+{
+    this->id = _id;
+}
+
 QByteArray UploadHandler::getPieces(bencode::string pieces)
 {
     QByteArray qba;
@@ -67,45 +67,114 @@ QByteArray UploadHandler::getPieces(bencode::string pieces)
     return qba;
 }
 
+bool UploadHandler::insertTorrentData(std::vector<QVariant> torrentVars,std::vector<FileStruct> files,QString torrentQuery)
+{
+    db->startTransaction();
+    QSqlQuery q = db->query();
+    qDebug() << torrentQuery;
+    q.prepare(torrentQuery);
+
+    for(size_t x=0;x<torrentVars.size();x++)
+    {
+        qDebug() << torrentVars.at(x);
+        q.bindValue(x+1, torrentVars.at(x));
+    }
+    bool torrentQuerySuccess = q.exec();
+    if(torrentQuerySuccess)
+    {
+        QVariant torrentId = q.lastInsertId();
+
+        QString torrentFileQuery = "INSERT INTO torrentFiles (torrentId,length) VALUES (?,?)";
+
+        for(auto file : files)
+        {
+            q.prepare(torrentFileQuery);
+            q.bindValue(1, torrentId);
+            q.bindValue(2, file.length);
+            bool torrentFileQuerySuccess = q.exec();
+            if(torrentFileQuerySuccess)
+            {
+                QVariant torrentFileId = q.lastInsertId();
+                QString torrentFilePathQuery = "INSERT INTO torrentFilePaths (torrentFilesId,path) VALUES (?,?)";
+                for(auto p : file.path)
+                {
+                    q.prepare(torrentFilePathQuery);
+                    q.bindValue(1, torrentFileId);
+                    q.bindValue(2, p);
+                    bool torrentFilePathQuerySuccess = q.exec();
+                    if(!torrentFilePathQuerySuccess)
+                    {
+                        db->rollBack();
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                db->rollBack();
+                qDebug() << "SQL failed on torrentFile insert";
+                return false;
+            }
+        }
+
+    }
+    else
+    {
+        db->rollBack();
+        qDebug() << "SQL failed on torrent insert";
+        return false;
+    }
+    db->commit();
+    return true;
+}
+
 bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
 
-
-
-
-    QString encoding;
-    QString announceUrl;
-    int creationDate;
-    QString comment;
-    QString createdBy;
-    int pieceLength;
-    QByteArray pieces;
-    bool privateTorrent = false;
-    QString infoHash;
-
     std::vector<FileStruct> filesVector;
+    std::vector<QVariant> sqlVariables;
 
+    sqlVariables.push_back(id);
+    QString torrentQuery = "INSERT INTO torrent (uploader";
+    QString torrentValues = "VALUES (?";
 
-
-    std::map<std::string, bencode::data>::iterator iterator = dict.find("announce");
+    std::map<std::string, bencode::data>::iterator iterator;
+    /*iterator= dict.find("announce");
     if (iterator == dict.end()) {
         std::cout << "Not found announce\n";
     } else {
         announceUrl = QString::fromStdString(boost::get<bencode::string>(iterator->second));
-    }
+    }*/
 
     iterator = dict.find("info");
     if (iterator == dict.end()) {
-        std::cout << "Not found info dict\n";
+        std::cout << "Not found info dict, aborting upload\n";
+        return false;
     } else {
         std::map<std::string, bencode::data> infoDict = boost::get<bencode::dict>(iterator->second);
-        infoHash = getInfoHash(infoDict);
+        torrentQuery+=",infoHash";
+        torrentValues+=",?";
+        sqlVariables.push_back(getInfoHash(infoDict));
     }
+
+    //OPTIONAL VARS
 
     iterator = dict.find("created by");
     if (iterator == dict.end()) {
         std::cout << "Not found Created by\n";
     } else {
-        createdBy = QString::fromStdString(boost::get<bencode::string>(iterator->second));
+        sqlVariables.push_back(QString::fromStdString(boost::get<bencode::string>(iterator->second)));
+        torrentValues+=",?";
+        torrentQuery+=",createdByClient";
+        //std::cout << "Created By: " << value << "\n";
+    }
+
+    iterator = dict.find("encoding");
+    if (iterator == dict.end()) {
+        std::cout << "Not found encoding\n";
+    } else {
+        sqlVariables.push_back(QString::fromStdString(boost::get<bencode::string>(iterator->second)));
+        torrentQuery+=",encoding";
+        torrentValues+=",?";
         //std::cout << "Created By: " << value << "\n";
     }
 
@@ -113,7 +182,9 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
     if (iterator == dict.end()) {
         std::cout << "Not found Comment\n";
     } else {
-        comment = QString::fromStdString(boost::get<bencode::string>(iterator->second));
+        sqlVariables.push_back(QString::fromStdString(boost::get<bencode::string>(iterator->second)));
+        torrentQuery+=",comment";
+        torrentValues+=",?";
         //std::cout << "Created By: " << value << "\n";
     }
 
@@ -122,40 +193,51 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
     if (iterator == dict.end()) {
         std::cout << "Not found CreationDate\n";
     } else {
-        creationDate = boost::get<bencode::integer>(iterator->second);
+        sqlVariables.push_back(boost::get<bencode::integer>(iterator->second));
+        torrentQuery+=",createdDate";
+        torrentValues+=",?";
         //std::cout << "CreationDate: " << value << "\n";
     }
 
     iterator = dict.find("private");
+    int number = 0;
     if (iterator == dict.end()) {
         std::cout << "Not found Private\n";
     } else {
-        int number = boost::get<bencode::integer>(iterator->second);
-        privateTorrent = (number == 1);
-        //std::cout << "CreationDate: " << value << "\n";
+        number = boost::get<bencode::integer>(iterator->second);
     }
+    sqlVariables.push_back(number == 1);
+    torrentValues+=",?";
+    torrentQuery+=",private";
 
     iterator = dict.find("info");
     bencode::dict info;
     if (iterator == dict.end()) {
-        std::cout << "Not found info\n";
+        std::cout << "Not found info, aborting upload\n";
+        return false;
     } else {
         info = boost::get<bencode::dict>(iterator->second);
     }
 
     iterator = info.find("piece length");
     if (iterator == info.end()) {
-        std::cout << "Not found piece length\n";
+        std::cout << "Not found piece length, aborting upload\n";
+        return false;
     } else {
-        pieceLength = boost::get<bencode::integer>(iterator->second);
+        sqlVariables.push_back(boost::get<bencode::integer>(iterator->second));
+        torrentValues+=",?";
+        torrentQuery+=",pieceLength";
         //std::cout << "Piece Length: " << value << "\n";
     }
 
     iterator = info.find("pieces");
     if (iterator == info.end()) {
-        std::cout << "Not found pieces\n";
+        std::cout << "Not found pieces, aborting upload\n";
+        return false;
     } else {
-        pieces = getPieces(boost::get<bencode::string>(iterator->second));
+        sqlVariables.push_back(getPieces(boost::get<bencode::string>(iterator->second)));
+        torrentValues+=",?";
+        torrentQuery+=",piece";
         //std::cout << "Pieces " << value << "\n";
 
     }
@@ -163,7 +245,7 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
     bencode::list files;
     iterator = info.find("files");
     if (iterator == info.end()) {
-        std::cout << "Not found info\n";
+        std::cout << "Not found files\n";
     } else {
         files = boost::get<bencode::list>(iterator->second);
     }
@@ -191,8 +273,6 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
     else
     {
         //std::cout << "Length of files: " << files.size() << "\n";
-
-
         for(auto file : files)
         {
             FileStruct f;
@@ -226,31 +306,8 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
         }
 
     }
-    QString query = "INSERT INTO torrent (";
-    for(auto file : filesVector)
-    {
-        for(auto p : file.path)
-        {
-            qDebug() << "   PathVal: " << p << "\n";
-        }
-        qDebug() << "   FileLength: " << file.length << "\n\n";
-    }
-    qDebug() << query;
-    /* QSqlQuery q = db->query();
-     q.prepare(query);
-     //q.bindValue(":username", username);
-    // q.bindValue(":password", hashedPassword);
-     //q.bindValue(":email", email);
-     if (q.exec())
-     {
-         qDebug() << "Torrent uploaded";
-         return true;
-     }
-     else
-     {
-         qDebug() << "Torrent upload failed";
-         return false;
-     }*/
-
-
+    torrentQuery+= ") ";
+    torrentValues+= ");";
+    torrentQuery+= torrentValues;
+    return insertTorrentData(sqlVariables,filesVector,torrentQuery);
 }

@@ -84,7 +84,6 @@ CREATE TABLE IF NOT EXISTS torrentFiles
 (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     torrentId INT NOT NULL,
-    name VARCHAR(255) NOT NULL,
     length INT NOT NULL,
 
     FOREIGN KEY (torrentId) REFERENCES torrent(id)

@@ -45,6 +45,7 @@ Rectangle {
             folder: shortcuts.home
             visible: false;
             onAccepted:function(){
+                uploadHandler.setId(user.getId())
                 uploadHandler.setUrl(fileDialog.fileUrl)
                 uploadUrlText.text = fileDialog.fileUrl
             }
@@ -151,7 +152,8 @@ Rectangle {
             text: "Upload"
             onClicked: function(){
                 uploadHandler.setTitle(titleTextField.text)
-                uploadHandler.uploadFile()
+                var success = uploadHandler.uploadFile()
+                console.log(success)
             }
         }
     }

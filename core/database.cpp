@@ -10,6 +10,18 @@ Database::~Database()
 {
     db.close();
 }
+void Database::startTransaction()
+{
+    db.transaction();
+}
+void Database::rollBack()
+{
+    db.rollback();
+}
+void Database::commit()
+{
+    db.commit();
+}
 
 bool Database::connect()
 {

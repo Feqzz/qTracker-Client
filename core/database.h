@@ -12,6 +12,9 @@ public:
     Database();
     ~Database();
     QSqlQuery query();
+    void startTransaction();
+    void commit();
+    void rollBack();
     QString hash(QString);
     void updatePassword(int, QString);
     bool isConnected;
