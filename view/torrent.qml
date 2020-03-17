@@ -165,7 +165,6 @@ Rectangle {
                         font.pixelSize: 15
                         color: "white"
                     }
-
             }
         }
     }
