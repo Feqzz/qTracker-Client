@@ -129,7 +129,7 @@ Rectangle {
                 anchors.verticalCenter: titleRectangle.verticalCenter
                 anchors.horizontalCenter: titleRectangle.horizontalCenter
                 anchors.verticalCenterOffset: 24
-                width: 700
+                width: 650
                 height: 40
                 text: ""
                 placeholderText: "Title"

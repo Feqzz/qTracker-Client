@@ -12,66 +12,53 @@ Rectangle {
         id: navBar
     }
 
-        Text {
-            id: torrentSearchText
-            anchors.verticalCenter: root.verticalCenter
-            anchors.horizontalCenter: root.horizontalCenter
-            anchors.verticalCenterOffset: -300
-            text: qsTr("Torrent Search")
-            font.pixelSize: 32
-            color: "#ffffff"
-        }
-
-        TextField {
-            id: searchField
-            anchors.verticalCenter: root.verticalCenter
-            anchors.horizontalCenter: root.horizontalCenter
-            anchors.verticalCenterOffset: -220
-            focus: true
-            width: 300
-            height: 40
-            text: qsTr("")
-            placeholderText: "Search"
-            selectByMouse: true
-            onTextChanged: torrentModel.applyFilter(text);
-        }
-
-        ScrollView {
-            id: flick
-            anchors.verticalCenter: root.verticalCenter
-            anchors.horizontalCenter: root.horizontalCenter
-            anchors.verticalCenterOffset: 0
-            clip: true
-            width: 700
-            height: 200
-            contentWidth: -1
-
-        }
-
-         ListView {
-             id: listView
-             anchors.fill: flick
-             model: torrentModel
-             spacing: 16
-             delegate: listDelegate
-
-             section.property: "size"
-             section.criteria: ViewSection.FullString
-         }
-
-
-
-
-
-    ListModel {
-         id: animalsModel
-         ListElement { name: "Parrot"; size: "Small" }
-         ListElement { name: "Guinea pig"; size: "Small" }
-         ListElement { name: "Dog"; size: "Medium" }
-         ListElement { name: "Cat"; size: "Medium" }
-         ListElement { name: "Elephant"; size: "Large" }
+    Text {
+        id: torrentSearchText
+        anchors.verticalCenter: root.verticalCenter
+        anchors.horizontalCenter: root.horizontalCenter
+        anchors.verticalCenterOffset: -300
+        text: qsTr("Torrent Search")
+        font.pixelSize: 32
+        color: "#ffffff"
     }
 
+    TextField {
+        id: searchField
+        anchors.verticalCenter: root.verticalCenter
+        anchors.horizontalCenter: root.horizontalCenter
+        anchors.verticalCenterOffset: -220
+        focus: true
+        width: 300
+        height: 40
+        text: qsTr("")
+        placeholderText: "Search"
+        selectByMouse: true
+        onTextChanged: torrentModel.applyFilter(text);
+    }
+
+
+
+     ListView {
+         id: listView
+         anchors.fill: flick
+         model: torrentModel
+         spacing: 16
+         delegate: listDelegate
+         anchors.verticalCenter: root.verticalCenter
+         anchors.horizontalCenter: root.horizontalCenter
+         anchors.verticalCenterOffset: 150
+         clip: true
+         width: 1000
+         height: 600
+
+         section.property: "size"
+         section.criteria: ViewSection.FullString
+
+         ScrollBar.vertical: ScrollBar {
+             active: true
+             //policy: ScrollBar.AlwaysOn
+         }
+     }
 
     ListModel {
         id: torrentModel
@@ -126,7 +113,7 @@ Rectangle {
                             id: uploaderText
                             text: uploaderUsername
                             font.pixelSize: 15
-                            color: "white"
+                            color: "#c2a800"
                         }
                     }
                 }
@@ -172,6 +159,12 @@ Rectangle {
                         //onClicked: fruitModel.setProperty(index, "cost", cost + 0.25)
                     }
 
+                    Text {
+                        id: emptyText //Need some empty space for the scrollbar
+                        text: "   "
+                        font.pixelSize: 15
+                        color: "white"
+                    }
 
             }
         }
