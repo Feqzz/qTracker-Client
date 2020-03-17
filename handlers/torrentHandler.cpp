@@ -4,7 +4,7 @@ TorrentHandler::TorrentHandler(QObject *parent) : QObject(parent)
 {
 
 }
-void TorrentHandler::downloadFile(int torrentId, QString torrentPass)
+bool TorrentHandler::downloadFile(int torrentId, QString torrentPass)
 {
     QString title;
     QString encoding;
@@ -94,13 +94,15 @@ void TorrentHandler::downloadFile(int torrentId, QString torrentPass)
             ofs.open((title+".torrent").toUtf8());
             bencode::encode(ofs, all);
             ofs.close();
+            return true;
         }
     }
     else
     {
         qDebug() << q.lastError();
-    }
 
+    }
+    return false;
 
 }
 
