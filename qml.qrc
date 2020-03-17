@@ -10,5 +10,6 @@
         <file>view/profile.qml</file>
         <file>view/admin.qml</file>
         <file>view/upload.qml</file>
+        <file>view/torrent.qml</file>
     </qresource>
 </RCC>
