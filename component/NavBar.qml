@@ -100,8 +100,14 @@ Rectangle {
 
         Label {
             id: torrentsLabel
-            color: "#ffffff"
+            color: maTorrentLabel.containsMouse ? "#d0d046" : "#ffffff"
             text: qsTr("Torrents")
+            MouseArea {
+                id: maTorrentLabel
+                hoverEnabled: true
+                anchors.fill: parent
+                onClicked: changePage("invite");
+            }
         }
 
         Label {
