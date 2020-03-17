@@ -4,7 +4,6 @@
 #include <QQmlContext>
 #include "core/securesocket.h"
 #include "model/user.h"
-#include "core/torrentfileparser.h"
 #include "handlers/uploadhandler.h"
 #include "handlers/loginHandler.h"
 #include "handlers/inviteHandler.h"
