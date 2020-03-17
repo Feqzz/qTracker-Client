@@ -214,16 +214,7 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
         //std::cout << "CreationDate: " << value << "\n";
     }
 
-    iterator = dict.find("private");
-    int number = 0;
-    if (iterator == dict.end()) {
-        std::cout << "Not found Private\n";
-    } else {
-        number = boost::get<bencode::integer>(iterator->second);
-        sqlVariables.push_back(number == 1);
-        torrentValues+=",?";
-        torrentQuery+=",private";
-    }
+
 
 
     iterator = dict.find("info");
@@ -256,6 +247,17 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
         torrentQuery+=",piece";
         //std::cout << "Pieces " << value << "\n";
 
+    }
+
+    iterator = info.find("private");
+    int number = 0;
+    if (iterator == info.end()) {
+        std::cout << "Not found Private\n";
+    } else {
+        number = boost::get<bencode::integer>(iterator->second);
+        sqlVariables.push_back(number == 1);
+        torrentValues+=",?";
+        torrentQuery+=",private";
     }
 
     bencode::list files;
