@@ -106,7 +106,7 @@ Rectangle {
                 id: maTorrentLabel
                 hoverEnabled: true
                 anchors.fill: parent
-                onClicked: changePage("invite");
+                onClicked: changePage("torrent");
             }
         }
 
