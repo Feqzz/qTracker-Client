@@ -163,7 +163,7 @@ Rectangle {
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
-                                console.log(torrentId)
+                                torrentHandler.downloadFile(torrentId, user.getTorrentPass());
                             }
                         }
                     }

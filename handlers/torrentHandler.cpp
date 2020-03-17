@@ -4,7 +4,7 @@ TorrentHandler::TorrentHandler(QObject *parent) : QObject(parent)
 {
 
 }
-void TorrentHandler::downloadFile(int torrentId,QString torrentPass)
+void TorrentHandler::downloadFile(int torrentId, QString torrentPass)
 {
     QString title;
     QString encoding;
