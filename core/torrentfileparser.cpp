@@ -5,14 +5,104 @@ TorrentFileParser::TorrentFileParser(QObject *parent):QObject(parent)
 
 }
 
-struct FileStruct
+
+
+void TorrentFileParser::getTorrentFile(int torrentId)
 {
-    std::vector<QString> path;
-    int length;
-};
+    QString title;
+    QString encoding;
+    QString comment;
+    QString createdByClient;
+    qlonglong createdtime;
+    qlonglong pieceLength;
+    QByteArray pieces;
+    bool privateTorrent;
+
+    QString torrentQuery = "SELECT title,encoding,comment,createdByClient,UNIX_TIMESTAMP(createdDate) as createdtime,pieceLength,piece,private FROM torrent WHERE id = ?;";
+    QSqlQuery q = db->query();
+    q.prepare(torrentQuery);
+    q.bindValue(0, torrentId);
+    if (q.exec())
+    {
+        if(q.next())
+        {
+            title = q.value(0).toString();
+            encoding = q.value(1).toString();
+            comment = q.value(2).toString();
+            createdByClient = q.value(3).toString();
+            createdtime = q.value(4).toLongLong();
+            pieceLength = q.value(5).toLongLong();
+            pieces = q.value(6).toByteArray();
+            privateTorrent = q.value(7).toBool();
+            std::vector<TorrentFileParser::FileStruct> t = getTorrentFiles(torrentId);
+            std::map<std::string, bencode::data> all;
+            all.insert(std::pair<std::string,bencode::data>("announce",trackerHostName.toStdString()));
+            if(encoding.length()>0)
+            {
+
+            }
+            //bencode::dict all;
+            //Multiple files mode
+            if(t.size()>1)
+            {
+                std::ofstream stream;
 
 
+            }
+            std::ofstream ofs;
+            ofs.open(title.toUtf8(), std::ios::binary);
+            bencode::encode(ofs, all);
+            ofs.close();
+        }
+    }
+    else
+    {
+        qDebug() << q.lastError();
+    }
 
+
+}
+
+std::vector<TorrentFileParser::FileStruct> TorrentFileParser::getTorrentFiles(int torrentId)
+{
+    std::vector<TorrentFileParser::FileStruct> fileVector;
+    QString torrentFileQuery = "SELECT id,length FROM torrentFiles WHERE torrentId = ?;";
+    QSqlQuery q = db->query();
+    q.prepare(torrentFileQuery);
+    q.bindValue(0, torrentId);
+    if (q.exec())
+    {
+        while(q.next())
+        {
+            FileStruct f;
+            f.length = q.value(1).toLongLong();
+            int fileId = q.value(0).toInt();
+            QString torrentFilePathQuery = "SELECT path FROM torrentFilePaths WHERE torrentFilesId = ?;";
+            QSqlQuery q2 = db->query();
+            q2.prepare(torrentFilePathQuery);
+            q2.bindValue(0, fileId);
+            if (q2.exec())
+            {
+                while(q2.next())
+                {
+                    f.path.push_back(q2.value(0).toString());
+                }
+            }
+            else
+            {
+                qDebug() << q2.lastError();
+            }
+            fileVector.push_back(f);
+
+        }
+    }
+    else
+    {
+        qDebug() << q.lastError();
+    }
+    return fileVector;
+
+}
 
 //QByteArray TorrentFileParser::getInfoHash(QString encodedInfo)
 //{
@@ -135,7 +225,7 @@ void TorrentFileParser::getInfoHashFromFile(QString url)
     }
     ifs.close();
     recursiveParser(list,0);
-   /* std::cout << "\n";
+    /* std::cout << "\n";
     std::cout << "Korrekt hex \n";
     for(int x=0;x<infoBytes.size();x++){
         std::cout << std::hex << (int)infoBytes.at(x);

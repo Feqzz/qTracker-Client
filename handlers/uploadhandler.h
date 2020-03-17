@@ -12,7 +12,7 @@ class UploadHandler:public QObject, public Handler
     struct FileStruct
     {
         std::vector<QString> path;
-        int length;
+        qlonglong length;
     };
 public:
     explicit UploadHandler(QObject *parent = nullptr);

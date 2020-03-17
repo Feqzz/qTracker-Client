@@ -16,9 +16,10 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
 
-    /*TorrentFileParser *t = new TorrentFileParser();
-    t->createFile();
-    t->getInfoHashFromFile("file:://home/tarves/ttest.torrent");*/
+    //TorrentFileParser *t = new TorrentFileParser();
+    //t->getTorrentFile(2);
+    //t->createFile();
+    //t->getInfoHashFromFile("file:://home/tarves/ttest.torrent");
 
     QScopedPointer<SecureSocket> secureSocket(new SecureSocket);
     QScopedPointer<UploadHandler> uploadHandler(new UploadHandler);
