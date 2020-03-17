@@ -33,13 +33,14 @@ public:
     Q_INVOKABLE void getInfoHashFromFile(QString);
     Q_INVOKABLE void createFile(QString);
     void getTorrentFile(int);
-
+    void setTorrentPass(QString);
 private:
     struct FileStruct
     {
         std::vector<QString> path;
         qlonglong length;
     };
+    QString torrentPass;
     int recursiveParser(std::vector<char>*,int);
     QByteArray infoBytes;
     std::vector<std::string> keys;
