@@ -148,7 +148,7 @@ std::vector<TorrentHandler::FileStruct> TorrentHandler::getTorrentFiles(int torr
     return fileVector;
 
 }
-QVariantMap TorrentHandler::getTorrentsByName(QString string)
+QVariantMap TorrentHandler::getTorrentsByName(QString string, int userId)
 {
     QMap<QString, QVariant> map;
     QSqlQuery q = db->query();
@@ -165,7 +165,13 @@ QVariantMap TorrentHandler::getTorrentsByName(QString string)
                     "seeders, "
                     "completed, "
                     "uploadDate, "
-                    "torrent.id "
+                    "torrent.id, "
+                    "IF((SELECT EXISTS(SELECT * FROM clientTorrents AS ct, client AS c,"
+                    " ipAddress AS ip WHERE ct.clientId = c.id AND c.ipaID = ip.id AND ip.userId = 1"
+                    " AND ct.torrentId = torrent.id)), 1, 0) AS 'downloaded', "
+                    "	IF((SELECT IF(ct.isActive = 1, 1, 0) FROM clientTorrents AS ct,"
+                    " client AS c, ipAddress AS ip WHERE ct.clientId = c.id AND c.ipaID = ip.id"
+                    " AND ip.userId = 1 AND ct.torrentId = torrent.id), 1, 0) AS 'seeding'"
             "FROM "
                     "torrent, "
                     "user "
@@ -185,7 +191,13 @@ QVariantMap TorrentHandler::getTorrentsByName(QString string)
                     "seeders, "
                     "completed, "
                     "uploadDate, "
-                    "torrent.id "
+                    "torrent.id, "
+                    "IF((SELECT EXISTS(SELECT * FROM clientTorrents AS ct, client AS c,"
+                    " ipAddress AS ip WHERE ct.clientId = c.id AND c.ipaID = ip.id AND ip.userId = :userId"
+                    " AND ct.torrentId = torrent.id)), 1, 0) AS 'downloaded', "
+                    "	IF((SELECT DISTINCT IF(ct.isActive = 1, 1, 0) FROM clientTorrents AS ct,"
+                    " client AS c, ipAddress AS ip WHERE ct.clientId = c.id AND c.ipaID = ip.id"
+                    " AND ip.userId = :userId AND ct.torrentId = torrent.id), 1, 0) AS 'seeding'"
             "FROM "
                     "torrent, "
                     "user "
@@ -196,14 +208,16 @@ QVariantMap TorrentHandler::getTorrentsByName(QString string)
         );
         q.bindValue(":string", string);
     }
+    q.bindValue(":userId", userId);
 
     if(q.exec() && q.size() > 0)
     {
         while (q.next()) {
             QVariantList values;
-            values << q.value(1).toString() << q.value(2).toString() <<
-                      q.value(3).toString() << q.value(4).toString() <<
-                      q.value(5).toString() << q.value(6).toString();
+            values << q.value(1).toString() << q.value(2).toInt() <<
+                      q.value(3).toInt() << q.value(4).toInt() <<
+                      q.value(5).toString() << q.value(6).toInt() <<
+                      q.value(7).toBool() << q.value(8).toBool();
             map[q.value(0).toString()] = values;
         }
     }

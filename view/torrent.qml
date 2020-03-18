@@ -36,8 +36,6 @@ Rectangle {
         onTextChanged: torrentModel.applyFilter(text);
     }
 
-
-
      ListView {
          id: listView
 
@@ -63,7 +61,7 @@ Rectangle {
     ListModel {
         id: torrentModel
         function applyFilter(text) {
-            var torrentList = torrentHandler.getTorrentsByName(text);
+            var torrentList = torrentHandler.getTorrentsByName(text, user.getId());
             torrentModel.clear();
             for (var title in torrentList) {
                 var valueList = torrentList[title];
@@ -79,7 +77,9 @@ Rectangle {
                 seeders: valueList[2],
                 completed: valueList[3],
                 uploadDate: valueList[4],
-                torrentId: valueList[5]
+                torrentId: valueList[5],
+                isDownloaded: valueList[6],
+                isSeeding: valueList[7]
             };
         }
     }
@@ -97,8 +97,6 @@ Rectangle {
                 Row {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: 10
-
-
 
                     Column {
                         anchors.verticalCenter: parent.verticalCenter
@@ -152,22 +150,30 @@ Rectangle {
                         color: "white"
                     }*/
 
-
-
                     Image {
                         anchors.verticalCenter: parent.verticalCenter
-                        source: "../images/download.png"
-                        width: 32
-                        height: 32
+                        source: {
+                            if (isDownloaded == 1) { //Did not work without == 1
+                                if (isSeeding == 1) {
+                                    "../images/downloadYellow.png"
+                                } else {
+                                    "../images/downloadRed.png"
+                                }
+                            } else {
+                                "../images/download.png"
+                            }
+                        }
+                        width: maDownloadImage.containsMouse ? 34 : 32
+                        height: maDownloadImage.containsMouse ? 34 : 32
 
                         MouseArea {
+                            id: maDownloadImage
                             anchors.fill: parent
                             onClicked: {
                                 torrentHandler.downloadFile(torrentId, user.getTorrentPass());
                             }
                         }
                     }
-
 
                     Text {
                         id: emptyText //Need some empty space for the scrollbar

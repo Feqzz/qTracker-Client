@@ -12,5 +12,7 @@
         <file>view/upload.qml</file>
         <file>view/torrent.qml</file>
         <file>images/download.png</file>
+        <file>images/downloadRed.png</file>
+        <file>images/downloadYellow.png</file>
     </qresource>
 </RCC>
