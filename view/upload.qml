@@ -39,6 +39,7 @@ Rectangle {
                 font.pixelSize: 24
             }
         }
+
         FileDialog {
             id: fileDialog
             title: "Please choose a file"
@@ -69,7 +70,7 @@ Rectangle {
                 anchors.verticalCenter: announceUrlRectangle.verticalCenter
                 anchors.horizontalCenter: announceUrlRectangle.horizontalCenter
                 color: "#ffffff"
-                text: "https://www.tarves.no:1337/" + user.getTorrentPass() + "/announce"
+                text: "http://www.tarves.no:1337/" + user.getTorrentPass() + "/announce"
                 selectByKeyboard: true
                 selectByMouse: true
                 selectedTextColor: "#d0d046"
