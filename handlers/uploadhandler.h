@@ -29,6 +29,7 @@ private:
     QString url;
     QString title;
     QString torrentPass;
+    QString fileName;
     int id;
 };
 
