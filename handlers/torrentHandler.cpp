@@ -6,7 +6,7 @@ TorrentHandler::TorrentHandler(QObject *parent) : QObject(parent)
 }
 
 
-bool TorrentHandler::downloadFile(int torrentId, QString torrentPass)
+bool TorrentHandler::downloadFile(int torrentId, QString torrentPass, QString url)
 {
     QString title;
     QString encoding;
@@ -93,7 +93,9 @@ bool TorrentHandler::downloadFile(int torrentId, QString torrentPass)
             }
             all.insert(std::pair<std::string,bencode::data>("info",info));
             std::ofstream ofs;
-            ofs.open((title+".torrent").toUtf8());
+            //ofs.open((title + ".torrent").toUtf8());
+            ofs.open(url.mid(7).toUtf8());
+            //qDebug() << url.mid(7).toUtf8();
             bencode::encode(ofs, all);
             ofs.close();
             return true;

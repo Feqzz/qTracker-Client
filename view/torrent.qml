@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.3
+import Qt.labs.platform 1.1
 import "../component" as C
 
 Rectangle {
@@ -10,6 +11,21 @@ Rectangle {
 
     C.NavBar{
         id: navBar
+    }
+
+    property var publicTorrentId;
+
+    FileDialog {
+        id: fileDialog
+        currentFile: document.source
+        folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+        //selectedNameFilter.index: 1
+        fileMode: FileDialog.SaveFile
+        //nameFilters: ["Text files (*.torrent)", "HTML files (*.html *.htm)"]
+        onAccepted: {
+            console.log(currentFile);
+            torrentHandler.downloadFile(publicTorrentId, user.getTorrentPass(), currentFile);
+        }
     }
 
     Text {
@@ -170,7 +186,9 @@ Rectangle {
                             id: maDownloadImage
                             anchors.fill: parent
                             onClicked: {
-                                torrentHandler.downloadFile(torrentId, user.getTorrentPass());
+                                publicTorrentId = torrentId;
+                                fileDialog.open();
+                                //torrentHandler.downloadFile(torrentId, user.getTorrentPass());
                             }
                         }
                     }
