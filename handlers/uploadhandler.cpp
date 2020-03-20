@@ -24,16 +24,16 @@ bool UploadHandler::uploadFile()
     //Removes 'file::/' from the start of url
     QString absFileUrl = url.mid(7);
 
-    QStringList fileUrlSplit = absFileUrl.split('/');
-    QString fileNameWithExtension = fileUrlSplit[fileUrlSplit.length()-1];
+    QStringList fileTitle = absFileUrl.split('/');
+    QString fileName = fileTitle[fileTitle.length()-1];
 
-    fileName = fileNameWithExtension.mid(0,fileNameWithExtension.length()-8);
-
+    QString onlyTitle = fileName.mid(0,fileName.length()-8);
     if(title.length()<=0)
     {
-        title = fileName;
+        title = onlyTitle;
     }
-    qDebug() << "title: " << title << " name: " <<fileName;
+    qDebug() << "File title: " << title;
+
     std::ifstream ifs;
     ifs.open(absFileUrl.toUtf8(), std::ios::binary);
 
@@ -90,7 +90,7 @@ bool UploadHandler::insertTorrentData(std::vector<QVariant> torrentVars,std::vec
 
     for(size_t x=0;x<torrentVars.size();x++)
     {
-        // qDebug() << torrentVars.at(x);
+       // qDebug() << torrentVars.at(x);
         q.bindValue(x, torrentVars.at(x));
     }
     bool torrentQuerySuccess = q.exec();
@@ -152,9 +152,8 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
 
     sqlVariables.push_back(id);
     sqlVariables.push_back(title);
-    sqlVariables.push_back(fileName);
-    QString torrentQuery = "INSERT INTO torrent (uploader,title,name";
-    QString torrentValues = "VALUES (?,?,?";
+    QString torrentQuery = "INSERT INTO torrent (uploader,title";
+    QString torrentValues = "VALUES (?,?";
 
     std::map<std::string, bencode::data>::iterator iterator;
     iterator= dict.find("announce");
@@ -166,7 +165,7 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
         QString fileTorrentPass = l[l.length()-2];
         if(torrentPass.compare(fileTorrentPass)!=0)
         {
-            qDebug() << "File torrentPass " << fileTorrentPass << " User torrentPass " << torrentPass << "DOES NOT MATCH";
+            qDebug() << "File torrentPass " << fileTorrentPass << " User torrentPass " << torrentPass;
             return false;
         }
     }
