@@ -28,6 +28,7 @@ private:
     QByteArray getPieces(bencode::string);
     QString url;
     QString title;
+    QString fileName;
     QString torrentPass;
     int id;
 };

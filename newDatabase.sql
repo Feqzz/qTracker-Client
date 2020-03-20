@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS torrent
     completed INT NOT NULL DEFAULT 0,
     flags INT NOT NULL DEFAULT 0,
     title VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     uploadDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     encoding VARCHAR(255),
     comment VARCHAR(255),
@@ -145,7 +146,8 @@ CREATE TABLE IF NOT EXISTS clientTorrents
 
 /* password:123 */
 INSERT INTO user (username, email, password, upload, download, points, privilege, torrentPass)
-VALUES ("test", "tarves@gmail.com", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 50, 1, "test");
+VALUES ("test", "test", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 50, 1, "test"),
+("stian", "stian", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 50, 1, "b3769d6c84e5cd97d799dc79f5e43afd");
 
 INSERT INTO text (page, text, lastEditedAt, lastEditedBy)
 VALUES ("rules", "The database works!", CURRENT_TIMESTAMP, 1);

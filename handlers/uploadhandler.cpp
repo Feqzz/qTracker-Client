@@ -25,12 +25,13 @@ bool UploadHandler::uploadFile()
     QString absFileUrl = url.mid(7);
 
     QStringList fileTitle = absFileUrl.split('/');
-    QString fileName = fileTitle[fileTitle.length()-1];
+    QString fileNameWithExtension = fileTitle[fileTitle.length()-1];
 
-    QString onlyTitle = fileName.mid(0,fileName.length()-8);
+    QString onlyFileName = fileNameWithExtension.mid(0,fileNameWithExtension.length()-8);
+    this->fileName = onlyFileName;
     if(title.length()<=0)
     {
-        title = onlyTitle;
+        title = onlyFileName;
     }
     qDebug() << "File title: " << title;
 
@@ -152,8 +153,9 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
 
     sqlVariables.push_back(id);
     sqlVariables.push_back(title);
-    QString torrentQuery = "INSERT INTO torrent (uploader,title";
-    QString torrentValues = "VALUES (?,?";
+    sqlVariables.push_back(fileName);
+    QString torrentQuery = "INSERT INTO torrent (uploader,title,name";
+    QString torrentValues = "VALUES (?,?,?";
 
     std::map<std::string, bencode::data>::iterator iterator;
     iterator= dict.find("announce");

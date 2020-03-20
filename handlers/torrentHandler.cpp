@@ -17,7 +17,7 @@ bool TorrentHandler::downloadFile(int torrentId, QString torrentPass, QString ur
     QByteArray pieces;
     int privateTorrent;
 
-    QString torrentQuery = "SELECT title,encoding,comment,createdByClient,"
+    QString torrentQuery = "SELECT name,encoding,comment,createdByClient,"
                            "UNIX_TIMESTAMP(createdDate) AS createdtime,"
                            "pieceLength,piece,"
                            "IF(ISNULL(private),2,private) AS private FROM torrent WHERE id = ?;";
@@ -60,7 +60,7 @@ bool TorrentHandler::downloadFile(int torrentId, QString torrentPass, QString ur
             std::map<std::string, bencode::data> info;
             info.insert(std::pair<std::string,bencode::data>("piece length",pieceLength));
             info.insert(std::pair<std::string,bencode::data>("pieces",pieces.toStdString()));
-            //info.insert(std::pair<std::string,bencode::data>("name",title.toStdString()));
+            info.insert(std::pair<std::string,bencode::data>("name",title.toStdString()));
             if(privateTorrent <= 1)
             {
                 info.insert(std::pair<std::string,bencode::data>("private",privateTorrent==1));
@@ -89,7 +89,7 @@ bool TorrentHandler::downloadFile(int torrentId, QString torrentPass, QString ur
             else
             {
                 info.insert(std::pair<std::string,bencode::data>("length",t.at(0).length));
-                info.insert(std::pair<std::string,bencode::data>("name",t.at(0).path.at(0).toStdString()));
+                //info.insert(std::pair<std::string,bencode::data>("name",t.at(0).path.at(0).toStdString()));
             }
             all.insert(std::pair<std::string,bencode::data>("info",info));
             std::ofstream ofs;
