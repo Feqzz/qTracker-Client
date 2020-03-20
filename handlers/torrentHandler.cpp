@@ -60,7 +60,7 @@ bool TorrentHandler::downloadFile(int torrentId, QString torrentPass, QString ur
             std::map<std::string, bencode::data> info;
             info.insert(std::pair<std::string,bencode::data>("piece length",pieceLength));
             info.insert(std::pair<std::string,bencode::data>("pieces",pieces.toStdString()));
-            info.insert(std::pair<std::string,bencode::data>("name",title.toStdString()));
+            //info.insert(std::pair<std::string,bencode::data>("name",title.toStdString()));
             if(privateTorrent <= 1)
             {
                 info.insert(std::pair<std::string,bencode::data>("private",privateTorrent==1));
