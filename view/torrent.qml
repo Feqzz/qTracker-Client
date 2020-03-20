@@ -14,16 +14,17 @@ Rectangle {
     }
 
     property var publicTorrentId;
+    property var publicTorrrentTitle;
 
     FileDialog {
         id: fileDialog
-        currentFile: document.source
+        currentFile: "file:///" + publicTorrrentTitle + ".torrent"
         folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
-        //selectedNameFilter.index: 1
+        //selectedNameFilter.index: 0
         fileMode: FileDialog.SaveFile
-        //nameFilters: ["Text files (*.torrent)", "HTML files (*.html *.htm)"]
+        nameFilters: ["Torrent files (*.torrent)"]
         onAccepted: {
-            console.log(currentFile);
+            //console.log(currentFile);
             torrentHandler.downloadFile(publicTorrentId, user.getTorrentPass(), currentFile);
         }
     }
@@ -186,6 +187,7 @@ Rectangle {
                             id: maDownloadImage
                             anchors.fill: parent
                             onClicked: {
+                                publicTorrrentTitle = title;
                                 publicTorrentId = torrentId;
                                 fileDialog.open();
                                 //torrentHandler.downloadFile(torrentId, user.getTorrentPass());
