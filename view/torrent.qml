@@ -18,13 +18,10 @@ Rectangle {
 
     FileDialog {
         id: fileDialog
-        currentFile: "file:///" + publicTorrrentTitle + ".torrent"
-        folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
-        //selectedNameFilter.index: 0
+        currentFile: StandardPaths.writableLocation(StandardPaths.DocumentsLocation) + "/" + publicTorrrentTitle + ".torrent"
         fileMode: FileDialog.SaveFile
         nameFilters: ["Torrent files (*.torrent)"]
         onAccepted: {
-            //console.log(currentFile);
             torrentHandler.downloadFile(publicTorrentId, user.getTorrentPass(), currentFile);
         }
     }
