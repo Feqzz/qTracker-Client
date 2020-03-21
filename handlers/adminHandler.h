@@ -14,6 +14,7 @@ public:
     Q_INVOKABLE bool removeTorrent(int torrentId);
     Q_INVOKABLE bool changeLeechingPrivilege(int userId, bool canLeech);
     Q_INVOKABLE QVariantMap getUsersByName(QString); //Empty string for all users
+    Q_INVOKABLE QVariantMap getTorrentsByTitle(QString);
 };
 
 #endif // ADMINHANDLER_H

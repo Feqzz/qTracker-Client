@@ -14,12 +14,15 @@ Rectangle {
     }
 
     property var currentUser;
+    property var currentTorrent;
+    property var torrentModel: false;
 
     function refreshButtons(user) {
         banUser.enabled = false;
         unbanUser.enabled = false;
         promoteUser.enabled = false;
         demoteUser.enabled = false;
+        removeButton.enabled = false;
 
         if (user) {
             if (user.privilege > -1) {
@@ -37,59 +40,122 @@ Rectangle {
 
     Column {
         id: column
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: navBar.horizontalCenter
+        anchors.verticalCenter: navBar.verticalCenter
         anchors.verticalCenterOffset: 96
         spacing: 32
 
         Row {
             id: labelsRow
+            anchors.horizontalCenter: parent.horizontalCenter
             spacing: 32
 
             Label {
                 id: userSearchLabel
-                color: "#ffffff"
-                text: qsTr("User Search")
+                color: maUserSearchLabel.containsMouse ? "#d0d046" : "#ffffff"
+                text: "User Search"
+                MouseArea {
+                    id: maUserSearchLabel
+                    hoverEnabled: true
+                    anchors.fill: parent
+                    onClicked: {
+                        torrentModel = false;
+                        torrentTableView.visible = false;
+                        userTableView.visible = true;
+                        userListModel.applyFilter(searchField.text)
+
+                    }
+                }
             }
 
             Label {
                 id: torrentSearchLabel
-                color: "#ffffff"
-                text: qsTr("Torrent Search")
+                color: maTorrentSearchLabel.containsMouse ? "#d0d046" : "#ffffff"
+                text: "Torrent Search"
+                MouseArea {
+                    id: maTorrentSearchLabel
+                    hoverEnabled: true
+                    anchors.fill: parent
+                    onClicked: {
+                        banUser.enabled = false;
+                        unbanUser.enabled = false;
+                        promoteUser.enabled = false;
+                        demoteUser.enabled = false;
+                        torrentModel = true;
+                        userTableView.visible = false;
+                        torrentTableView.visible = true;
+                        torrentListModel.applyFilter(searchField.text)
+
+
+                    }
+                }
             }
         }
 
         TextField {
             id: searchField
+            anchors.horizontalCenter: parent.horizontalCenter
             focus: true
             width: 300
             height: 40
             text: qsTr("")
             placeholderText: "Search"
             selectByMouse: true
-            onTextChanged: listModel.applyFilter(text);
+            onTextChanged: {
+                if (torrentModel) {
+                    torrentListModel.applyFilter(text);
+                } else {
+                    userListModel.applyFilter(text);
+                }
+            }
         }
 
         ListModel {
-            id: listModel
+            id: userListModel
             function applyFilter(text) {
                 var userList = adminHandler.getUsersByName(text);
-                listModel.clear();
+                userListModel.clear();
                 for (var userId in userList) {
                     var valueList = userList[userId];
-                    append(createListElement(userId,valueList));
+                    append(createListElement(userId, valueList));
                 }
             }
 
-            function createListElement(userId,valueList) {
+            function createListElement(userId, valueList) {
                 return {
-                    id:userId,
+                    id: userId,
                     username: valueList[0],
                     privilege: valueList[1],
                     canLeech: valueList[2]
                 };
             }
 
+        }
+
+        ListModel {
+            id: torrentListModel
+            function applyFilter(text) {
+                var torrentList = adminHandler.getTorrentsByTitle(text);
+                torrentListModel.clear();
+                for (var torrentId in torrentList) {
+                    var valueList = torrentList[torrentId];
+                    append(createListElement(torrentId, valueList));
+                }
+            }
+
+            function createListElement(torrentId, valueList) {
+                return {
+                    id: torrentId,
+                    title: valueList[0],
+                    infoHash: valueList[1],
+                    completed: valueList[2],
+                    seeders: valueList[3],
+                    leechers: valueList[4],
+                    uploadDate: valueList[5],
+                    uploader: valueList[6]
+
+                }
+            }
         }
 
             /*
@@ -146,7 +212,7 @@ Rectangle {
             */
 
         TableView {
-            id: tableView
+            id: userTableView
             width: 1000
             height: 500
             TableViewColumn {
@@ -165,15 +231,68 @@ Rectangle {
                 width: 333
             }
             onClicked:  {
-                if (listModel.get(currentRow)) {
-                     currentUser = listModel.get(currentRow)
+                if (userListModel.get(currentRow)) {
+                     currentUser = userListModel.get(currentRow)
                 } else {
                     currentUser = null;
                 }
                 refreshButtons(currentUser);
+                removeButton.enabled = true;
             }
 
-            model: listModel
+            model: userListModel
+        }
+
+        TableView {
+            id: torrentTableView
+            width: 1000
+            height: 500
+            visible: false
+            TableViewColumn {
+                role: "title"
+                title: "Title"
+                width: 142
+            }
+            TableViewColumn {
+                role: "infoHash"
+                title: "info_hash"
+                width: 142
+            }
+            TableViewColumn {
+                role: "completed"
+                title: "Completed"
+                width: 142
+            }
+            TableViewColumn {
+                role: "seeders"
+                title: "Seeders"
+                width: 142
+            }
+            TableViewColumn {
+                role: "leechers"
+                title: "Leechers"
+                width: 142
+            }
+            TableViewColumn {
+                role: "uploadDate"
+                title: "Uploaded"
+                width: 142
+            }
+            TableViewColumn {
+                role: "uploader"
+                title: "Uploader"
+                width: 142
+            }
+            onClicked:  {
+                if (torrentListModel.get(currentRow)) {
+                     currentTorrent = torrentListModel.get(currentRow)
+                } else {
+                    currentTorrent = null;
+                }
+                removeButton.enabled = true;
+            }
+
+            model: torrentListModel
         }
 
         Row {
@@ -185,8 +304,8 @@ Rectangle {
                 onClicked: {
                     adminHandler.changeUserPrivilege(currentUser.id, -1);
                     adminHandler.changeLeechingPrivilege(currentUser.id, 0);
-                    listModel.applyFilter(searchField.text);
-                    tableView.focus = true;
+                    userListModel.applyFilter(searchField.text);
+                    userTableView.focus = true;
                     refreshButtons(currentUser);
                 }
                 enabled: false
@@ -198,8 +317,8 @@ Rectangle {
                 onClicked: {
                     adminHandler.changeUserPrivilege(currentUser.id, 0);
                     adminHandler.changeLeechingPrivilege(currentUser.id, 1);
-                    listModel.applyFilter(searchField.text);
-                    tableView.focus = true;
+                    userListModel.applyFilter(searchField.text);
+                    userTableView.focus = true;
                     refreshButtons(currentUser);
                 }
             }
@@ -209,8 +328,8 @@ Rectangle {
                 text: "Promote"
                 onClicked: {
                     adminHandler.changeUserPrivilege(currentUser.id, 1);
-                    listModel.applyFilter(searchField.text);
-                    tableView.focus = true;
+                    userListModel.applyFilter(searchField.text);
+                   userTableView.focus = true;
                     refreshButtons(currentUser);
                 }
             }
@@ -220,26 +339,32 @@ Rectangle {
                 text: "Demote"
                 onClicked: {
                     adminHandler.changeUserPrivilege(currentUser.id, 0);
-                    listModel.applyFilter(searchField.text);
-                    tableView.focus = true;
+                    userListModel.applyFilter(searchField.text);
+                    userTableView.focus = true;
                     refreshButtons(currentUser);
                 }
             }
 
             C.PushButton {
-                id: removeUser
+                id: removeButton
                 text: "Remove"
                 onClicked: {
-                    adminHandler.removeUser(currentUser.id);
-                    listModel.applyFilter(searchField.text);
-                    tableView.focus = true;
+                    if (torrentModel) {
+                        adminHandler.removeTorrent(currentTorrent.id);
+                        torrentListModel.applyFilter(searchField.text);
+                        torrentTableView.focus = true;
+                    } else {
+                        adminHandler.removeUser(currentUser.id);
+                        userListModel.applyFilter(searchField.text);
+                        userTableView.focus = true;
+                    }
                     refreshButtons(null);
                 }
             }
         }
     }
     Component.onCompleted: {
-        listModel.applyFilter(searchField.text);
+        userListModel.applyFilter(searchField.text);
         refreshButtons(null);
     }
 }
