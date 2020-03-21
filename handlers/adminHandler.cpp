@@ -11,14 +11,7 @@ bool AdminHandler::changeUserPrivilege(int userId, int priv)
     q.prepare("UPDATE user SET privilege = :priv WHERE id = :id");
     q.bindValue(":priv", priv);
     q.bindValue(":id", userId);
-    if (q.exec())
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return q.exec() ? true : false;
 }
 
 bool AdminHandler::changeLeechingPrivilege(int userId, bool canLeech)
@@ -27,14 +20,7 @@ bool AdminHandler::changeLeechingPrivilege(int userId, bool canLeech)
     q.prepare("UPDATE user SET canLeech = :canLeech WHERE id = :id");
     q.bindValue(":canLeech", canLeech);
     q.bindValue(":id", userId);
-    if (q.exec())
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return q.exec() ? true : false;
 }
 
 QVariantMap AdminHandler::getUsersByName(QString string)
@@ -44,7 +30,7 @@ QVariantMap AdminHandler::getUsersByName(QString string)
     string = "%"+string+"%";
     if (string.isEmpty())
     {
-        q.prepare("SELECT id, username, privilege FROM user");
+        q.prepare("SELECT id, username, privilege, canLeech FROM user");
     }
     else
     {
@@ -52,7 +38,7 @@ QVariantMap AdminHandler::getUsersByName(QString string)
         q.bindValue(":string", string);
     }
 
-    if(q.exec()&&q.size()>0)
+    if(q.exec() && q.size() > 0)
     {
         while (q.next()) {
             QVariantList values;
@@ -63,22 +49,82 @@ QVariantMap AdminHandler::getUsersByName(QString string)
     return map;
 }
 
+QVariantMap AdminHandler::getTorrentsByTitle(QString string)
+{
+    QMap<QString, QVariant> map;
+    QSqlQuery q = db->query();
+    string = "%"+string+"%";
+    if (string.isEmpty())
+    {
+        q.prepare
+        (
+            "SELECT "
+                "t.id, "
+                "title, "
+                "infoHash, "
+                "completed, "
+                "seeders, "
+                "leechers, "
+                "uploadDate, "
+                "username "
+            "FROM "
+                "torrent AS t, "
+                "user AS u "
+            "WHERE "
+                    "t.uploader = u.id"
+        );
+    }
+    else
+    {
+        q.prepare
+        (
+            "SELECT "
+                "t.id, "
+                "title, "
+                "infoHash, "
+                "completed, "
+                "seeders, "
+                "leechers, "
+                "uploadDate, "
+                "username "
+            "FROM "
+                "torrent AS t, "
+                "user AS u "
+            "WHERE "
+                    "t.uploader = u.id AND "
+                    "t.title LIKE :title"
+        );
+        q.bindValue(":title", string);
+    }
+    if(q.exec() && q.size() > 0)
+    {
+        while (q.next()) {
+            QVariantList values;
+            values << q.value(1).toString() << q.value(2).toString() << q.value(3).toInt()
+                   << q.value(4).toInt() << q.value(5).toInt() << q.value(6).toString()
+                   << q.value(7).toString();
+            map[q.value(0).toString()] = values;
+        }
+    }
+    else
+    {
+        qDebug() << "Failed AdminHandler::getTorrentsByTitle query";
+    }
+    return map;
+}
+
 bool AdminHandler::removeUser(int userId)
 {
     QSqlQuery q = db->query();
     q.prepare("DELETE FROM user WHERE id = :id");
     q.bindValue(":id", userId);
-    if (q.exec())
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return q.exec() ? true : false;
 }
 
 bool AdminHandler::removeTorrent(int torrentId)
 {
-    return false;
+    QSqlQuery q = db->query();
+    q.prepare("DELETE FROM torrent WHERE id = :id");
+    q.bindValue(":id", torrentId);
+    return q.exec() ? true : false;
 }
