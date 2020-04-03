@@ -173,7 +173,8 @@ QVariantMap TorrentHandler::getTorrentsByName(QString string, int userId)
                     " AND ct.torrentId = torrent.id)), 1, 0) AS 'downloaded', "
                     "	IF((SELECT IF(ct.isActive = 1, 1, 0) FROM clientTorrents AS ct,"
                     " client AS c, ipAddress AS ip WHERE ct.clientId = c.id AND c.ipaID = ip.id"
-                    " AND ip.userId = :userId AND ct.torrentId = torrent.id LIMIT 1), 1, 0) AS 'seeding'"
+                    " AND ip.userId = :userId AND ct.torrentId = torrent.id LIMIT 1), 1, 0) AS 'seeding',"
+                    " (SELECT SUM(length) FROM torrentFiles WHERE torrentId = torrent.id) AS 'size' "
             "FROM "
                     "torrent, "
                     "user "
@@ -199,7 +200,8 @@ QVariantMap TorrentHandler::getTorrentsByName(QString string, int userId)
                     "AND ct.torrentId = torrent.id)), 1, 0) AS 'downloaded', "
                     "IF((SELECT EXISTS(SELECT * FROM clientTorrents AS ct, "
                     "client AS c, ipAddress AS ip WHERE ct.clientId = c.id AND c.ipaID = ip.id AND ip.userId = :userId "
-                    "AND ct.torrentId = torrent.id AND ct.isActive = 1)), 1, 0) AS 'seeding' "
+                    "AND ct.torrentId = torrent.id AND ct.isActive = 1)), 1, 0) AS 'seeding', "
+                    "(SELECT SUM(length) FROM torrentFiles WHERE torrentId = torrent.id) AS 'size' "
             "FROM "
                     "torrent, "
                     "user "
@@ -219,7 +221,8 @@ QVariantMap TorrentHandler::getTorrentsByName(QString string, int userId)
             values << q.value(1).toString() << q.value(2).toInt() <<
                       q.value(3).toInt() << q.value(4).toInt() <<
                       q.value(5).toString() << q.value(6).toInt() <<
-                      q.value(7).toBool() << q.value(8).toBool();
+                      q.value(7).toBool() << q.value(8).toBool() <<
+                      q.value(9).toLongLong();
             map[q.value(0).toString()] = values;
         }
     }

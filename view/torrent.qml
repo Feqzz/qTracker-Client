@@ -93,7 +93,8 @@ Rectangle {
                 uploadDate: valueList[4],
                 torrentId: valueList[5],
                 isDownloaded: valueList[6],
-                isSeeding: valueList[7]
+                isSeeding: valueList[7],
+                size: valueList[8]
             };
         }
     }
@@ -137,30 +138,51 @@ Rectangle {
                     spacing: 10
 
                     Text {
+                        id: sizeText
+                        text: {
+                            if (size >= 1000000000) {
+                                (size/1000000000).toFixed(2) + " GB"
+                            }
+                            else if (size >= 1000000) {
+                                (size/1000000).toFixed(2) + " MB"
+                            }
+                            else if (size >= 1000){
+                                (size/1000).toFixed(2) + " KB"
+                            }
+                            else {
+                                size.toFixed(2) + " B"
+                            }
+                        }
+
+                        font.pixelSize: 16
+                        color: "cadetblue"
+                    }
+
+                    Text {
                         id: completedText
                         text: completed
-                        font.pixelSize: 15
+                        font.pixelSize: 16
                         color: "white"
                     }
 
                     Text {
                         id: seedersText
                         text: seeders
-                        font.pixelSize: 15
+                        font.pixelSize: 16
                         color: "white"
                     }
 
                     Text {
                         id: leechersText
                         text: leechers
-                        font.pixelSize: 15
+                        font.pixelSize: 16
                         color: "white"
                     }
 
                     /*Text {
                         id: uploadDateText
                         text: uploadDate
-                        font.pixelSize: 15
+                        font.pixelSize: 16
                         color: "white"
                     }*/
 
@@ -195,7 +217,7 @@ Rectangle {
                     Text {
                         id: emptyText //Need some empty space for the scrollbar
                         text: "   "
-                        font.pixelSize: 15
+                        font.pixelSize: 16
                         color: "white"
                     }
                 }
