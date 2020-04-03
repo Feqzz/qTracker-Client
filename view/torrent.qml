@@ -135,7 +135,7 @@ Rectangle {
                 Row {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
-                    spacing: 10
+                    spacing: 12
 
                     Text {
                         id: sizeText
@@ -169,7 +169,13 @@ Rectangle {
                         id: seedersText
                         text: seeders
                         font.pixelSize: 16
-                        color: "white"
+                        color: {
+                            if (seeders == 0) {
+                                color: "#e90000"
+                            } else {
+                                color: "white"
+                            }
+                        }
                     }
 
                     Text {

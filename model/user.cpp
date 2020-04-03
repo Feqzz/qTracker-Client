@@ -51,13 +51,14 @@ bool User::updateUsersData()
 bool User::refreshUserData()
 {
     QSqlQuery q = db->query();
-    q.prepare("SELECT download, upload FROM user WHERE id = :id");
+    q.prepare("SELECT download, upload, points FROM user WHERE id = :id");
     q.bindValue(":id", id);
     if (q.exec())
     {
         q.next();
         download = q.value(0).toULongLong();
         upload = q.value(1).toULongLong();
+        points = q.value(2).toInt();
         return true;
     }
     else
