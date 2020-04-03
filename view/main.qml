@@ -110,11 +110,11 @@ ApplicationWindow {
         }
     }
 
-    function generateInvite(email, label) {
-        var inviteKey = inviteHandler.inviteUser(user.getId(),email);
+    function generateInvite(email, label, points) {
+        var inviteKey = inviteHandler.inviteUser(user.getId(), email, points);
         if(inviteKey && secureSocket.sendMessage(0,[email,inviteKey],2))
         {
-            label.color = "#ffffff"
+            label.color = "#00e940"
             label.text = "User has been invited!";
         }
         else

@@ -109,9 +109,8 @@ Rectangle {
             Text {
                 id: uploadUrlText
                 anchors.verticalCenter: torrentUploadRectangle.verticalCenter
-                //anchors.horizontalCenter: torrentUploadRectangle.horizontalCenter
                 x: 250
-                text: "No file selected." //Not implemented yet
+                text: "No file selected."
                 color: "#ffffff"
             }
         }
@@ -120,42 +119,72 @@ Rectangle {
             id: titleRectangle
 
             width: 720
-            height: 128
+            height: 256
             color: "#303030"
             radius: 16
             border.width: 0
-
-            TextField {
-                id: titleTextField
-                anchors.verticalCenter: titleRectangle.verticalCenter
-                anchors.horizontalCenter: titleRectangle.horizontalCenter
-                anchors.verticalCenterOffset: 24
-                width: 650
-                height: 40
-                text: ""
-                placeholderText: "Title"
-                font.pointSize: 16
-            }
 
             Text {
                 id: titleText
                 anchors.verticalCenter: titleRectangle.verticalCenter
                 anchors.horizontalCenter: titleRectangle.horizontalCenter
-                anchors.verticalCenterOffset: -32
+                anchors.verticalCenterOffset: -64
                 color: "#ffffff"
                 text: qsTr("Please enter a title")
                 font.pixelSize: 24
             }
-        }
 
-        C.PushButton {
-            id: confirmUploadButton
-            text: "Upload"
-            onClicked: function(){
-                uploadHandler.setTitle(titleTextField.text)
-                uploadHandler.setTorrentPass(user.getTorrentPass())
-                var success = uploadHandler.uploadFile()
-                console.log(success)
+            TextField {
+                id: titleTextField
+                anchors.verticalCenter: titleRectangle.verticalCenter
+                anchors.horizontalCenter: titleRectangle.horizontalCenter
+                anchors.verticalCenterOffset: -8
+                width: 512
+                height: 40
+                text: ""
+                placeholderText: "Title"
+                font.pointSize: 12
+            }
+
+            C.PushButton {
+                id: confirmUploadButton
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenterOffset: 54
+                text: "Upload"
+                onClicked: function(){
+                    if (uploadUrlText.text != "No file selected.") {
+                        if (titleTextField.text != "") {
+                            uploadHandler.setTitle(titleTextField.text)
+                            uploadHandler.setTorrentPass(user.getTorrentPass())
+                            var success = uploadHandler.uploadFile()
+                            console.log(success)
+                            if (success) {
+                                errorText.color = "#00e940"
+                                errorText.text = "Successfully uploaded the torrent. Remember to seed!"
+                            } else {
+                                errorText.color = "#e90000"
+                                errorText.text = "Failed to upload file"
+                            }
+                        } else {
+                            errorText.color = "#e90000"
+                            errorText.text = "Please enter a title"
+                        }
+                    } else {
+                        errorText.color = "#e90000"
+                        errorText.text = "Please select a file"
+                    }
+                }
+            }
+
+            Text {
+                id: errorText
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenterOffset: 96
+                text: ""
+                color: "#e90000"
+                font.pointSize: 16
             }
         }
     }
