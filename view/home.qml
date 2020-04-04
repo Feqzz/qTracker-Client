@@ -3,10 +3,12 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.12
 import "../component" as Components
+
 Rectangle {
     id: root
-    width: 1920
-    height: 1080
+    //width: 1920
+    //height: 1080
+    anchors.fill: parent
     color: "#141414"
 
     Components.NavBar{
@@ -16,9 +18,10 @@ Rectangle {
 
     Rectangle {
         id: announceUrlRectangle
-        anchors.verticalCenter: root.verticalCenter
+        //anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: root.horizontalCenter
-        anchors.verticalCenterOffset: -100
+        //anchors.verticalCenterOffset: -100
+        y: 300
         width: 720
         height: 200
         color: "#303030"

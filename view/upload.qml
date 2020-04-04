@@ -5,8 +5,9 @@ import "../component" as C
 
 Rectangle {
     id: root
-    width: 1920
-    height: 1080
+    //width: 1920
+    //height: 1080
+    anchors.fill: parent
     color: "#141414"
 
     C.NavBar{
@@ -15,8 +16,9 @@ Rectangle {
 
     Column {
         id: column
-        anchors.verticalCenter: navBar.verticalCenter
+        //anchors.verticalCenter: navBar.verticalCenter
         anchors.horizontalCenter: navBar.horizontalCenter
+        y: 300
         spacing: 32
 
         Rectangle {
@@ -48,7 +50,7 @@ Rectangle {
             onAccepted:function(){
                 uploadHandler.setId(user.getId())
                 uploadHandler.setUrl(fileDialog.fileUrl)
-                uploadUrlText.text = fileDialog.fileUrl
+                uploadUrlText.text = fileDialog.fileUrl.toString().split('/').pop();
             }
             onRejected: {
                 console.log("Canceled")
