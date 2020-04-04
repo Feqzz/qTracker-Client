@@ -9,6 +9,8 @@ ApplicationWindow {
     visible: true
     width: 1920
     height: 1080
+    minimumHeight: 1100
+    minimumWidth: 1600
     title: qsTr("qTracker")
 
     // Main stackview
