@@ -5,8 +5,9 @@ import "../component" as C
 
 Rectangle {
     id: root
-    width: 1920
-    height: 1080
+    //width: 1920
+    //height: 1080
+    anchors.fill: parent
     color: "#141414"
 
     C.NavBar{
@@ -28,9 +29,10 @@ Rectangle {
 
     Text {
         id: torrentSearchText
-        anchors.verticalCenter: root.verticalCenter
-        anchors.horizontalCenter: root.horizontalCenter
-        anchors.verticalCenterOffset: -300
+        //anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+        //anchors.verticalCenterOffset: -300
+        y: 300
         text: qsTr("Torrent Search")
         font.pixelSize: 32
         color: "#ffffff"
@@ -38,9 +40,10 @@ Rectangle {
 
     TextField {
         id: searchField
-        anchors.verticalCenter: root.verticalCenter
-        anchors.horizontalCenter: root.horizontalCenter
-        anchors.verticalCenterOffset: -220
+        //anchors.verticalCenter: root.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+        //anchors.verticalCenterOffset: -220
+        y: 380
         focus: true
         width: 300
         height: 40
@@ -56,9 +59,9 @@ Rectangle {
          model: torrentModel
          spacing: 16
          delegate: listDelegate
-         anchors.verticalCenter: root.verticalCenter
-         anchors.horizontalCenter: root.horizontalCenter
-         anchors.verticalCenterOffset: 150
+         //anchors.verticalCenter: root.verticalCenter
+         anchors.horizontalCenter: parent.horizontalCenter
+         y: 500
          clip: true
          width: 1000
          height: 600

@@ -4,8 +4,9 @@ import "../component" as C
 
 Rectangle {
     id: root
-    width: 1920
-    height: 1080
+    //width: 1920
+    //height: 1080
+    anchors.fill: parent
     border.color: "#4b4b4b"
 
     C.NavBar {
@@ -16,12 +17,12 @@ Rectangle {
         id: flick
         clip: true
         x: 250
-        y: 200
+        y: 300
         width: 1500
         height: 700
         contentWidth: -1
-        anchors.verticalCenterOffset: 50
-        anchors.verticalCenter: parent.verticalCenter
+        //anchors.verticalCenterOffset: 50
+        //anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
 
         TextEdit {

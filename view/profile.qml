@@ -4,8 +4,9 @@ import "../component" as C
 
 Rectangle {
     id: root
-    width: 1366
-    height: 768
+    //width: 1366
+    //height: 768
+    anchors.fill: parent
     color: "#141414"
 
     C.NavBar {
@@ -15,10 +16,11 @@ Rectangle {
     Column {
         id: column1
         spacing: 16
-        anchors.horizontalCenterOffset: -400
-        anchors.verticalCenterOffset: -200
-        anchors.horizontalCenter: navBar.horizontalCenter
-        anchors.verticalCenter: navBar.verticalCenter
+        anchors.horizontalCenterOffset: -460
+        //anchors.verticalCenterOffset: -200
+        anchors.horizontalCenter: parent.horizontalCenter
+        //anchors.verticalCenter: parent.verticalCenter
+        y: 300
 
         Label {
             id: emailLabel

@@ -5,8 +5,9 @@ import "../component" as C
 
 Rectangle {
     id: root
-    width: 1920
-    height: 1080
+    //width: 1920
+    //height: 1080
+    anchors.fill: parent
     color: "#141414"
 
     C.NavBar {
@@ -41,8 +42,9 @@ Rectangle {
     Column {
         id: column
         anchors.horizontalCenter: navBar.horizontalCenter
-        anchors.verticalCenter: navBar.verticalCenter
-        anchors.verticalCenterOffset: 96
+        //anchors.verticalCenter: navBar.verticalCenter
+        //anchors.verticalCenterOffset: 96
+        y: 300
         spacing: 32
 
         Row {

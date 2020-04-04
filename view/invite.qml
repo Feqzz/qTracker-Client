@@ -4,8 +4,9 @@ import "../component" as Components
 
 Rectangle {
     id: root
-    width: 1920
-    height: 1080
+    //width: 1920
+    //height: 1080
+    anchors.fill: parent
     color: "#141414"
 
     Components.NavBar{
@@ -16,9 +17,10 @@ Rectangle {
 
     Column {
         id: column
-        anchors.verticalCenter: navBar.verticalCenter
-        anchors.horizontalCenter: navBar.horizontalCenter
-        anchors.verticalCenterOffset: 0
+        //anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+        //anchors.verticalCenterOffset: 0
+        y: 300
         spacing: 32
 
         Rectangle {
@@ -34,6 +36,7 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenterOffset: -32
+                //y: 32
                 text: "Each invite costs 1,000 Bonus Points."
                 color: "white"
                 font.pixelSize: 24
@@ -44,6 +47,7 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenterOffset: 16
+                //y: 96
                 text: "You have full responsibility for every rule your invitee breaks"
                 color: "white"
                 font.pixelSize: 24
@@ -62,7 +66,8 @@ Rectangle {
                 id: inviteInfoText
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenterOffset: -64
+                anchors.verticalCenterOffset: -96
+                //y: 32
                 text: "Please enter your friend's Email Address"
                 color: "white"
                 font.pixelSize: 24
@@ -73,7 +78,8 @@ Rectangle {
                 width: 512
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenterOffset: 0
+                anchors.verticalCenterOffset: -32
+                //y: 96
                 text: qsTr("")
                 placeholderText: "Email"
                 selectByMouse: true
@@ -83,7 +89,8 @@ Rectangle {
                 id: inviteButton
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenterOffset: 64
+                anchors.verticalCenterOffset: 32
+                //y: 160
                 text: "Invite"
                // anchors.horizontalCenter: emailField.horizontalCenter
                 onClicked: {
@@ -102,7 +109,7 @@ Rectangle {
                 id: inviteKeyLabel
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenterOffset: 120
+                anchors.verticalCenterOffset: 100
                 text: ""
                 font.pixelSize: 24
                 //anchors.horizontalCenter: inviteButton.horizontalCenter

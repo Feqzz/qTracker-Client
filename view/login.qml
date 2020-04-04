@@ -4,35 +4,33 @@ import QtQuick.Window 2.12
 import "../component" as Components
 
 
-Page{
-    visible: true
-    width: 1920
-    height: 1080
-    title: qsTr("Login :: qTracker 1.0");
+
 
     Rectangle {
         id: loginroot
         color: "#141414"
         property alias inviteLabel: inviteLabel
-        width: 1920
-        height: 1080
+        //width: 1920
+        //height: 1080
+        anchors.fill: parent
 
         Rectangle {
             id: loginPage
-            width: 1920
-            height: 1080
+            //width: 1920
+            //height: 1080
+            anchors.fill: parent
             color: "#141414"
             //Enter login
             signal accepted
 
             Components.PushButton {
                 id: registerButton
-                x: 503
+                x: 510
                 y: 664
                 text: "Create Account"
                 anchors.verticalCenter: loginButton.verticalCenter
                 visible: false
-                anchors.horizontalCenterOffset: 0
+                anchors.horizontalCenterOffset: 30
                 anchors.horizontalCenter: title.horizontalCenter
                 onClicked: registerUser(usernameField.text, passwordField.text,
                                            emailField.text, inviteField.text, errorMessage)
@@ -40,10 +38,10 @@ Page{
 
             Components.PushButton {
                 id: loginButton
-                x: 488
-                y: 393
+                //x: 600
+                //y: 393
                 text: qsTr("Log in")
-                anchors.horizontalCenterOffset: 30
+                anchors.horizontalCenterOffset: 50
                 anchors.horizontalCenter: usernameAndPasswordColumn.horizontalCenter
                 anchors.verticalCenterOffset: 96
                 anchors.verticalCenter: usernameAndPasswordColumn.verticalCenter
@@ -70,7 +68,7 @@ Page{
                 y: 100
                 color: "#ffffff"
                 text: qsTr("qTracker")
-                font.pixelSize: 32
+                font.pixelSize: 36
                 anchors.top: parent.top
                 anchors.topMargin: 100
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -88,10 +86,10 @@ Page{
 
                 TextField {
                     id: usernameField
-                    width: 156
-                    height: 32
+                    width: 200
+                    //height: 32
                     text: qsTr("")
-                    font.pixelSize: 16
+                    ///font.pixelSize: 24
                     placeholderText: qsTr("Username")
                     selectByMouse: true
                     focus: true
@@ -99,10 +97,10 @@ Page{
 
                 TextField {
                     id: passwordField
-                    width: 156
-                    height: 32
+                    width: 200
+                    //height: 32
                     text: qsTr("")
-                    font.pixelSize: 16
+                    //font.pixelSize: 24
                     placeholderText: "Password"
                     echoMode: "Password"
                     selectByMouse: true
@@ -209,8 +207,8 @@ Page{
 
                 TextField {
                     id: emailField
-                    width: 156
-                    height: 32
+                    width: 200
+                    //height: 32
                     text: qsTr("")
                     placeholderText: qsTr("Email")
                     selectByMouse: true
@@ -218,8 +216,8 @@ Page{
 
                 TextField {
                     id: inviteField
-                    width: 156
-                    height: 32
+                    width: 200
+                    //height: 32
                     text: qsTr("")
                     placeholderText: qsTr("Invite Code")
                     selectByMouse: true
@@ -329,7 +327,7 @@ Page{
                     x: 449
                     y: 382
                     anchors.verticalCenterOffset: 0
-                    anchors.horizontalCenterOffset: 146
+                    anchors.horizontalCenterOffset: 164
                     font.pixelSize: 24
                     visible: true
                 }
@@ -385,4 +383,4 @@ Page{
 
 
 
-}
+
