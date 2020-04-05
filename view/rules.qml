@@ -69,5 +69,9 @@ Rectangle {
             }
         }
     }
-    Component.onCompleted: getText(textEdit, 1)
+
+    Component.onCompleted: {
+        getText(textEdit, 1);
+        setTitle("qTracker :: Rules");
+    }
 }

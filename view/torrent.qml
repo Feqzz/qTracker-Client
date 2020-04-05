@@ -233,7 +233,8 @@ Rectangle {
             }
         }
 
-         Component.onCompleted: {
-             torrentModel.applyFilter("");
-         }
+     Component.onCompleted: {
+         torrentModel.applyFilter("");
+         setTitle("qTracker :: Torrents");
+     }
 }

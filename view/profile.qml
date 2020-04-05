@@ -175,4 +175,8 @@ Rectangle {
             }
         }
     ]
+
+    Component.onCompleted: {
+        setTitle("qTracker :: Profile");
+    }
 }

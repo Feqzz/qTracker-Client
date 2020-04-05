@@ -116,4 +116,8 @@ Rectangle {
             }
         }
     }
+
+    Component.onCompleted: {
+        setTitle("qTracker :: Invite");
+    }
 }

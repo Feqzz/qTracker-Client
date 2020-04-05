@@ -190,4 +190,8 @@ Rectangle {
             }
         }
     }
+
+    Component.onCompleted: {
+        setTitle("qTracker :: Upload");
+    }
 }

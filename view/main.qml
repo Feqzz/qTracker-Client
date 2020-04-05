@@ -204,4 +204,8 @@ ApplicationWindow {
             console.log("Failed to update Users Data");
         }
     }
+
+    function setTitle(title) {
+        rootWindow.title = title;
+    }
 }

@@ -13,7 +13,6 @@ Rectangle {
 
     Components.NavBar{
         id: navBar
-
     }
 
     Rectangle {
@@ -61,6 +60,7 @@ Rectangle {
     Component.onCompleted: {
         updateUsersData();
         navBar.update();
+        setTitle("qTracker :: Home");
     }
 
 }

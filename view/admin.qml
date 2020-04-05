@@ -365,8 +365,10 @@ Rectangle {
             }
         }
     }
+
     Component.onCompleted: {
         userListModel.applyFilter(searchField.text);
         refreshButtons(null);
+        setTitle("qTracker :: Admin");
     }
 }
