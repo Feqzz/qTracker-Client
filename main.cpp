@@ -10,6 +10,7 @@
 #include "handlers/textHandler.h"
 #include "handlers/adminHandler.h"
 #include "handlers/torrentHandler.h"
+#include "handlers/hitandrunHandler.h"
 
 int main(int argc, char *argv[])
 {
@@ -30,6 +31,7 @@ int main(int argc, char *argv[])
     QScopedPointer<TextHandler> textHandler(new TextHandler());
     QScopedPointer<AdminHandler> adminHandler(new AdminHandler());
     QScopedPointer<TorrentHandler> torrentHandler(new TorrentHandler());
+    QScopedPointer<HitAndRunHandler> hitAndRunHandler(new HitAndRunHandler());
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/view/main.qml"));
@@ -47,6 +49,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("textHandler", textHandler.data());
     engine.rootContext()->setContextProperty("adminHandler", adminHandler.data());
     engine.rootContext()->setContextProperty("torrentHandler", torrentHandler.data());
+    engine.rootContext()->setContextProperty("hitAndRunHandler", hitAndRunHandler.data());
 
     engine.load(url);
 

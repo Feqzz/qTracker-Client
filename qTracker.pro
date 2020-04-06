@@ -23,6 +23,7 @@ SOURCES += \
     core/securesocket.cpp \
     core/torrentfileparser.cpp \
     handlers/adminHandler.cpp \
+    handlers/hitandrunHandler.cpp \
     handlers/inviteHandler.cpp \
     handlers/loginHandler.cpp \
     handlers/textHandler.cpp \
@@ -56,6 +57,7 @@ HEADERS += \
     core/securesocket.h \
     core/torrentfileparser.h \
     handlers/adminHandler.h \
+    handlers/hitandrunHandler.h \
     handlers/inviteHandler.h \
     handlers/loginHandler.h \
     handlers/textHandler.h \

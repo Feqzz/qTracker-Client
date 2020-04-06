@@ -14,5 +14,8 @@
         <file>images/download.png</file>
         <file>images/downloadRed.png</file>
         <file>images/downloadYellow.png</file>
+        <file>view/hitAndRun.qml</file>
+        <file>images/downloadWhiteUp.png</file>
+        <file>images/downloadWhiteDown.png</file>
     </qresource>
 </RCC>
