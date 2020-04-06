@@ -319,7 +319,7 @@ Rectangle {
                        }
                        font.pixelSize: 16
                        color: {
-                           if (hnr) {
+                           if (!hnr) {
                                "#00e940"
                            } else {
                                "#e90000"
