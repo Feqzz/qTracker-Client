@@ -139,7 +139,9 @@ CREATE TABLE IF NOT EXISTS clientTorrents
     `left` BIGINT UNSIGNED NOT NULL,
     uploaded BIGINT UNSIGNED NOT NULL,
     lastEvent INT NOT NULL,
+    timeCreated DATETIME DEFAULT CURRENT_TIMESTAMP,
     lastActivity DATETIME DEFAULT CURRENT_TIMESTAMP,
+    timeActive INT NOT NULL DEFAULT 0,
     FOREIGN KEY (torrentId) REFERENCES torrent(id),
     FOREIGN KEY (clientId) REFERENCES client(id)
 );
