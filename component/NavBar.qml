@@ -71,8 +71,15 @@ Rectangle {
 
         Label {
             id: hnrsLabel
-            color: "#ffffff"
-            text: qsTr("HnRs: ")
+            color: maHnRsLabel.containsMouse ? "#d0d046" : "#ffffff"
+            text: "HnRs: " + hitAndRunHandler.getNumberOfHnRs(user.getId())
+            MouseArea {
+                id: maHnRsLabel
+                hoverEnabled: true
+                anchors.fill: parent
+                onClicked: changePage("hitAndRun")
+            }
+
         }
 
         Label {

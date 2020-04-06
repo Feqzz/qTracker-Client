@@ -154,8 +154,8 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
     sqlVariables.push_back(id);
     sqlVariables.push_back(title);
     sqlVariables.push_back(fileName);
-    QString torrentQuery = "INSERT INTO torrent (uploader,title,name";
-    QString torrentValues = "VALUES (?,?,?";
+    QString torrentQuery = "INSERT INTO torrent (uploader, title, name)";
+    QString torrentValues = "VALUES (?,?,?)";
 
     std::map<std::string, bencode::data>::iterator iterator;
     iterator= dict.find("announce");
@@ -167,7 +167,7 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
         QString fileTorrentPass = l[l.length()-2];
         if(torrentPass.compare(fileTorrentPass)!=0)
         {
-            qDebug() << "File torrentPass " << fileTorrentPass << " User torrentPass " << torrentPass;
+            qDebug() << "fileTorrentPass does not match with userTorrentPass \n" << "File torrentPass " << fileTorrentPass << " User torrentPass " << torrentPass;
             return false;
         }
     }
