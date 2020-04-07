@@ -155,6 +155,8 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
     sqlVariables.push_back(id);
     sqlVariables.push_back(title);
     sqlVariables.push_back(fileName);
+
+    //These two queries are not finished, String grows according to dict input
     QString torrentQuery = "INSERT INTO torrent (uploader, title, name";
     QString torrentValues = "VALUES (?,?,?";
 
