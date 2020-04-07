@@ -140,25 +140,26 @@ bool AdminHandler::removeTorrent(int torrentId)
                 db->rollBack();
                 return false;
             }
-            q.prepare("DELETE FROM torrentFiles WHERE torrentId = :id");
-            q.bindValue(":id", torrentId);
-            bool torrentFileDeleteSuccess = q.exec();
-            if(!torrentFileDeleteSuccess)
-            {
-                qDebug() << q.lastError();
-                db->rollBack();
-                return false;
-            }
-            q.prepare("DELETE FROM torrent WHERE id = :id");
-            q.bindValue(":id", torrentId);
-            bool torrentDeleteSuccess = q.exec();
-            if(!torrentDeleteSuccess)
-            {
-                qDebug() << q.lastError();
-                db->rollBack();
-                return false;
-            }
         }
+        q.prepare("DELETE FROM torrentFiles WHERE torrentId = :id");
+        q.bindValue(":id", torrentId);
+        bool torrentFileDeleteSuccess = q.exec();
+        if(!torrentFileDeleteSuccess)
+        {
+            qDebug() << q.lastError();
+            db->rollBack();
+            return false;
+        }
+        q.prepare("DELETE FROM torrent WHERE id = :id");
+        q.bindValue(":id", torrentId);
+        bool torrentDeleteSuccess = q.exec();
+        if(!torrentDeleteSuccess)
+        {
+            qDebug() << q.lastError();
+            db->rollBack();
+            return false;
+        }
+
 
     }
     else
