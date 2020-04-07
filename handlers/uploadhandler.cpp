@@ -139,7 +139,8 @@ bool UploadHandler::insertTorrentData(std::vector<QVariant> torrentVars,std::vec
     {
         qDebug() << q.lastError();
         db->rollBack();
-        qDebug() << "SQL failed on torrent insert";
+        qDebug() << "SQL failed on torrent insert, query:";
+        qDebug() << torrentQuery;
         return false;
     }
     db->commit();
@@ -154,8 +155,8 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
     sqlVariables.push_back(id);
     sqlVariables.push_back(title);
     sqlVariables.push_back(fileName);
-    QString torrentQuery = "INSERT INTO torrent (uploader, title, name)";
-    QString torrentValues = "VALUES (?,?,?)";
+    QString torrentQuery = "INSERT INTO torrent (uploader, title, name";
+    QString torrentValues = "VALUES (?,?,?";
 
     std::map<std::string, bencode::data>::iterator iterator;
     iterator= dict.find("announce");
