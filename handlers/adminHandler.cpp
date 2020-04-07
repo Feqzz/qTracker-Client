@@ -57,43 +57,43 @@ QVariantMap AdminHandler::getTorrentsByTitle(QString string)
     if (string.isEmpty())
     {
         q.prepare
-        (
-            "SELECT "
-                "t.id, "
-                "title, "
-                "infoHash, "
-                "completed, "
-                "seeders, "
-                "leechers, "
-                "uploadDate, "
-                "username "
-            "FROM "
-                "torrent AS t, "
-                "user AS u "
-            "WHERE "
+                (
+                    "SELECT "
+                    "t.id, "
+                    "title, "
+                    "infoHash, "
+                    "completed, "
+                    "seeders, "
+                    "leechers, "
+                    "uploadDate, "
+                    "username "
+                    "FROM "
+                    "torrent AS t, "
+                    "user AS u "
+                    "WHERE "
                     "t.uploader = u.id"
-        );
+                    );
     }
     else
     {
         q.prepare
-        (
-            "SELECT "
-                "t.id, "
-                "title, "
-                "infoHash, "
-                "completed, "
-                "seeders, "
-                "leechers, "
-                "uploadDate, "
-                "username "
-            "FROM "
-                "torrent AS t, "
-                "user AS u "
-            "WHERE "
+                (
+                    "SELECT "
+                    "t.id, "
+                    "title, "
+                    "infoHash, "
+                    "completed, "
+                    "seeders, "
+                    "leechers, "
+                    "uploadDate, "
+                    "username "
+                    "FROM "
+                    "torrent AS t, "
+                    "user AS u "
+                    "WHERE "
                     "t.uploader = u.id AND "
                     "t.title LIKE :title"
-        );
+                    );
         q.bindValue(":title", string);
     }
     if(q.exec() && q.size() > 0)
@@ -124,7 +124,48 @@ bool AdminHandler::removeUser(int userId)
 bool AdminHandler::removeTorrent(int torrentId)
 {
     QSqlQuery q = db->query();
-    q.prepare("DELETE FROM torrent WHERE id = :id");
+    q.prepare("SELECT id FROM torrentFiles WHERE torrentId = :id");
     q.bindValue(":id", torrentId);
-    return q.exec() ? true : false;
+    if(q.exec()&&q.size()>0)
+    {
+        db->startTransaction();
+        while (q.next()) {
+            int torrentFilesId = q.value(0).toInt();
+            q.prepare("DELETE FROM torrentFilePaths WHERE torrentFilesId = :id");
+            q.bindValue(":id", torrentFilesId);
+            bool torrentFilePathDeleteSuccess = q.exec();
+            if(!torrentFilePathDeleteSuccess)
+            {
+                qDebug() << q.lastError();
+                db->rollBack();
+                return false;
+            }
+            q.prepare("DELETE FROM torrentFiles WHERE torrentId = :id");
+            q.bindValue(":id", torrentId);
+            bool torrentFileDeleteSuccess = q.exec();
+            if(!torrentFileDeleteSuccess)
+            {
+                qDebug() << q.lastError();
+                db->rollBack();
+                return false;
+            }
+            q.prepare("DELETE FROM torrent WHERE id = :id");
+            q.bindValue(":id", torrentId);
+            bool torrentDeleteSuccess = q.exec();
+            if(!torrentDeleteSuccess)
+            {
+                qDebug() << q.lastError();
+                db->rollBack();
+                return false;
+            }
+        }
+
+    }
+    else
+    {
+        qDebug() << q.lastError();
+        //db->rollBack();
+        return false;
+    }
+    return true;
 }
