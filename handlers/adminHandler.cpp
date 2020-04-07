@@ -167,5 +167,6 @@ bool AdminHandler::removeTorrent(int torrentId)
         //db->rollBack();
         return false;
     }
+    db->commit();
     return true;
 }
