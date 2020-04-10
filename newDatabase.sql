@@ -122,9 +122,10 @@ CREATE TABLE IF NOT EXISTS userTorrentTotals
 CREATE TABLE IF NOT EXISTS client
 (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    peerId VARCHAR(191) NOT NULL UNIQUE,
+    peerId VARCHAR(191) NOT NULL,
     port INT NOT NULL,
     ipaId INT NOT NULL,
+    UNIQUE KEY (port, ipaId),
     FOREIGN KEY (ipaId) REFERENCES ipAddress(id)
 );
 
