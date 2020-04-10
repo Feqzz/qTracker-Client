@@ -92,7 +92,7 @@ Rectangle {
 
                     Image {
                         horizontalAlignment: Text.AlignLeft
-                        source: "../images/downloadWhiteUp.png"
+                        source: "../images/snatches.png"
                         width: 16
                         height: 16
                     }
