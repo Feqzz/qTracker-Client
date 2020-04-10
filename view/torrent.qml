@@ -65,6 +65,59 @@ Rectangle {
          clip: true
          width: 1000
          height: 600
+         headerPositioning: ListView.OverlayHeader
+            header: Item {
+                height: 40
+                anchors.left: parent.left
+                anchors.right: parent.right
+
+                Text {
+                    horizontalAlignment: Text.AlignLeft
+                    anchors.left: parent.left
+                    width: 350
+                    text: "Title"
+                    color: "white"
+                }
+                Row {
+                    anchors.right: parent.right
+                    spacing: 12
+
+
+                    Text {
+                        horizontalAlignment: Text.AlignHCenter
+                        text: "Size"
+                        color: "white"
+                        width: 150
+                    }
+
+                    Image {
+                        horizontalAlignment: Text.AlignLeft
+                        source: "../images/downloadWhiteUp.png"
+                        width: 16
+                        height: 16
+                    }
+
+                    Image {
+                        horizontalAlignment: Text.AlignLeft
+                        source: "../images/downloadWhiteUp.png"
+                        width: 16
+                        height: 16
+                    }
+
+                    Image {
+                        horizontalAlignment: Text.AlignLeft
+                        source: "../images/downloadWhiteDown.png"
+                        width: 16
+                        height: 16
+                    }
+
+                    Text {
+                        horizontalAlignment: Text.AlignHCenter
+                        text: ""
+                        width: 60
+                    }
+                }
+            }
 
          section.property: "size"
          section.criteria: ViewSection.FullString
@@ -115,6 +168,7 @@ Rectangle {
                 Row {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: 10
+                    width: 1000
 
                     Column {
                         anchors.verticalCenter: parent.verticalCenter
@@ -141,6 +195,7 @@ Rectangle {
                     spacing: 12
 
                     Text {
+                        horizontalAlignment: Text.AlignHCenter
                         id: sizeText
                         text: {
                             if (size >= 1000000000) {
@@ -156,19 +211,22 @@ Rectangle {
                                 size.toFixed(2) + " B"
                             }
                         }
-
+                        width: 150
                         font.pixelSize: 16
                         color: "cadetblue"
                     }
 
                     Text {
+                        horizontalAlignment: Text.AlignHCenter
                         id: completedText
                         text: completed
                         font.pixelSize: 16
                         color: "white"
+                        width: 16
                     }
 
                     Text {
+                        horizontalAlignment: Text.AlignHCenter
                         id: seedersText
                         text: seeders
                         font.pixelSize: 16
@@ -179,13 +237,16 @@ Rectangle {
                                 color: "white"
                             }
                         }
+                        width: 16
                     }
 
                     Text {
+                        horizontalAlignment: Text.AlignHCenter
                         id: leechersText
                         text: leechers
                         font.pixelSize: 16
                         color: "white"
+                        width: 16
                     }
 
                     /*Text {
@@ -225,9 +286,10 @@ Rectangle {
 
                     Text {
                         id: emptyText //Need some empty space for the scrollbar
-                        text: "   "
+                        text: ""
                         font.pixelSize: 16
                         color: "white"
+                        width: 16
                     }
                 }
             }
