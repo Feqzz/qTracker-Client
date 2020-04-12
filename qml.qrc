@@ -17,5 +17,6 @@
         <file>view/hitAndRun.qml</file>
         <file>images/downloadWhiteUp.png</file>
         <file>images/downloadWhiteDown.png</file>
+        <file>images/snatches.png</file>
     </qresource>
 </RCC>
