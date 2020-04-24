@@ -225,11 +225,14 @@ Rectangle {
                    Text {
                        horizontalAlignment: Text.AlignHCenter
                        id: ratioText
-                       text: ratio
+                       text: (uploaded > 0 && downloaded == 0) ? "Inf" : ratio.toFixed(2)
                        font.pixelSize: 16
                        color: {
-                           if (ratio >= 0.5) {
-                               if (ration >= 0.75) {
+                           if (uploaded > 0 && downloaded == 0) {
+                               "gainsboro"
+                           }
+                           else if (ratio >= 0.5) {
+                               if (ratio >= 0.75 && ratio < 1) {
                                    "orange"
                                } else {
                                    "gainsboro"
@@ -237,9 +240,9 @@ Rectangle {
                            } else {
                                "#e90000"
                            }
-                       }
-                       width: 40
-                   }
+                        }
+                        width: 40
+                    }
 
                    Text {
                        horizontalAlignment: Text.AlignHCenter
