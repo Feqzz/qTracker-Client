@@ -150,6 +150,24 @@ bool AdminHandler::removeTorrent(int torrentId)
             db->rollBack();
             return false;
         }
+        q.prepare("DELETE FROM userTorrentTotals WHERE torrentId = :id");
+        q.bindValue(":id", torrentId);
+        bool userTorrentTotalsDeleteSuccess = q.exec();
+        if(!userTorrentTotalsDeleteSuccess)
+        {
+            qDebug() << q.lastError();
+            db->rollBack();
+            return false;
+        }
+        q.prepare("DELETE FROM clientTorrents WHERE torrentId = :id");
+        q.bindValue(":id", torrentId);
+        bool clientTorrentsDeleteSuccess = q.exec();
+        if(!clientTorrentsDeleteSuccess)
+        {
+            qDebug() << q.lastError();
+            db->rollBack();
+            return false;
+        }
         q.prepare("DELETE FROM torrent WHERE id = :id");
         q.bindValue(":id", torrentId);
         bool torrentDeleteSuccess = q.exec();
