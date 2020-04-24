@@ -113,11 +113,20 @@ ApplicationWindow {
     }
 
     function generateInvite(email, label, points) {
-        var inviteKey = inviteHandler.inviteUser(user.getId(), email, points);
-        if(inviteKey && secureSocket.sendMessage(0,[email,inviteKey],2))
+        var inviteSuccess = inviteHandler.inviteUser(user.getId(), email, points);
+        var inviteKey = inviteHandler.getKey();
+        if(inviteSuccess)
         {
+            if(secureSocket.sendMessage(0,[email,inviteKey],2))
+            {
             label.color = "#00e940"
             label.text = "User has been invited!";
+            }
+            else
+            {
+                label.color = "#e90000";
+                label.text = "Error with email server";
+            }
         }
         else
         {

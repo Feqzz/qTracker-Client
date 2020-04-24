@@ -12,8 +12,10 @@ public:
     Q_INVOKABLE bool inviteUser(int inviterId, QString inviteeEmail, int points);
     Q_INVOKABLE QString getErrorMessage();
     Q_INVOKABLE bool subtractPoints(int inviterId, int points);
+    Q_INVOKABLE QString getKey();
 private:
     QString errorMessage;
+    QString key;
 };
 
 #endif // INVITEHANDLER_H

@@ -5,6 +5,11 @@ InviteHandler::InviteHandler(QObject* parent): QObject(parent)
 
 }
 
+QString InviteHandler::getKey()
+{
+    return key;
+}
+
 bool InviteHandler::inviteUser(int inviterId, QString inviteeEmail, int points)
 {
     QString key = QUuid::createUuid().toString(QUuid::Id128).left(12);
@@ -18,7 +23,12 @@ bool InviteHandler::inviteUser(int inviterId, QString inviteeEmail, int points)
     q.bindValue(":key", key);
     if (q.exec())
     {
-        return subtractPoints(inviterId, points);
+        bool substractSuccess = subtractPoints(inviterId, points);
+        if(substractSuccess)
+        {
+            this->key=key;
+        }
+        return substractSuccess;
     }
     else
     {
