@@ -52,9 +52,6 @@ CREATE TABLE IF NOT EXISTS torrent
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     uploader INT NOT NULL,
     infoHash VARCHAR(191) NOT NULL UNIQUE,
-    leechers INT NOT NULL DEFAULT 0,
-    seeders INT NOT NULL DEFAULT 0,
-    completed INT NOT NULL DEFAULT 0,
     flags INT NOT NULL DEFAULT 0,
     title VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
@@ -149,8 +146,8 @@ CREATE TABLE IF NOT EXISTS clientTorrents
 
 /* password:123 */
 INSERT INTO user (username, email, password, upload, download, points, privilege, torrentPass)
-VALUES ("test", "test", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 50, 1, "test"),
-("stian", "stian", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 50, 1, "b3769d6c84e5cd97d799dc79f5e43afd");
+VALUES ("test", "test", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 50000, 1, "test"),
+("stian", "stian", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 0, 1, "b3769d6c84e5cd97d799dc79f5e43afd");
 
 INSERT INTO text (page, text, lastEditedAt, lastEditedBy)
 VALUES ("rules", "The database works!", CURRENT_TIMESTAMP, 1);
