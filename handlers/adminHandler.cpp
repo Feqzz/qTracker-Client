@@ -62,9 +62,9 @@ QVariantMap AdminHandler::getTorrentsByTitle(QString string)
                     "t.id, "
                     "title, "
                     "infoHash, "
-                    "completed, "
-                    "seeders, "
-                    "leechers, "
+                   // "completed, "
+                   // "seeders, "
+                   // "leechers, "
                     "uploadDate, "
                     "username "
                     "FROM "
@@ -82,9 +82,9 @@ QVariantMap AdminHandler::getTorrentsByTitle(QString string)
                     "t.id, "
                     "title, "
                     "infoHash, "
-                    "completed, "
-                    "seeders, "
-                    "leechers, "
+                   // "completed, "
+                   // "seeders, "
+                   // "leechers, "
                     "uploadDate, "
                     "username "
                     "FROM "
@@ -100,9 +100,11 @@ QVariantMap AdminHandler::getTorrentsByTitle(QString string)
     {
         while (q.next()) {
             QVariantList values;
-            values << q.value(1).toString() << q.value(2).toString() << q.value(3).toInt()
+            values << q.value(1).toString() << q.value(2).toString() << q.value(6).toString()
+                               << q.value(7).toString();
+           /* values << q.value(1).toString() << q.value(2).toString() << q.value(3).toInt()
                    << q.value(4).toInt() << q.value(5).toInt() << q.value(6).toString()
-                   << q.value(7).toString();
+                   << q.value(7).toString();*/
             map[q.value(0).toString()] = values;
         }
     }
@@ -128,7 +130,7 @@ bool AdminHandler::removeTorrent(int torrentId)
     q.bindValue(":id", torrentId);
     bool selectSuccess = q.exec();
     int querySize = q.size();
-    //qDebug() << "id: "<<torrentId<<" select success: " << selectSuccess << " querySize: " << querySize;
+    qDebug() << "id: "<<torrentId<<" select success: " << selectSuccess << " querySize: " << querySize;
     if(selectSuccess && querySize>0)
     {
         db->startTransaction();
