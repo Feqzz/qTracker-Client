@@ -352,7 +352,8 @@ Rectangle {
                 text: "Remove"
                 onClicked: {
                     if (torrentModel) {
-                        adminHandler.removeTorrent(currentTorrent.id);
+                        var deleteSuccess = adminHandler.removeTorrent(currentTorrent.id);
+                        //console.log("torrent deletion: "+deleteSuccess);
                         torrentListModel.applyFilter(searchField.text);
                         torrentTableView.focus = true;
                     } else {

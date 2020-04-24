@@ -126,7 +126,10 @@ bool AdminHandler::removeTorrent(int torrentId)
     QSqlQuery q = db->query();
     q.prepare("SELECT id FROM torrentFiles WHERE torrentId = :id");
     q.bindValue(":id", torrentId);
-    if(q.exec()&&q.size()>0)
+    bool selectSuccess = q.exec();
+    int querySize = q.size();
+    //qDebug() << "id: "<<torrentId<<" select success: " << selectSuccess << " querySize: " << querySize;
+    if(selectSuccess && querySize>0)
     {
         db->startTransaction();
         while (q.next()) {
@@ -136,6 +139,7 @@ bool AdminHandler::removeTorrent(int torrentId)
             bool torrentFilePathDeleteSuccess = q.exec();
             if(!torrentFilePathDeleteSuccess)
             {
+                qDebug() << "SQL failed DELETE FROM torrentFilePaths";
                 qDebug() << q.lastError();
                 db->rollBack();
                 return false;
@@ -146,6 +150,7 @@ bool AdminHandler::removeTorrent(int torrentId)
         bool torrentFileDeleteSuccess = q.exec();
         if(!torrentFileDeleteSuccess)
         {
+            qDebug() << "SQL failed DELETE FROM torrentFiles";
             qDebug() << q.lastError();
             db->rollBack();
             return false;
@@ -155,6 +160,7 @@ bool AdminHandler::removeTorrent(int torrentId)
         bool userTorrentTotalsDeleteSuccess = q.exec();
         if(!userTorrentTotalsDeleteSuccess)
         {
+            qDebug() << "SQL failed DELETE FROM userTorrentTotals";
             qDebug() << q.lastError();
             db->rollBack();
             return false;
@@ -164,6 +170,7 @@ bool AdminHandler::removeTorrent(int torrentId)
         bool clientTorrentsDeleteSuccess = q.exec();
         if(!clientTorrentsDeleteSuccess)
         {
+            qDebug() << "SQL failed DELETE FROM clientTorrents";
             qDebug() << q.lastError();
             db->rollBack();
             return false;
@@ -173,6 +180,7 @@ bool AdminHandler::removeTorrent(int torrentId)
         bool torrentDeleteSuccess = q.exec();
         if(!torrentDeleteSuccess)
         {
+            qDebug() << "SQL failed DELETE FROM torrent";
             qDebug() << q.lastError();
             db->rollBack();
             return false;
@@ -182,6 +190,7 @@ bool AdminHandler::removeTorrent(int torrentId)
     }
     else
     {
+        qDebug() << "SQL failed SELECT id FROM torrentFiles";
         qDebug() << q.lastError();
         //db->rollBack();
         return false;
