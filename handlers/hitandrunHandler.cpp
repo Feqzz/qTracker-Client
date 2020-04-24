@@ -83,7 +83,7 @@ QVariantMap HitAndRunHandler::getTorrents(int userId)
         while (q.next())
         {
             QVariantList values;
-            values << q.value(1).toLongLong() << q.value(2).toLongLong() <<
+            values << q.value(1).toULongLong() << q.value(2).toULongLong() <<
                       q.value(3).toDouble() << q.value(4).toInt() <<
                       q.value(5).toInt() << q.value(6).toString() <<
                       q.value(7).toBool() << q.value(8).toInt() <<

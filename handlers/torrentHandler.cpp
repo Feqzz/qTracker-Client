@@ -229,7 +229,7 @@ QVariantMap TorrentHandler::getTorrentsByName(QString string, int userId)
                       q.value(3).toInt() << q.value(4).toInt() <<
                       q.value(5).toString() << q.value(6).toInt() <<
                       q.value(7).toBool() << q.value(8).toBool() <<
-                      q.value(9).toLongLong();
+                      q.value(9).toULongLong();
             map[q.value(0).toString()] = values;
         }
     }

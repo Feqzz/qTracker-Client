@@ -225,11 +225,11 @@ Rectangle {
                    Text {
                        horizontalAlignment: Text.AlignHCenter
                        id: ratioText
-                       text: ratio
+                       text: ratio.toFixed(2)
                        font.pixelSize: 16
                        color: {
                            if (ratio >= 0.5) {
-                               if (ration >= 0.75) {
+                               if (ratio >= 0.75) {
                                    "orange"
                                } else {
                                    "gainsboro"
