@@ -30,7 +30,7 @@ public:
     void setEmail(QString _email);
     void setDateJoined(QString _dateJoined);
     void setPassword(QString _password);
-    void setPoints(int _points);
+    void setPoints(double _points);
     void setTorrentPass(QString _torrentPass);
 private:
     QString username;

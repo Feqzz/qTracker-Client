@@ -29,7 +29,7 @@ int HitAndRunHandler::getNumberOfHnRs(int userId)
     q.bindValue(":minTime", minTime);
     if (q.exec())
     {
-        //q.next()
+        q.first();
         return q.value(0).toInt();
     }
     else
@@ -50,10 +50,8 @@ QVariantMap HitAndRunHandler::getTorrents(int userId)
                 "ct.uploaded, "
                 "ct.downloaded, "
                 "(ct.uploaded/ct.downloaded) AS ratio, "
-                //"t.seeders, "
                 "(SELECT IFNULL(SUM(isActive), 0) FROM clientTorrents AS ct WHERE ct.torrentId = t.id "
                 "AND (TIMESTAMPDIFF(MINUTE, ct.lastActivity, NOW()) < 60)) AS 'seeders', "
-                //"t.leechers, "
                 "(SELECT IFNULL(SUM(isActive), 0) FROM clientTorrents AS ct WHERE ct.torrentId = t.id "
                 "AND ct.left > 0) AS 'leechers', "
                 "ct.lastActivity, "

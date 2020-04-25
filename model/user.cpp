@@ -28,8 +28,6 @@ User::User(int id) : id(id)
     }
 }
 
-
-
 bool User::refreshUserData()
 {
     QSqlQuery q = db->query();
@@ -37,7 +35,8 @@ bool User::refreshUserData()
     q.bindValue(":id", id);
     if (q.exec())
     {
-        points = q.value(0).toDouble();
+        q.first();
+        points = q.value(0).toInt();
     }
     else
     {
@@ -193,7 +192,7 @@ void User::setPassword(QString _password)
     password = _password;
 }
 
-void User::setPoints(int _points)
+void User::setPoints(double _points)
 {
     points = _points;
 }
