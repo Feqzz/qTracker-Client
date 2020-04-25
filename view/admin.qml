@@ -250,12 +250,12 @@ Rectangle {
             TableViewColumn {
                 role: "title"
                 title: "Title"
-                width: 142
+                width: 350
             }
             TableViewColumn {
                 role: "infoHash"
                 title: "info_hash"
-                width: 142
+                width: 250
             }
             /*TableViewColumn {
                 role: "completed"
@@ -275,12 +275,12 @@ Rectangle {
             TableViewColumn {
                 role: "uploadDate"
                 title: "Uploaded"
-                width: 142
+                width: 200
             }
             TableViewColumn {
                 role: "uploader"
                 title: "Uploader"
-                width: 142
+                width: 200
             }
             onClicked:  {
                 if (torrentListModel.get(currentRow)) {
