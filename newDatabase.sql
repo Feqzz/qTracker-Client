@@ -143,9 +143,9 @@ CREATE TABLE IF NOT EXISTS clientTorrents
 );
 
 /* password:123 */
-INSERT INTO user (username, email, password, upload, download, points, privilege, torrentPass)
-VALUES ("test", "test", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 50000, 1, "test"),
-("stian", "stian", "ICy5YqxZB1uWSwcVLSNLcA==",10, 100, 0, 1, "b3769d6c84e5cd97d799dc79f5e43afd");
+INSERT INTO user (username, email, password, points, privilege, torrentPass)
+VALUES ("test", "test", "ICy5YqxZB1uWSwcVLSNLcA==", 50000, 1, "test"),
+("stian", "stian", "ICy5YqxZB1uWSwcVLSNLcA==", 0, 1, "b3769d6c84e5cd97d799dc79f5e43afd");
 
 INSERT INTO text (page, text, lastEditedAt, lastEditedBy)
 VALUES ("rules", "The database works!", CURRENT_TIMESTAMP, 1);
