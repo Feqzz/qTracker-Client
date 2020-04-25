@@ -100,8 +100,8 @@ QVariantMap AdminHandler::getTorrentsByTitle(QString string)
     {
         while (q.next()) {
             QVariantList values;
-            values << q.value(1).toString() << q.value(2).toString() << q.value(6).toString()
-                               << q.value(7).toString();
+            values << q.value(1).toString() << q.value(2).toString() << q.value(3).toString()
+                               << q.value(4).toString();
            /* values << q.value(1).toString() << q.value(2).toString() << q.value(3).toInt()
                    << q.value(4).toInt() << q.value(5).toInt() << q.value(6).toString()
                    << q.value(7).toString();*/

@@ -150,11 +150,8 @@ Rectangle {
                     id: torrentId,
                     title: valueList[0],
                     infoHash: valueList[1],
-                    completed: valueList[2],
-                    seeders: valueList[3],
-                    leechers: valueList[4],
-                    uploadDate: valueList[5],
-                    uploader: valueList[6]
+                    uploadDate: valueList[2],
+                    uploader: valueList[3]
 
                 }
             }
@@ -260,7 +257,7 @@ Rectangle {
                 title: "info_hash"
                 width: 142
             }
-            TableViewColumn {
+            /*TableViewColumn {
                 role: "completed"
                 title: "Completed"
                 width: 142
@@ -274,7 +271,7 @@ Rectangle {
                 role: "leechers"
                 title: "Leechers"
                 width: 142
-            }
+            }*/
             TableViewColumn {
                 role: "uploadDate"
                 title: "Uploaded"
