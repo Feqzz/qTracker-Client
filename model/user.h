@@ -21,8 +21,7 @@ public:
     Q_INVOKABLE int getInvitedCount();
     Q_INVOKABLE int getPoints();
     Q_INVOKABLE QString getTorrentPass();
-    Q_INVOKABLE bool updateUsersData();
-    bool refreshUserData();
+    Q_INVOKABLE bool refreshUserData();
     void setUsername(QString _username);
     void setDownload(uint64_t _download);
     void setUpload(uint64_t _upload);

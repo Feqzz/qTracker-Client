@@ -140,11 +140,31 @@ ApplicationWindow {
     }
 
     function getUpload() {
-        return user.getUpload()/1000;
+        var size = user.getUpload();
+        return getSiPrefix(size);
     }
 
     function getDownload() {
-        return user.getDownload()/1000;
+        var size = user.getDownload();
+        return getSiPrefix(size);
+    }
+
+    function getSiPrefix(size) {
+        if (size >= 1000000000000) {
+            return (size/1000000000000).toFixed(2) + " TB"
+        }
+        else if (size >= 1000000000) {
+            return (size/1000000000).toFixed(2) + " GB"
+        }
+        else if (size >= 1000000) {
+            return (size/1000000).toFixed(2) + " MB"
+        }
+        else if (size >= 1000){
+            return (size/1000).toFixed(2) + " KB"
+        }
+        else {
+            return size.toFixed(2) + " B"
+        }
     }
 
     function checkPrivilege() {
@@ -207,7 +227,7 @@ ApplicationWindow {
     }
 
     function updateUsersData() {
-        if (user.updateUsersData()) {
+        if (user.refreshUserData()) {
             console.log("Updated Users Data");
         } else {
             console.log("Failed to update Users Data");

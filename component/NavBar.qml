@@ -5,10 +5,9 @@ import QtQuick.Window 2.12
 
 Rectangle {
     id: root
-    //width: 1920
-    //height: 1080
     anchors.fill: parent
     color: "#141414"
+
 
     Text {
         id: title
@@ -58,15 +57,13 @@ Rectangle {
         Label {
             id: upLabel
             color: "#ffffff"
-            text: (getUpload() >= 1000) ? "Up: " + (getUpload()/1000).toFixed(2) + " TiB"
-                                        : "Up: " + getUpload().toFixed(2) + " GiB"
+            text: "Up: " + getUpload()
         }
 
         Label {
             id: downLabel
             color: "#ffffff"
-            text: (getDownload() >= 1000) ? "Down: " + (getDownload()/1000).toFixed(2) + " TiB"
-                                        : "Down: " + getDownload().toFixed(2) + " GiB"
+            text: "Down: " + getDownload()
         }
 
         Label {

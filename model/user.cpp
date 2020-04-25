@@ -8,8 +8,8 @@ User::User(QObject *parent) : QObject(parent)
 User::User(int id) : id(id)
 {
     QSqlQuery q = db->query();
-    q.prepare("SELECT username, password, upload,"
-              " download, privilege, email, createdAt, "
+    q.prepare("SELECT username, password, "
+              "privilege, email, createdAt, "
               "torrentPass FROM user WHERE id = :id");
     q.bindValue(":id", id);
     if (q.exec())
@@ -17,12 +17,10 @@ User::User(int id) : id(id)
         q.next();
         username = q.value(0).toString();
         password = q.value(1).toString();
-        upload = q.value(2).toUInt();
-        download = q.value(3).toUInt();
-        privilege = q.value(4).toInt();
-        email = q.value(5).toString();
-        dateJoined = q.value(6).toString();
-        torrentPass = q.value(7).toString();
+        privilege = q.value(2).toInt();
+        email = q.value(3).toString();
+        dateJoined = q.value(4).toString();
+        torrentPass = q.value(5).toString();
     }
     else
     {
@@ -30,42 +28,46 @@ User::User(int id) : id(id)
     }
 }
 
-bool User::updateUsersData()
-{
-    QSqlQuery q = db->query();
-    q.prepare("UPDATE user AS u "
-              "SET "
-              "download = (SELECT IFNULL(SUM(totalDownloaded), 0) FROM userTorrentTotals WHERE userId = u.id), "
-              "upload = (SELECT IFNULL(SUM(totalUploaded), 0) FROM userTorrentTotals WHERE userId = u.id)");
-   if (q.exec())
-   {
-       return refreshUserData();
-   }
-   else
-   {
-       qDebug() << "Failed to update download/upload for all users";
-       return false;
-   }
-}
+
 
 bool User::refreshUserData()
 {
     QSqlQuery q = db->query();
-    q.prepare("SELECT download, upload, points FROM user WHERE id = :id");
+    q.prepare("SELECT points FROM user WHERE id = :id");
+    q.bindValue(":id", id);
+    if (q.exec())
+    {
+        points = q.value(0).toDouble();
+    }
+    else
+    {
+        qDebug() << "Failed to retrieve points for user";
+        return false;
+    }
+
+    q.prepare
+    (
+        "SELECT "
+                "IFNULL(SUM(totalDownloaded), 0) AS 'downloaded', "
+                "IFNULL(SUM(totalUploaded), 0) AS 'uploaded' "
+        "FROM "
+                "userTorrentTotals "
+        "WHERE "
+                "userId = :id"
+    );
     q.bindValue(":id", id);
     if (q.exec())
     {
         q.next();
         download = q.value(0).toULongLong();
         upload = q.value(1).toULongLong();
-        points = q.value(2).toInt();
-        return true;
     }
     else
     {
-        qDebug() << "Failed to retrieve updated download/upload for user";
+        qDebug() << "Failed to retrieve total uploaded and downloaded for user";
         return false;
     }
+    return true;
 }
 
 
@@ -77,12 +79,12 @@ double User::getRatio()
 
 int User::getUpload()
 {
-    return upload/1000000;
+    return upload;
 }
 
 int User::getDownload()
 {
-    return download/1000000;
+    return download;
 }
 
 QString User::getUsername()

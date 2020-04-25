@@ -78,7 +78,7 @@ bool LoginHandler::loginUser(User* user, QString username, QString password)
 bool LoginHandler::fillUser(User *user, QString username)
 {
     QSqlQuery q = db->query();
-    q.prepare("SELECT id, download, upload, privilege, email, createdAt, "
+    q.prepare("SELECT id, privilege, email, createdAt, "
               "password, points, torrentPass FROM user WHERE username = :username");
     q.bindValue(":username", username);
     if(q.exec())
@@ -88,25 +88,24 @@ bool LoginHandler::fillUser(User *user, QString username)
 
         user->setId(q.value(0).toInt());
 
-        user->setDownload(q.value(1).toULongLong());
+        user->setprivilege(q.value(1).toInt());
 
-        user->setUpload(q.value(2).toULongLong());
+        user->setEmail(q.value(2).toString());
 
-        user->setprivilege(q.value(3).toInt());
+        user->setDateJoined(q.value(3).toString());
 
-        user->setEmail(q.value(4).toString());
+        user->setPassword(q.value(4).toString());
 
-        user->setDateJoined(q.value(5).toString());
+        user->setPoints(q.value(5).toDouble());
 
-        user->setPassword(q.value(6).toString());
-
-        user->setPoints(q.value(7).toInt());
-
-        user->setTorrentPass(q.value(8).toString());
-
-        return true;
+        user->setTorrentPass(q.value(6).toString());
     }
-    return false;
+    else
+    {
+        qDebug() << "Failed to retrieve user information when logging in";
+        return false;
+    }
+    return user->refreshUserData();
 }
 
 QString LoginHandler::getErrorMessage()

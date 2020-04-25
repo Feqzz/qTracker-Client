@@ -197,20 +197,7 @@ Rectangle {
                     Text {
                         horizontalAlignment: Text.AlignHCenter
                         id: sizeText
-                        text: {
-                            if (size >= 1000000000) {
-                                (size/1000000000).toFixed(2) + " GB"
-                            }
-                            else if (size >= 1000000) {
-                                (size/1000000).toFixed(2) + " MB"
-                            }
-                            else if (size >= 1000){
-                                (size/1000).toFixed(2) + " KB"
-                            }
-                            else {
-                                size.toFixed(2) + " B"
-                            }
-                        }
+                        text: getSiPrefix(size)
                         width: 150
                         font.pixelSize: 16
                         color: "cadetblue"

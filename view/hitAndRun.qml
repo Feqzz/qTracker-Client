@@ -181,20 +181,7 @@ Rectangle {
                    Text {
                        horizontalAlignment: Text.AlignHCenter
                        id: uploadedText
-                       text: {
-                           if (uploaded >= 1000000000) {
-                               (uploaded/1000000000).toFixed(2) + " GB"
-                           }
-                           else if (uploaded >= 1000000) {
-                               (uploaded/1000000).toFixed(2) + " MB"
-                           }
-                           else if (uploaded >= 1000){
-                               (uploaded/1000).toFixed(2) + " KB"
-                           }
-                           else {
-                               uploaded.toFixed(2) + " B"
-                           }
-                       }
+                       text: getSiPrefix(uploaded)
                        font.pixelSize: 16
                        color: "white"
                        width: 100
@@ -203,20 +190,7 @@ Rectangle {
                    Text {
                        horizontalAlignment: Text.AlignHCenter
                        id: downloadedText
-                       text: {
-                           if (downloaded >= 1000000000) {
-                               (downloaded/1000000000).toFixed(2) + " GB"
-                           }
-                           else if (downloaded >= 1000000) {
-                               (downloaded/1000000).toFixed(2) + " MB"
-                           }
-                           else if (downloaded >= 1000){
-                               (downloaded/1000).toFixed(2) + " KB"
-                           }
-                           else {
-                               downloaded.toFixed(2) + " B"
-                           }
-                       }
+                       text: getSiPrefix(downloaded)
                        font.pixelSize: 16
                        color: "white"
                        width: 100
