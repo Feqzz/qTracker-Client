@@ -70,7 +70,8 @@ QVariantMap HitAndRunHandler::getTorrents(int userId)
                 "t.id = ct.torrentId AND "
                 "ct.clientId = c.id AND "
                 "c.ipaId = ip.id AND "
-                "ip.userId = :userId"
+                "ip.userId = :userId "
+                "ct.timeActive < 2880"
     );
     q.bindValue(":minTime", minTime);
     q.bindValue(":maxTime", maxTime);
