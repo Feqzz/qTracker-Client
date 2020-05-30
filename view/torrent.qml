@@ -197,7 +197,7 @@ Rectangle {
                     Text {
                         horizontalAlignment: Text.AlignHCenter
                         id: sizeText
-                        text: getSiPrefix(size)
+                        text: getGiPrefix(size)
                         width: 150
                         font.pixelSize: 16
                         color: "cadetblue"

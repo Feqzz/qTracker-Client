@@ -141,7 +141,7 @@ ApplicationWindow {
 
     function getUpload() {
         var size = user.getUpload();
-        return getSiPrefix(size);
+        return getGiPrefix(size);
     }
 
     function getDownload() {
@@ -164,6 +164,44 @@ ApplicationWindow {
         }
         else {
             return size.toFixed(2) + " B"
+        }
+    }
+
+    /*Does not return decimals.
+    function getGiPrefix(size) {
+        if (size >= Math.pow(2, 40)) {
+            return (size >> 40) + " TiB"
+        }
+        else if (size >= Math.pow(2, 30)) {
+            return (size >> 30) + " GiB"
+        }
+        else if (size >= Math.pow(2, 10)) {
+            return (size >> 20) + " MiB"
+        }
+        else if (size >= Math.pow(2, 10)) {
+            return (size >> 10) + " KiB"
+        }
+        else {
+            return size + " B"
+        }
+    }
+    */
+
+    function getGiPrefix(size) {
+        if (size >= Math.pow(2, 40)) {
+            return ((size/Math.pow(2, 40)).toFixed(2)) + " TiB"
+        }
+        else if (size >= Math.pow(2, 30)) {
+            return ((size/Math.pow(2, 30)).toFixed(2)) + " GiB"
+        }
+        else if (size >= Math.pow(2, 20)) {
+            return ((size/Math.pow(2, 20)).toFixed(2)) + " MiB"
+        }
+        else if (size >= Math.pow(2, 10)) {
+            return ((size/Math.pow(2, 10)).toFixed(2)) + " KiB"
+        }
+        else {
+            return size + " B"
         }
     }
 
