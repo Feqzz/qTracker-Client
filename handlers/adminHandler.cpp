@@ -32,19 +32,18 @@ bool AdminHandler::changeIPPrivilege(int ipId, bool banned)
     q.bindValue(":id", ipId);
     return q.exec() ? true : false;
 }
-
-QVariantMap AdminHandler::getIPsByIP(QString string)
+QVariantMap AdminHandler::getIPsByUser(QString string)
 {
     QMap<QString, QVariant> map;
     QSqlQuery q = db->query();
     string = "%"+string+"%";
     if (string.isEmpty())
     {
-        q.prepare("SELECT ipa FROM ipAddress");
+        q.prepare("SELECT ipAddress.id,ipa,isBanned,username FROM ipAddress,user WHERE user.id = ipAddress.userId");
     }
     else
     {
-        q.prepare("SELECT id,ipa,isBanned FROM ipAddress WHERE ipa LIKE :string");
+        q.prepare("SELECT ipAddress.id,ipa,isBanned,username FROM ipAddress,user WHERE user.id = ipAddress.userId AND username LIKE :string");
         q.bindValue(":string", string);
     }
 
@@ -52,7 +51,32 @@ QVariantMap AdminHandler::getIPsByIP(QString string)
     {
         while (q.next()) {
             QVariantList values;
-            values << q.value(1).toString() << q.value(2).toString();
+            values << q.value(1).toString() << q.value(2).toString()<< q.value(3).toString();
+            map[q.value(0).toString()] = values;
+        }
+    }
+    return map;
+}
+QVariantMap AdminHandler::getIPsByIP(QString string)
+{
+    QMap<QString, QVariant> map;
+    QSqlQuery q = db->query();
+    string = "%"+string+"%";
+    if (string.isEmpty())
+    {
+        q.prepare("SELECT ipAddress.id,ipa,isBanned,username FROM ipAddress,user WHERE user.id = ipAddress.userId");
+    }
+    else
+    {
+        q.prepare("SELECT ipAddress.id,ipa,isBanned,username FROM ipAddress,user WHERE user.id = ipAddress.userId AND ipa LIKE :string");
+        q.bindValue(":string", string);
+    }
+
+    if(q.exec() && q.size() > 0)
+    {
+        while (q.next()) {
+            QVariantList values;
+            values << q.value(1).toString() << q.value(2).toString()<< q.value(3).toString();
             map[q.value(0).toString()] = values;
         }
     }

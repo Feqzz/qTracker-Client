@@ -15,6 +15,7 @@ Rectangle {
     }
 
     property var currentIP;
+    property var currentSearchBool:true;
 
     Column {
         id: column
@@ -59,30 +60,55 @@ Rectangle {
                 C.MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                         changePage("adminTorrent")
+                        changePage("adminTorrent")
                     }
                 }
             }
         }
 
-        TextField {
-            id: searchField
+
+        Row{
             anchors.horizontalCenter: parent.horizontalCenter
-            focus: true
-            width: 300
-            height: 40
-            text: qsTr("")
-            placeholderText: "Search"
-            selectByMouse: true
-            onTextChanged: {
+            anchors.verticalCenter: navBar.verticalCenter
+            anchors.verticalCenterOffset: 96
+            TextField {
+                id: searchField
+                //anchors.horizontalCenter: parent.horizontalCenter
+                focus: true
+                width: 300
+                height: 40
+                text: qsTr("")
+                placeholderText: "Search"
+                selectByMouse: true
+                onTextChanged: {
                     ipListModel.applyFilter(text);
+                }
+            }
+
+            C.PushButton {
+                id: searchToggle
+                height: 40
+                text: "IP Search"
+                onClicked: {
+                    if(currentSearchBool){
+                        this.text = "User Search";
+                    } else {
+                        this.text = "IP Search"
+                    }
+                    currentSearchBool = !currentSearchBool;
+                }
             }
         }
 
         ListModel {
             id: ipListModel
             function applyFilter(text) {
-                var userList = adminHandler.getIPsByIP(text);
+                var userList;
+                if(currentSearchBool){
+                    userList = adminHandler.getIPsByIP(text);
+                }else{
+                    userList = adminHandler.getIPsByUser(text);
+                }
                 ipListModel.clear();
                 for (var userId in userList) {
                     var valueList = userList[userId];
@@ -93,8 +119,10 @@ Rectangle {
             function createListElement(userId, valueList) {
                 return {
                     id: userId,
+                    user: valueList[2],
                     ipa: valueList[0],
                     isbanned: valueList[1]
+
                 };
             }
 
@@ -102,7 +130,7 @@ Rectangle {
 
 
 
-            /*
+        /*
             ListModel {
                 id: listModel
                 function applyFilter(text) {
@@ -124,7 +152,7 @@ Rectangle {
             }
             */
 
-            /*
+        /*
             ListView {
                 id: listView
                 width: 100; height: 100
@@ -160,10 +188,16 @@ Rectangle {
             width: 1000
             height: 500
             TableViewColumn {
+                role: "user"
+                title: "User"
+                width: 333
+            }
+            TableViewColumn {
                 role: "ipa"
                 title: "IP Address"
                 width: 333
-                }
+            }
+
             TableViewColumn {
                 role: "isbanned"
                 title: "Is Banned"
@@ -171,7 +205,7 @@ Rectangle {
             }
             onClicked:  {
                 if (ipListModel.get(currentRow)) {
-                     currentIP = ipListModel.get(currentRow)
+                    currentIP = ipListModel.get(currentRow)
                 } else {
                     currentIP = null;
                 }
