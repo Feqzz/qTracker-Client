@@ -42,7 +42,7 @@ ApplicationWindow {
 
     // After loading show initial Login Page
     Component.onCompleted: {
-        stackView.push("qrc:/view/home.qml")
+        stackView.push("qrc:/view/login.qml")
 
     }
 
