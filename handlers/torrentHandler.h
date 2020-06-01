@@ -13,7 +13,7 @@ class TorrentHandler : public QObject, public Handler
     Q_OBJECT
 public:
     explicit TorrentHandler(QObject *parent = nullptr);
-    Q_INVOKABLE QVariantList getTorrentsByName(QString string, int userId, int orderType, bool isAccending);
+    Q_INVOKABLE QVariantList getTorrentsByName(QString string, int userId, int orderType, bool isAccending, QString orderByUsername);
     Q_INVOKABLE bool downloadFile(int, QString, QString);
 
 private:

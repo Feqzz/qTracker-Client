@@ -3,15 +3,24 @@ import QtQuick.Controls 2.3
 import Qt.labs.platform 1.1
 import "../component" as C
 
+/*
+orderTypes:
+0 - completed
+1 - seeders
+2 - leechers
+3 - size
+4 - title
+default - uploadDate (Just enter -1)
+*/
+
 Rectangle {
     id: root
-    //width: 1920
-    //height: 1080
     anchors.fill: parent
     color: "#141414"
 
     property var isAccending: false;
     property var orderType: -1;
+    property var orderByUsername: NULL;
 
     C.NavBar{
         id: navBar
@@ -32,9 +41,7 @@ Rectangle {
 
     Text {
         id: torrentSearchText
-        //anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
-        //anchors.verticalCenterOffset: -300
         y: 300
         text: qsTr("Torrent Search")
         font.pixelSize: 32
@@ -43,9 +50,7 @@ Rectangle {
 
     TextField {
         id: searchField
-        //anchors.verticalCenter: root.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
-        //anchors.verticalCenterOffset: -220
         y: 380
         focus: true
         width: 300
@@ -58,11 +63,9 @@ Rectangle {
 
      ListView {
          id: listView
-
          model: torrentModel
          spacing: 16
          delegate: listDelegate
-         //anchors.verticalCenter: root.verticalCenter
          anchors.horizontalCenter: parent.horizontalCenter
          y: 500
          clip: true
@@ -92,8 +95,6 @@ Rectangle {
                 Row {
                     anchors.right: parent.right
                     spacing: 12
-
-
                     Text {
                         horizontalAlignment: Text.AlignHCenter
                         text: "Size"
@@ -167,14 +168,13 @@ Rectangle {
 
          ScrollBar.vertical: ScrollBar {
              active: true
-             //policy: ScrollBar.AlwaysOn
          }
      }
 
     ListModel {
         id: torrentModel
         function applyFilter(text) {
-            var torrentList = torrentHandler.getTorrentsByName(text, user.getId(), orderType, isAccending);
+            var torrentList = torrentHandler.getTorrentsByName(text, user.getId(), orderType, isAccending, orderByUsername);
             torrentModel.clear();
             for (var title in torrentList) {
                 var valueList = torrentList[title];
@@ -228,6 +228,13 @@ Rectangle {
                             text: uploaderUsername
                             font.pixelSize: 15
                             color: "#c2a800"
+                            C.MouseArea {
+                                anchors.fill: parent
+                                onClicked: {
+                                    orderByUsername = uploaderUsername
+                                    torrentModel.applyFilter(searchField.text)
+                                }
+                            }
                         }
                     }
                 }
@@ -279,18 +286,11 @@ Rectangle {
                         width: 16
                     }
 
-                    /*Text {
-                        id: uploadDateText
-                        text: uploadDate
-                        font.pixelSize: 16
-                        color: "white"
-                    }*/
-
                     Image {
                         anchors.verticalCenter: parent.verticalCenter
                         source: {
-                            if (isDownloaded == 1) { //Did not work without == 1
-                                if (isSeeding == 1) {
+                            if (isDownloaded) { //Did not work without == 1
+                                if (isSeeding) {
                                     "../images/downloadYellow.png"
                                 } else {
                                     "../images/downloadRed.png"
@@ -309,7 +309,6 @@ Rectangle {
                                 publicTorrrentTitle = title;
                                 publicTorrentId = torrentId;
                                 fileDialog.open();
-                                //torrentHandler.downloadFile(torrentId, user.getTorrentPass());
                             }
                         }
                     }

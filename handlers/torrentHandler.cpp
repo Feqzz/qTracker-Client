@@ -150,7 +150,7 @@ std::vector<TorrentHandler::FileStruct> TorrentHandler::getTorrentFiles(int torr
     return fileVector;
 
 }
-QVariantList TorrentHandler::getTorrentsByName(QString string, int userId, int orderType, bool isAccending)
+QVariantList TorrentHandler::getTorrentsByName(QString string, int userId, int orderType, bool isAccending, QString orderByUsername)
 {
     QList<QVariant> list;
     QSqlQuery q = db->query();
@@ -179,8 +179,12 @@ QVariantList TorrentHandler::getTorrentsByName(QString string, int userId, int o
                           "user "
                   "WHERE "
                           "uploader = user.id AND "
-                          "title LIKE :string "
-                  "ORDER BY ";
+                          "title LIKE :string ";
+    if (!orderByUsername.isNull())
+    {
+        queryString += "AND username = :orderByUsername ";
+    }
+    queryString += "ORDER BY ";
     QString arrangedOrder = isAccending ? "" : " DESC";
     switch (orderType)
     {
@@ -201,7 +205,8 @@ QVariantList TorrentHandler::getTorrentsByName(QString string, int userId, int o
     q.prepare(queryString);
     q.bindValue(":string", string);
     q.bindValue(":userId", userId);
-
+    if (!orderByUsername.isNull()) q.bindValue(":orderByUsername", orderByUsername);
+    qDebug() << queryString;
     if(q.exec() && q.size() > 0)
     {
         int i = 0;
