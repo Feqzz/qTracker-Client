@@ -20,5 +20,7 @@
         <file>images/snatches.png</file>
         <file>component/YellowLabel.qml</file>
         <file>component/MouseArea.qml</file>
+        <file>view/adminUser.qml</file>
+        <file>view/adminTorrent.qml</file>
     </qresource>
 </RCC>
