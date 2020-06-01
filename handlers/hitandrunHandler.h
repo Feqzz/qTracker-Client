@@ -12,8 +12,8 @@ public:
     Q_INVOKABLE int getNumberOfHnRs(int userId);
     Q_INVOKABLE QVariantMap getTorrents(int userId);
 private:
-    int minTime = 2880; //Minimum seeding time required in minutes
-    int maxTime = 20160; //Maximum time in minutes the user is given to seed before registered as HnR
+    const int minTime = 2880; //Minimum seeding time required in minutes
+    const int maxTime = 20160; //Maximum time in minutes the user is given to seed before registered as HnR
 };
 
 #endif // HITANDRUNHANDLER_H

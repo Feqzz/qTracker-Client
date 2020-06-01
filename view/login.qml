@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.3
 import QtQuick.Window 2.12
-import "../component" as Components
+import "../component" as C
 
 
 
@@ -23,7 +23,7 @@ Rectangle {
         //Enter login
         signal accepted
 
-        Components.PushButton {
+        C.PushButton {
             id: registerButton
             x: 510
             y: 664
@@ -36,7 +36,7 @@ Rectangle {
                                        emailField.text, inviteField.text, errorMessage)
         }
 
-        Components.PushButton {
+        C.PushButton {
             id: loginButton
             //x: 600
             //y: 393
@@ -49,7 +49,7 @@ Rectangle {
             onClicked: loginUser(usernameField.text, passwordField.text, errorMessage)
         }
 
-        Components.PushButton {
+        C.PushButton {
             id: forgotPasswordButton
             x: 488
             y: 393
@@ -110,6 +110,7 @@ Rectangle {
             }
         }
 
+        /* Replaced with C.YellowLabel
         Label {
             id: inviteLabel
             x: 392
@@ -126,6 +127,28 @@ Rectangle {
                 id: ma
                 hoverEnabled: true
                 anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: {
+                    loginroot.state = "registerState"
+                    errorMessage.text = ""
+                }
+            }
+        }
+        */
+
+        C.YellowLabel {
+            id: inviteLabel
+            x: 392
+            y: 505
+            width: 240
+            height: 22
+            text: qsTr("Have an invite code? Register here..")
+            font.pixelSize: 16
+            anchors.verticalCenterOffset: 64
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: loginButton.verticalCenter
+            C.MouseArea {
+                anchors.fill: parent
                 onClicked: {
                     loginroot.state = "registerState"
                     errorMessage.text = ""
@@ -133,21 +156,19 @@ Rectangle {
             }
         }
 
-        Label {
+        C.YellowLabel {
             id: forgotPasswordLabel
             x: 392
             y: 505
             width: 240
             height: 22
-            color: forgotPasswordMouseArea.containsMouse ? "#d0d046" : "#ffffff"
             text: qsTr("Forgot your password? Click here..")
             font.pixelSize: 16
             anchors.verticalCenterOffset: 64+32
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: loginButton.verticalCenter
-            MouseArea {
+            C.MouseArea {
                 id: forgotPasswordMouseArea
-                hoverEnabled: true
                 anchors.fill: parent
                 onClicked: {
                     loginroot.state = "forgotPasswordState"
@@ -156,22 +177,21 @@ Rectangle {
             }
         }
 
-        Label {
+        C.YellowLabel {
             id: goBackLabel
             x: 280
             y: 429
             width: 240
             height: 22
-            color: goBackMouseArea.containsMouse ? "#d0d046" : "#ffffff"
             text: qsTr("Already have an account? Log in..")
             anchors.horizontalCenter: parent.horizontalCenter
             visible: false
-            MouseArea {
+            C.MouseArea {
                 id: goBackMouseArea
                 visible: false
                 width: 240
                 height: 22
-                hoverEnabled: true
+                anchors.fill: parent
                 onClicked: {
                     loginroot.state = "base state"
                 }

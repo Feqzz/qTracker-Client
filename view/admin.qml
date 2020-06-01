@@ -52,13 +52,10 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: 32
 
-            Label {
+            C.YellowLabel {
                 id: userSearchLabel
-                color: maUserSearchLabel.containsMouse ? "#d0d046" : "#ffffff"
                 text: "User Search"
-                MouseArea {
-                    id: maUserSearchLabel
-                    hoverEnabled: true
+                C.MouseArea {
                     anchors.fill: parent
                     onClicked: {
                         torrentModel = false;
@@ -70,13 +67,10 @@ Rectangle {
                 }
             }
 
-            Label {
+            C.YellowLabel {
                 id: torrentSearchLabel
-                color: maTorrentSearchLabel.containsMouse ? "#d0d046" : "#ffffff"
                 text: "Torrent Search"
-                MouseArea {
-                    id: maTorrentSearchLabel
-                    hoverEnabled: true
+                C.MouseArea {
                     anchors.fill: parent
                     onClicked: {
                         banUser.enabled = false;
@@ -87,8 +81,6 @@ Rectangle {
                         userTableView.visible = false;
                         torrentTableView.visible = true;
                         torrentListModel.applyFilter(searchField.text)
-
-
                     }
                 }
             }

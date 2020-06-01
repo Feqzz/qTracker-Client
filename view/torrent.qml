@@ -10,6 +10,9 @@ Rectangle {
     anchors.fill: parent
     color: "#141414"
 
+    property var isAccending: true;
+    property var orderType: 0;
+
     C.NavBar{
         id: navBar
     }
@@ -95,6 +98,14 @@ Rectangle {
                         source: "../images/snatches.png"
                         width: 16
                         height: 16
+                        C.MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                isAccending = !isAccending
+                                orderType = 0
+                                torrentModel.applyFilter(searchField.text)
+                            }
+                        }
                     }
 
                     Image {
@@ -102,6 +113,14 @@ Rectangle {
                         source: "../images/downloadWhiteUp.png"
                         width: 16
                         height: 16
+                        C.MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                isAccending = !isAccending
+                                orderType = 1
+                                torrentModel.applyFilter(searchField.text)
+                            }
+                        }
                     }
 
                     Image {
@@ -109,6 +128,14 @@ Rectangle {
                         source: "../images/downloadWhiteDown.png"
                         width: 16
                         height: 16
+                        C.MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                isAccending = !isAccending
+                                orderType = 2
+                                torrentModel.applyFilter(searchField.text)
+                            }
+                        }
                     }
 
                     Text {
@@ -131,7 +158,7 @@ Rectangle {
     ListModel {
         id: torrentModel
         function applyFilter(text) {
-            var torrentList = torrentHandler.getTorrentsByName(text, user.getId());
+            var torrentList = torrentHandler.getTorrentsByName(text, user.getId(), orderType, isAccending);
             torrentModel.clear();
             for (var title in torrentList) {
                 var valueList = torrentList[title];
@@ -197,7 +224,7 @@ Rectangle {
                     Text {
                         horizontalAlignment: Text.AlignHCenter
                         id: sizeText
-                        text: getSiPrefix(size)
+                        text: getGiPrefix(size)
                         width: 150
                         font.pixelSize: 16
                         color: "cadetblue"
@@ -259,7 +286,7 @@ Rectangle {
                         width: maDownloadImage.containsMouse ? 34 : 32
                         height: maDownloadImage.containsMouse ? 34 : 32
 
-                        MouseArea {
+                        C.MouseArea {
                             id: maDownloadImage
                             anchors.fill: parent
                             onClicked: {
@@ -283,7 +310,7 @@ Rectangle {
         }
 
      Component.onCompleted: {
-         torrentModel.applyFilter("");
+         torrentModel.applyFilter(""); //add searchFiled.text??
          setTitle("qTracker :: Torrents");
      }
 }

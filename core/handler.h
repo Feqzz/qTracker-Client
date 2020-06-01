@@ -9,6 +9,7 @@ class Handler
 {
 public:
     Handler();
+    ~Handler();
     Database* db;
 };
 

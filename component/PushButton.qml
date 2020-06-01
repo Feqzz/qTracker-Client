@@ -39,6 +39,13 @@ T.Button {
         elide: Text.ElideRight
     }
 
+    MouseArea {
+        hoverEnabled: true
+        anchors.fill: parent
+        cursorShape: Qt.PointingHandCursor
+        onClicked: control.clicked()
+    }
+
     states: [
         State {
             name: "normal"

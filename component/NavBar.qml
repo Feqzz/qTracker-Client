@@ -2,12 +2,12 @@ import QtQuick 2.0
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.12
+import "../component" as C
 
 Rectangle {
-    id: root
+    id: rootNav
     anchors.fill: parent
     color: "#141414"
-
 
     Text {
         id: title
@@ -19,7 +19,7 @@ Rectangle {
         anchors.top: parent.top
         anchors.topMargin: 50
         font.pixelSize: 36
-        MouseArea {
+        C.MouseArea {
             id: maTitle
             hoverEnabled: true
             anchors.fill: parent
@@ -35,13 +35,10 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: title.verticalCenter
 
-        Label {
+        C.YellowLabel {
             id: profileLabel
-            color: maProfileLabel.containsMouse ? "#d0d046" : "#ffffff"
             text: "Profile"
-            MouseArea {
-                id: maProfileLabel
-                hoverEnabled: true
+            C.MouseArea {
                 anchors.fill: parent
                 onClicked: changePage("profile");
             }
@@ -66,17 +63,13 @@ Rectangle {
             text: "Down: " + getDownload()
         }
 
-        Label {
+        C.YellowLabel {
             id: hnrsLabel
-            color: maHnRsLabel.containsMouse ? "#d0d046" : "#ffffff"
             text: "HnRs: " + hitAndRunHandler.getNumberOfHnRs(user.getId())
-            MouseArea {
-                id: maHnRsLabel
-                hoverEnabled: true
+            C.MouseArea {
                 anchors.fill: parent
                 onClicked: changePage("hitAndRun")
             }
-
         }
 
         Label {
@@ -85,67 +78,46 @@ Rectangle {
             text: "Points: " + getPoints()
         }
 
-        Label {
-            id: donateLabel
-            color: "#ffffff"
-            text: qsTr("Donate")
-        }
-
-        Label {
+        C.YellowLabel {
             id: rulesLabel
-            color: maRulesLabel.containsMouse ? "#d0d046" : "#ffffff"
             text: qsTr("Rules")
-            MouseArea {
-                id: maRulesLabel
-                hoverEnabled: true
+            C.MouseArea {
                 anchors.fill: parent
                 onClicked: changePage("rules");
             }
         }
 
-        Label {
+        C.YellowLabel {
             id: torrentsLabel
-            color: maTorrentLabel.containsMouse ? "#d0d046" : "#ffffff"
             text: qsTr("Torrents")
-            MouseArea {
-                id: maTorrentLabel
-                hoverEnabled: true
+            C.MouseArea {
                 anchors.fill: parent
                 onClicked: changePage("torrent");
             }
         }
 
-        Label {
+        C.YellowLabel {
             id: inviteLabel
-            color: maInviteLabel.containsMouse ? "#d0d046" : "#ffffff"
             text: qsTr("Invite")
-            MouseArea {
-                id: maInviteLabel
-                hoverEnabled: true
+            C.MouseArea {
                 anchors.fill: parent
                 onClicked: changePage("invite");
             }
         }
 
-        Label {
+        C.YellowLabel {
             id: uploadLabel
-            color: maUploadLabel.containsMouse ? "#d0d046" : "#ffffff"
             text: qsTr("Upload")
-            MouseArea {
-                id: maUploadLabel
-                hoverEnabled: true
+            C.MouseArea {
                 anchors.fill: parent
                 onClicked: changePage("upload");
             }
         }
 
-        Label {
+        C.YellowLabel {
             id: adminLabel
-            color: maAdminLabel.containsMouse ? "#d0d046" : "#ffffff"
             text: qsTr("Admin")
-            MouseArea {
-                id: maAdminLabel
-                hoverEnabled: true
+            C.MouseArea {
                 anchors.fill: parent
                 onClicked: changePage("admin");
             }

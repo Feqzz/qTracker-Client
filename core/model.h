@@ -9,6 +9,7 @@ class Model
 {
 public:
     Model();
+    ~Model();
     Database* db;
 };
 
