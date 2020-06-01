@@ -10,8 +10,8 @@ Rectangle {
     anchors.fill: parent
     color: "#141414"
 
-    property var isAccending: true;
-    property var orderType: 0;
+    property var isAccending: false;
+    property var orderType: -1;
 
     C.NavBar{
         id: navBar
@@ -80,6 +80,14 @@ Rectangle {
                     width: 350
                     text: "Title"
                     color: "white"
+                    C.MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            isAccending = !isAccending
+                            orderType = 4
+                            torrentModel.applyFilter(searchField.text)
+                        }
+                    }
                 }
                 Row {
                     anchors.right: parent.right
@@ -91,6 +99,14 @@ Rectangle {
                         text: "Size"
                         color: "white"
                         width: 150
+                        C.MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                isAccending = !isAccending
+                                orderType = 3
+                                torrentModel.applyFilter(searchField.text)
+                            }
+                        }
                     }
 
                     Image {
@@ -168,16 +184,16 @@ Rectangle {
 
         function createListElement(title, valueList) {
             return {
-                title: title,
-                uploaderUsername: valueList[0],
-                leechers: valueList[1],
-                seeders: valueList[2],
-                completed: valueList[3],
-                uploadDate: valueList[4],
-                torrentId: valueList[5],
-                isDownloaded: valueList[6],
-                isSeeding: valueList[7],
-                size: valueList[8]
+                title: valueList[0],
+                uploaderUsername: valueList[1],
+                leechers: valueList[2],
+                seeders: valueList[3],
+                completed: valueList[4],
+                uploadDate: valueList[5],
+                torrentId: valueList[6],
+                isDownloaded: valueList[7],
+                isSeeding: valueList[8],
+                size: valueList[9]
             };
         }
     }

@@ -1,5 +1,5 @@
 import QtQuick 2.0
 
 MouseArea {
-    cursorShape: Qt.WaitCursor
+    cursorShape: Qt.PointingHandCursor
 }

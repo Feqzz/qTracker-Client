@@ -150,9 +150,9 @@ std::vector<TorrentHandler::FileStruct> TorrentHandler::getTorrentFiles(int torr
     return fileVector;
 
 }
-QVariantMap TorrentHandler::getTorrentsByName(QString string, int userId, int orderType, bool isAccending)
+QVariantList TorrentHandler::getTorrentsByName(QString string, int userId, int orderType, bool isAccending)
 {
-    QMap<QString, QVariant> map;
+    QList<QVariant> list;
     QSqlQuery q = db->query();
     string = "%" + string + "%";
     QString queryString = "SELECT "
@@ -190,28 +190,37 @@ QVariantMap TorrentHandler::getTorrentsByName(QString string, int userId, int or
                 break;
         case 2: queryString += "leechers";
                 break;
+        case 3: queryString += "size";
+                break;
+        case 4: queryString += "title";
+                break;
+        default: queryString += "uploadDate";
+                break;
     }
     queryString += arrangedOrder;
-    qDebug() << queryString;
     q.prepare(queryString);
     q.bindValue(":string", string);
     q.bindValue(":userId", userId);
 
     if(q.exec() && q.size() > 0)
     {
+        int i = 0;
         while (q.next()) {
-            QVariantList values;
-            values << q.value(1).toString() << q.value(2).toInt() <<
+            list.append(i);
+            QList<QVariant> values;
+            values << q.value(0).toString() << q.value(1).toString() <<
+                      q.value(2).toInt() <<
                       q.value(3).toInt() << q.value(4).toInt() <<
                       q.value(5).toString() << q.value(6).toInt() <<
                       q.value(7).toBool() << q.value(8).toBool() <<
                       q.value(9).toULongLong();
-            map[q.value(0).toString()] = values;
+            list[i] = values;
+            i++;
         }
     }
     else
     {
         qDebug() << "Failed get Torrents query";
     }
-    return map;
+    return list;
 }
