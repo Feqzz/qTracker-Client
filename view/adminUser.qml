@@ -181,7 +181,6 @@ Rectangle {
                 } else {
                     currentUser = null;
                 }
-                removeButton.enabled = true;
             }
 
             model: userListModel
@@ -201,7 +200,6 @@ Rectangle {
                     userListModel.applyFilter(searchField.text);
                     userTableView.focus = true;
                 }
-                enabled: false
             }
 
             C.PushButton {
