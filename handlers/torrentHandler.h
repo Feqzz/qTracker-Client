@@ -13,7 +13,7 @@ class TorrentHandler : public QObject, public Handler
     Q_OBJECT
 public:
     explicit TorrentHandler(QObject *parent = nullptr);
-    Q_INVOKABLE QVariantMap getTorrentsByName(QString, int); //Empty String for the top 10 torrents
+    Q_INVOKABLE QVariantMap getTorrentsByName(QString, int, int orderType, bool isAccending); //Empty String for the top 10 torrents
     Q_INVOKABLE bool downloadFile(int, QString, QString);
 
 private:

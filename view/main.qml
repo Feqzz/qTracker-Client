@@ -42,7 +42,7 @@ ApplicationWindow {
 
     // After loading show initial Login Page
     Component.onCompleted: {
-        stackView.push("qrc:/view/login.qml")
+        stackView.push("qrc:/view/home.qml")
 
     }
 
@@ -253,7 +253,6 @@ ApplicationWindow {
                 label.color = "#e90000";
                 label.text = "Wrong old password";
             }
-
         } else {
             label.color = "#e90000";
             label.text = "The new password didn't match";

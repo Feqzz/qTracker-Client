@@ -150,75 +150,51 @@ std::vector<TorrentHandler::FileStruct> TorrentHandler::getTorrentFiles(int torr
     return fileVector;
 
 }
-QVariantMap TorrentHandler::getTorrentsByName(QString string, int userId)
+QVariantMap TorrentHandler::getTorrentsByName(QString string, int userId, int orderType, bool isAccending)
 {
     QMap<QString, QVariant> map;
     QSqlQuery q = db->query();
     string = "%" + string + "%";
-    if (string.isEmpty())
+    QString queryString = "SELECT "
+                          "title, "
+                          "username, "
+                          "(SELECT IFNULL(SUM(isActive), 0) FROM clientTorrents AS ct WHERE ct.torrentId = torrent.id "
+                          "AND ct.left > 0) AS 'leechers', "
+                          "(SELECT IFNULL(SUM(isActive), 0) FROM clientTorrents AS ct WHERE ct.torrentId = torrent.id "
+                          "AND (TIMESTAMPDIFF(MINUTE, ct.lastActivity, NOW()) < 60)) AS 'seeders', "
+                          "(SELECT IFNULL(SUM(ct.completed), 0) FROM clientTorrents AS ct WHERE ct.torrentId = torrent.id) "
+                          "AS 'completed', "
+                          "uploadDate, "
+                          "torrent.id, "
+                          "IF((SELECT EXISTS(SELECT * FROM clientTorrents AS ct, client AS c, "
+                          "ipAddress AS ip WHERE ct.clientId = c.id AND c.ipaID = ip.id AND ip.userId = :userId "
+                          "AND ct.torrentId = torrent.id)), 1, 0) AS 'downloaded', "
+                          "IF((SELECT EXISTS(SELECT * FROM clientTorrents AS ct, "
+                          "client AS c, ipAddress AS ip WHERE ct.clientId = c.id AND c.ipaID = ip.id AND ip.userId = :userId "
+                          "AND ct.torrentId = torrent.id AND ct.isActive = 1 "
+                          "AND (TIMESTAMPDIFF(MINUTE, ct.lastActivity, NOW()) < 60))), 1, 0) AS 'seeding', "
+                          "(SELECT SUM(length) FROM torrentFiles WHERE torrentId = torrent.id) AS 'size' "
+                  "FROM "
+                          "torrent, "
+                          "user "
+                  "WHERE "
+                          "uploader = user.id AND "
+                          "title LIKE :string "
+                  "ORDER BY ";
+    QString arrangedOrder = isAccending ? "" : " DESC";
+    switch (orderType)
     {
-        q.prepare
-        (
-            "SELECT "
-                    "torrent.id, "
-                    "title, "
-                    "username, "
-                    "leechers, "
-                    "seeders, "
-                    "completed, "
-                    "uploadDate, "
-                    "torrent.id, "
-                    "IF((SELECT EXISTS(SELECT * FROM clientTorrents AS ct, client AS c,"
-                    " ipAddress AS ip WHERE ct.clientId = c.id AND c.ipaID = ip.id AND ip.userId = :userId"
-                    " AND ct.torrentId = torrent.id)), 1, 0) AS 'downloaded', "
-                    "	IF((SELECT IF(ct.isActive = 1, 1, 0) FROM clientTorrents AS ct,"
-                    " client AS c, ipAddress AS ip WHERE ct.clientId = c.id AND c.ipaID = ip.id"
-                    " AND ip.userId = :userId AND ct.torrentId = torrent.id LIMIT 1), 1, 0) AS 'seeding',"
-                    " (SELECT SUM(length) FROM torrentFiles WHERE torrentId = torrent.id) AS 'size' "
-            "FROM "
-                    "torrent, "
-                    "user "
-            "WHERE "
-                    "uploader = user.id "
-            "ORDER BY completed"
-        );
+        case 0: queryString += "completed";
+                break;
+        case 1: queryString += "seeders";
+                break;
+        case 2: queryString += "leechers";
+                break;
     }
-    else
-    {
-        q.prepare
-        (
-            "SELECT "
-                    "title, "
-                    "username, "
-                    //"leechers, "
-                    "(SELECT IFNULL(SUM(isActive), 0) FROM clientTorrents AS ct WHERE ct.torrentId = torrent.id "
-                    "AND ct.left > 0) AS 'leechers', "
-                    //"seeders, "
-                    "(SELECT IFNULL(SUM(isActive), 0) FROM clientTorrents AS ct WHERE ct.torrentId = torrent.id "
-                    "AND (TIMESTAMPDIFF(MINUTE, ct.lastActivity, NOW()) < 60)) AS 'seeders', "
-                    //"completed, "
-                    "(SELECT IFNULL(SUM(ct.completed), 0) FROM clientTorrents AS ct WHERE ct.torrentId = torrent.id) "
-                    "AS 'completed', "
-                    "uploadDate, "
-                    "torrent.id, "
-                    "IF((SELECT EXISTS(SELECT * FROM clientTorrents AS ct, client AS c, "
-                    "ipAddress AS ip WHERE ct.clientId = c.id AND c.ipaID = ip.id AND ip.userId = :userId "
-                    "AND ct.torrentId = torrent.id)), 1, 0) AS 'downloaded', "
-                    "IF((SELECT EXISTS(SELECT * FROM clientTorrents AS ct, "
-                    "client AS c, ipAddress AS ip WHERE ct.clientId = c.id AND c.ipaID = ip.id AND ip.userId = :userId "
-                    "AND ct.torrentId = torrent.id AND ct.isActive = 1 "
-                    "AND (TIMESTAMPDIFF(MINUTE, ct.lastActivity, NOW()) < 60))), 1, 0) AS 'seeding', "
-                    "(SELECT SUM(length) FROM torrentFiles WHERE torrentId = torrent.id) AS 'size' "
-            "FROM "
-                    "torrent, "
-                    "user "
-            "WHERE "
-                    "uploader = user.id AND "
-                    "title LIKE :string "
-            "ORDER BY completed"
-        );
-        q.bindValue(":string", string);
-    }
+    queryString += arrangedOrder;
+    qDebug() << queryString;
+    q.prepare(queryString);
+    q.bindValue(":string", string);
     q.bindValue(":userId", userId);
 
     if(q.exec() && q.size() > 0)

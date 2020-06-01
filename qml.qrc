@@ -18,5 +18,7 @@
         <file>images/downloadWhiteUp.png</file>
         <file>images/downloadWhiteDown.png</file>
         <file>images/snatches.png</file>
+        <file>component/YellowLabel.qml</file>
+        <file>component/MouseArea.qml</file>
     </qresource>
 </RCC>
