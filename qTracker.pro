@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     config.cpp \
+    config.cpp \
     core/database.cpp \
     core/handler.cpp \
     core/model.cpp \
