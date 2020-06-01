@@ -46,6 +46,16 @@ Rectangle {
         text: qsTr("Torrent Search")
         font.pixelSize: 32
         color: "#ffffff"
+        C.MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                isAccending = false
+                orderType = -1
+                orderByUsername = null
+                searchField.text = ""
+                torrentModel.applyFilter("")
+            }
+        }
     }
 
     TextField {
