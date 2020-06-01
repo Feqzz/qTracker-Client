@@ -109,6 +109,7 @@ CREATE TABLE IF NOT EXISTS userTorrentTotals
     userId INT NOT NULL,
     totalDownloaded BIGINT UNSIGNED NOT NULL,
     totalUploaded BIGINT UNSIGNED NOT NULL,
+    timeActive INT NOT NULL DEFAULT 0,
     FOREIGN KEY (torrentId) REFERENCES torrent(id),
     FOREIGN KEY (userId) REFERENCES user(id),
     PRIMARY KEY (torrentId,userId)
@@ -137,7 +138,6 @@ CREATE TABLE IF NOT EXISTS clientTorrents
     lastEvent INT NOT NULL,
     timeCreated DATETIME DEFAULT CURRENT_TIMESTAMP,
     lastActivity DATETIME DEFAULT CURRENT_TIMESTAMP,
-    timeActive INT NOT NULL DEFAULT 0,
     UNIQUE KEY (torrentId, clientId),
     FOREIGN KEY (torrentId) REFERENCES torrent(id),
     FOREIGN KEY (clientId) REFERENCES client(id)

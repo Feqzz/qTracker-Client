@@ -119,7 +119,7 @@ Rectangle {
             text: qsTr("Admin")
             C.MouseArea {
                 anchors.fill: parent
-                onClicked: changePage("admin");
+                onClicked: changePage("adminUser");
             }
             visible: checkPrivilege()
         }

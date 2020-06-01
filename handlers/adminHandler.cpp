@@ -23,6 +23,66 @@ bool AdminHandler::changeLeechingPrivilege(int userId, bool canLeech)
     return q.exec() ? true : false;
 }
 
+bool AdminHandler::changeIPPrivilege(int ipId, bool banned)
+{
+    QSqlQuery q = db->query();
+    qDebug() << banned;
+    q.prepare("UPDATE ipAddress SET isBanned = :banned WHERE id = :id");
+    q.bindValue(":banned", banned);
+    q.bindValue(":id", ipId);
+    return q.exec() ? true : false;
+}
+QVariantMap AdminHandler::getIPsByUser(QString string)
+{
+    QMap<QString, QVariant> map;
+    QSqlQuery q = db->query();
+    string = "%"+string+"%";
+    if (string.isEmpty())
+    {
+        q.prepare("SELECT ipAddress.id,ipa,isBanned,username FROM ipAddress,user WHERE user.id = ipAddress.userId");
+    }
+    else
+    {
+        q.prepare("SELECT ipAddress.id,ipa,isBanned,username FROM ipAddress,user WHERE user.id = ipAddress.userId AND username LIKE :string");
+        q.bindValue(":string", string);
+    }
+
+    if(q.exec() && q.size() > 0)
+    {
+        while (q.next()) {
+            QVariantList values;
+            values << q.value(1).toString() << q.value(2).toString()<< q.value(3).toString();
+            map[q.value(0).toString()] = values;
+        }
+    }
+    return map;
+}
+QVariantMap AdminHandler::getIPsByIP(QString string)
+{
+    QMap<QString, QVariant> map;
+    QSqlQuery q = db->query();
+    string = "%"+string+"%";
+    if (string.isEmpty())
+    {
+        q.prepare("SELECT ipAddress.id,ipa,isBanned,username FROM ipAddress,user WHERE user.id = ipAddress.userId");
+    }
+    else
+    {
+        q.prepare("SELECT ipAddress.id,ipa,isBanned,username FROM ipAddress,user WHERE user.id = ipAddress.userId AND ipa LIKE :string");
+        q.bindValue(":string", string);
+    }
+
+    if(q.exec() && q.size() > 0)
+    {
+        while (q.next()) {
+            QVariantList values;
+            values << q.value(1).toString() << q.value(2).toString()<< q.value(3).toString();
+            map[q.value(0).toString()] = values;
+        }
+    }
+    return map;
+}
+
 QVariantMap AdminHandler::getUsersByName(QString string)
 {
     QMap<QString, QVariant> map;

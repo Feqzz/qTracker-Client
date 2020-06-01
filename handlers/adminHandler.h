@@ -15,6 +15,9 @@ public:
     Q_INVOKABLE bool changeLeechingPrivilege(int userId, bool canLeech);
     Q_INVOKABLE QVariantMap getUsersByName(QString); //Empty string for all users
     Q_INVOKABLE QVariantMap getTorrentsByTitle(QString);
+    Q_INVOKABLE QVariantMap getIPsByIP(QString);
+    Q_INVOKABLE QVariantMap getIPsByUser(QString);
+    Q_INVOKABLE bool changeIPPrivilege(int ipId, bool banned);
 };
 
 #endif // ADMINHANDLER_H
