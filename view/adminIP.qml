@@ -14,7 +14,7 @@ Rectangle {
         id: navBar
     }
 
-    property var currentUser;
+    property var currentIP;
 
     Column {
         id: column
@@ -75,15 +75,15 @@ Rectangle {
             placeholderText: "Search"
             selectByMouse: true
             onTextChanged: {
-                    userListModel.applyFilter(text);
+                    ipListModel.applyFilter(text);
             }
         }
 
         ListModel {
-            id: userListModel
+            id: ipListModel
             function applyFilter(text) {
-                var userList = adminHandler.getUsersByName(text);
-                userListModel.clear();
+                var userList = adminHandler.getIPsByIP(text);
+                ipListModel.clear();
                 for (var userId in userList) {
                     var valueList = userList[userId];
                     append(createListElement(userId, valueList));
@@ -93,9 +93,8 @@ Rectangle {
             function createListElement(userId, valueList) {
                 return {
                     id: userId,
-                    username: valueList[0],
-                    privilege: valueList[1],
-                    canLeech: valueList[2]
+                    ipa: valueList[0],
+                    isbanned: valueList[1]
                 };
             }
 
@@ -161,30 +160,24 @@ Rectangle {
             width: 1000
             height: 500
             TableViewColumn {
-                role: "username"
-                title: "Username"
+                role: "ipa"
+                title: "IP Address"
                 width: 333
                 }
             TableViewColumn {
-                role: "privilege"
-                title: "Privilege"
-                width: 333
-            }
-            TableViewColumn {
-                role: "canLeech"
-                title: "Leeching privilege"
+                role: "isbanned"
+                title: "Is Banned"
                 width: 333
             }
             onClicked:  {
-                if (userListModel.get(currentRow)) {
-                     currentUser = userListModel.get(currentRow)
+                if (ipListModel.get(currentRow)) {
+                     currentIP = ipListModel.get(currentRow)
                 } else {
-                    currentUser = null;
+                    currentIP = null;
                 }
-                removeButton.enabled = true;
             }
 
-            model: userListModel
+            model: ipListModel
         }
 
 
@@ -196,60 +189,27 @@ Rectangle {
                 id: banUser
                 text: "Ban"
                 onClicked: {
-                    adminHandler.changeUserPrivilege(currentUser.id, -1);
-                    adminHandler.changeLeechingPrivilege(currentUser.id, 0);
-                    userListModel.applyFilter(searchField.text);
+                    adminHandler.changeIPPrivilege(currentIP.id, 1);
+                    ipListModel.applyFilter(searchField.text);
                     userTableView.focus = true;
                 }
-                enabled: false
             }
 
             C.PushButton {
                 id: unbanUser
                 text: "Unban"
                 onClicked: {
-                    adminHandler.changeUserPrivilege(currentUser.id, 0);
-                    adminHandler.changeLeechingPrivilege(currentUser.id, 1);
-                    userListModel.applyFilter(searchField.text);
+                    adminHandler.changeIPPrivilege(currentIP.id, 0);
+                    ipListModel.applyFilter(searchField.text);
                     userTableView.focus = true;
                 }
             }
 
-            C.PushButton {
-                id: promoteUser
-                text: "Promote"
-                onClicked: {
-                    adminHandler.changeUserPrivilege(currentUser.id, 1);
-                    userListModel.applyFilter(searchField.text);
-                   userTableView.focus = true;
-
-                }
-            }
-
-            C.PushButton {
-                id: demoteUser
-                text: "Demote"
-                onClicked: {
-                    adminHandler.changeUserPrivilege(currentUser.id, 0);
-                    userListModel.applyFilter(searchField.text);
-                    userTableView.focus = true;
-                }
-            }
-
-            C.PushButton {
-                id: removeButton
-                text: "Remove"
-                onClicked: {
-                        adminHandler.removeUser(currentUser.id);
-                        userListModel.applyFilter(searchField.text);
-                        userTableView.focus = true;
-                }
-            }
         }
     }
 
     Component.onCompleted: {
-        userListModel.applyFilter(searchField.text);
+        ipListModel.applyFilter(searchField.text);
         setTitle("qTracker :: Admin");
     }
 }

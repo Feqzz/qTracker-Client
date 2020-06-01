@@ -22,5 +22,6 @@
         <file>component/MouseArea.qml</file>
         <file>view/adminUser.qml</file>
         <file>view/adminTorrent.qml</file>
+        <file>view/adminIP.qml</file>
     </qresource>
 </RCC>

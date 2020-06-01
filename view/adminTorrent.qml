@@ -43,6 +43,18 @@ Rectangle {
             }
 
             C.YellowLabel {
+                id: ipSearchLabel
+                text: "IP Search"
+                C.MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        changePage("adminIP")
+
+                    }
+                }
+            }
+
+            C.YellowLabel {
                 id: torrentSearchLabel
                 text: "Torrent Search"
                 C.MouseArea {
