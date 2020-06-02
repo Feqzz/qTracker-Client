@@ -181,7 +181,7 @@ Rectangle {
                    Text {
                        horizontalAlignment: Text.AlignHCenter
                        id: uploadedText
-                       text: getSiPrefix(uploaded)
+                       text: getGiPrefix(uploaded)
                        font.pixelSize: 16
                        color: "white"
                        width: 100
@@ -190,7 +190,7 @@ Rectangle {
                    Text {
                        horizontalAlignment: Text.AlignHCenter
                        id: downloadedText
-                       text: getSiPrefix(downloaded)
+                       text: getGiPrefix(downloaded)
                        font.pixelSize: 16
                        color: "white"
                        width: 100

@@ -146,7 +146,7 @@ ApplicationWindow {
 
     function getDownload() {
         var size = user.getDownload();
-        return getSiPrefix(size);
+        return getGiPrefix(size);
     }
 
     function getSiPrefix(size) {

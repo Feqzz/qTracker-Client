@@ -159,7 +159,7 @@ QVariantList TorrentHandler::getTorrentsByName(QString string, int userId, int o
                           "title, "
                           "username, "
                           "(SELECT IFNULL(SUM(isActive), 0) FROM clientTorrents AS ct WHERE ct.torrentId = torrent.id "
-                          "AND ct.left > 0) AS 'leechers', "
+                          "AND ct.left > 0 AND (TIMESTAMPDIFF(MINUTE, ct.lastActivity, NOW()) < 60)) AS 'leechers', "
                           "(SELECT IFNULL(SUM(isActive), 0) FROM clientTorrents AS ct WHERE ct.torrentId = torrent.id "
                           "AND (TIMESTAMPDIFF(MINUTE, ct.lastActivity, NOW()) < 60)) AS 'seeders', "
                           "(SELECT IFNULL(SUM(ct.completed), 0) FROM clientTorrents AS ct WHERE ct.torrentId = torrent.id) "

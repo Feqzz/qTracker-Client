@@ -13,7 +13,7 @@ public:
     Q_INVOKABLE QVariantMap getTorrents(int userId);
 private:
     const int minTime = 2880; //Minimum seeding time required in minutes
-    const int maxTime = 20160; //Maximum time in minutes the user is given to seed before registered as HnR
+    const int maxTime = 20160; //Maximum time in minutes the user is given to seed before registered as HnR. Not in use atm
 };
 
 #endif // HITANDRUNHANDLER_H
