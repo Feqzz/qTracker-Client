@@ -52,7 +52,7 @@ QVariantMap HitAndRunHandler::getTorrents(int userId)
                 "utt.totalDownloaded, "
                 "(utt.totalUploaded/utt.totalDownloaded) AS ratio, "
                 "(SELECT IFNULL(SUM(isActive), 0) FROM clientTorrents AS ct WHERE ct.torrentId = t.id "
-                "AND (TIMESTAMPDIFF(MINUTE, ct.lastActivity, NOW()) < 60)) AS 'seeders', "
+                "AND (TIMESTAMPDIFF(MINUTE, ct.lastActivity, NOW()) < 60) AND ct.downloaded > 0) AS 'seeders', "
                 "(SELECT IFNULL(SUM(isActive), 0) FROM clientTorrents AS ct WHERE ct.torrentId = t.id "
                 "AND ct.left > 0 AND (TIMESTAMPDIFF(MINUTE, ct.lastActivity, NOW()) < 60)) AS 'leechers', "
                 "ct.lastActivity, "
