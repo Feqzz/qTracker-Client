@@ -72,7 +72,7 @@ Rectangle {
                 anchors.verticalCenter: announceUrlRectangle.verticalCenter
                 anchors.horizontalCenter: announceUrlRectangle.horizontalCenter
                 color: "#ffffff"
-                text: "http://www.tarves.no:1337/" + user.getTorrentPass() + "/announce"
+                text: "http://www.feqzz.no:1337/" + user.getTorrentPass() + "/announce"
                 selectByKeyboard: true
                 selectByMouse: true
                 selectedTextColor: "#d0d046"

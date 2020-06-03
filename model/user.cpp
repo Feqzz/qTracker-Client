@@ -76,12 +76,12 @@ double User::getRatio()
     return double(upload/1000)/double(download/1000);
 }
 
-int User::getUpload()
+qint64 User::getUpload()
 {
     return upload;
 }
 
-int User::getDownload()
+qint64 User::getDownload()
 {
     return download;
 }

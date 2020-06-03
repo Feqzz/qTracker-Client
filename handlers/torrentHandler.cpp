@@ -5,7 +5,6 @@ TorrentHandler::TorrentHandler(QObject *parent) : QObject(parent)
 
 }
 
-
 bool TorrentHandler::downloadFile(int torrentId, QString torrentPass, QString url)
 {
     QString title;
@@ -66,8 +65,6 @@ bool TorrentHandler::downloadFile(int torrentId, QString torrentPass, QString ur
                 info.insert(std::pair<std::string,bencode::data>("private",privateTorrent==1));
             }
 
-            //bencode::dict all;
-            //Multiple files mode
             if(t.size()>1)
             {
                 std::vector<bencode::data> fileList;
@@ -89,13 +86,10 @@ bool TorrentHandler::downloadFile(int torrentId, QString torrentPass, QString ur
             else
             {
                 info.insert(std::pair<std::string,bencode::data>("length",t.at(0).length));
-                //info.insert(std::pair<std::string,bencode::data>("name",t.at(0).path.at(0).toStdString()));
             }
             all.insert(std::pair<std::string,bencode::data>("info",info));
             std::ofstream ofs;
-            //ofs.open((title + ".torrent").toUtf8());
             ofs.open(url.mid(7).toUtf8());
-            //qDebug() << url.mid(7).toUtf8();
             bencode::encode(ofs, all);
             ofs.close();
             return true;
@@ -104,7 +98,6 @@ bool TorrentHandler::downloadFile(int torrentId, QString torrentPass, QString ur
     else
     {
         qDebug() << q.lastError();
-
     }
     return false;
 

@@ -12,8 +12,8 @@ public:
     Q_INVOKABLE double getRatio();
     Q_INVOKABLE bool changePassword(QString, QString);
     Q_INVOKABLE int getId();
-    Q_INVOKABLE int getDownload();
-    Q_INVOKABLE int getUpload();
+    Q_INVOKABLE qint64 getDownload();
+    Q_INVOKABLE qint64 getUpload();
     Q_INVOKABLE QString getUsername();
     Q_INVOKABLE int getPrivilege();
     Q_INVOKABLE QString getEmail();

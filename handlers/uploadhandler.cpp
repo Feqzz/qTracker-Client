@@ -86,12 +86,10 @@ bool UploadHandler::insertTorrentData(std::vector<QVariant> torrentVars,std::vec
 {
     db->startTransaction();
     QSqlQuery q = db->query();
-    //qDebug() << torrentQuery;
     q.prepare(torrentQuery);
 
     for(size_t x=0;x<torrentVars.size();x++)
     {
-       // qDebug() << torrentVars.at(x);
         q.bindValue(x, torrentVars.at(x));
     }
     bool torrentQuerySuccess = q.exec();
@@ -156,7 +154,6 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
     sqlVariables.push_back(title);
     sqlVariables.push_back(fileName);
 
-    //These two queries are not finished, String grows according to dict input
     QString torrentQuery = "INSERT INTO torrent (uploader, title, name";
     QString torrentValues = "VALUES (?,?,?";
 
@@ -195,7 +192,6 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
         sqlVariables.push_back(QString::fromStdString(boost::get<bencode::string>(iterator->second)));
         torrentValues+=",?";
         torrentQuery+=",createdByClient";
-        //std::cout << "Created By: " << value << "\n";
     }
 
     iterator = dict.find("encoding");
@@ -205,7 +201,6 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
         sqlVariables.push_back(QString::fromStdString(boost::get<bencode::string>(iterator->second)));
         torrentQuery+=",encoding";
         torrentValues+=",?";
-        //std::cout << "Created By: " << value << "\n";
     }
 
     iterator = dict.find("comment");
@@ -215,7 +210,6 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
         sqlVariables.push_back(QString::fromStdString(boost::get<bencode::string>(iterator->second)));
         torrentQuery+=",comment";
         torrentValues+=",?";
-        //std::cout << "Created By: " << value << "\n";
     }
 
 
@@ -226,11 +220,7 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
         sqlVariables.push_back(boost::get<bencode::integer>(iterator->second));
         torrentQuery+=",createdDate";
         torrentValues+=",FROM_UNIXTIME(?)";
-        //std::cout << "CreationDate: " << value << "\n";
     }
-
-
-
 
     iterator = dict.find("info");
     bencode::dict info;
@@ -249,7 +239,6 @@ bool UploadHandler::uploadDict(std::map<std::string, bencode::data> dict){
         sqlVariables.push_back(boost::get<bencode::integer>(iterator->second));
         torrentValues+=",?";
         torrentQuery+=",pieceLength";
-        //std::cout << "Piece Length: " << value << "\n";
     }
 
     iterator = info.find("pieces");
