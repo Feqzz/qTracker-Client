@@ -7,7 +7,7 @@ The client is used for downloading and uploading torrents. It has common functio
 * `libqt5sql5-mysql`
 
 # Documentation
-For the time being there is no documentation available. You might find the screenshots of the application in 
+For the time being there is no documentation available. You might find the screenshots of the application and the development process in 
 the [wiki](https://github.com/Feqzz/qTracker-Client/wiki) interesting.
 
 # Tracker
