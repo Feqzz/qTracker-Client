@@ -11,7 +11,15 @@
 #include "handlers/adminHandler.h"
 #include "handlers/torrentHandler.h"
 #include "handlers/hitandrunHandler.h"
-
+/*! \mainpage QTracker-Client Documentation
+ *
+ * \section intro_sec Introduction
+ *
+ * This document describes all the C++ classes used in our QTracker-Client.<br>
+ * There are no ads on this page, but due to the unforunate name of the software,
+ * adblockers will disable some functionality. Disable it to view the webpage as
+ * intended.
+ */
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
