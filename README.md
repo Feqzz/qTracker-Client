@@ -5,6 +5,7 @@ The client is used for downloading and uploading torrents. It has common functio
 # Dependencies
 * `Qt 5.*`
 * `libqt5sql5-mysql`
+* `Boost 1.23+`
 
 # Documentation
 The online documentation is available at this [website](https://tarves.no/docs/QTracker-Client/).You might find the screenshots of the application and the development process in the [wiki](https://github.com/Feqzz/qTracker-Client/wiki) interesting.
