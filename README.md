@@ -19,5 +19,5 @@ our tracker software. It is written in `C++` and can be found [here](https://git
 When sending out invites, a server is being used to send the e-mails. The source code can be found [here](https://github.com/Feqzz/qTracker-Server).
 
 ## Credits
-Much appreciations to [Kornelius Hauge](https://www.behance.net/korneliushauge) for creating the logo and icons.
+Much appreciations to [Kornelius Hauge](https://www.behance.net/korneliushauge) for creating the logo and icons.<br>
 Thanks to [jimporter](https://github.com/jimporter/bencode.hpp) for the bencode header-only library already included.
