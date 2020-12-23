@@ -20,3 +20,4 @@ When sending out invites, a server is being used to send the e-mails. The source
 
 ## Credits
 Much appreciations to [Kornelius Hauge](https://www.behance.net/korneliushauge) for creating the logo and icons.
+Thanks to [jimporter](https://github.com/jimporter/bencode.hpp) for the bencode header-only library already included.
